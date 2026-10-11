@@ -2,7 +2,7 @@
 
 A free, standalone cinematic scene editor for **FiveM GTA V Legacy**. Build short scenes with a camera timeline, characters, vehicles, objects, curated animations, lighting and weather controls. The editor can hide its interface for a clean take; use OBS or another recorder to capture the footage.
 
-[**Download the latest installer**](https://github.com/SraxDev/vanta-director-free/releases/latest/download/VANTA_Director_Free_0.1.0-beta.2_EN_Install.zip) · [All releases](https://github.com/SraxDev/vanta-director-free/releases) · [Vanta Discord](https://discord.gg/BUdg2bx6H)
+[**Download the latest installer**](https://github.com/SraxDev/vanta-director-free/releases/download/v0.1.0-beta.2/VANTA_Director_Free_0.1.0-beta.2_EN_Install.zip) · [All releases](https://github.com/SraxDev/vanta-director-free/releases) · [Vanta Discord](https://discord.gg/BUdg2bx6H)
 
 ## Features
 
