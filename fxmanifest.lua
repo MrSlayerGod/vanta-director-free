@@ -1,0 +1,91 @@
+fx_version 'cerulean'
+game 'gta5'
+
+author 'Vanta'
+description 'VANTA DIRECTOR FREE - standalone cinematic editor (beta)'
+version '0.1.0-beta.2'
+
+shared_scripts { 'config.lua', 'config_validation.lua', 'locale.lua', 'free_edition.lua', 'routes.lua', 'history.lua', 'shots.lua', 'staging.lua', 'appearance.lua', 'attachments.lua', 'recording.lua' }
+
+ui_page 'web/index.html'
+
+files {
+    'web/index.html',
+    'web/free-edition.css',
+    'web/free-edition.js',
+    'web/locales.js',
+    'web/i18n.js',
+    'web/style.css',
+    'web/editor-polish.css',
+    'web/vanta-system.css',
+    'web/vanta-controls.js',
+    'web/app.js',
+    'web/vanta-mark.png',
+    'web/director-polish.css',
+    'web/settings.css',
+    'web/settings.js',
+    'web/runtime-config.js',
+    'web/director-polish.js',
+    'web/visual-match.css',
+    'web/visual-match.js',
+    'web/library-ui.js',
+    'web/tutorial.js',
+    'web/tutorial.css',
+    'web/workflow.js',
+    'web/workflow.css',
+    'catalog/index.json',
+    'catalog/chunk-001.json',
+    'catalog/chunk-002.json',
+    'catalog/chunk-003.json',
+    'catalog/chunk-004.json',
+    'catalog/chunk-005.json',
+    'catalog/chunk-006.json',
+    'catalog/chunk-007.json',
+    'catalog/chunk-008.json',
+    'catalog/chunk-009.json',
+    'catalog/chunk-010.json',
+    'catalog/chunk-011.json',
+    'catalog/chunk-012.json',
+    'catalog/chunk-013.json',
+    'catalog/chunk-014.json',
+    'catalog/chunk-015.json',
+    'catalog/chunk-016.json',
+    'catalog/chunk-017.json',
+    'catalog/chunk-018.json',
+    'catalog/chunk-019.json',
+    'catalog/chunk-020.json',
+    'catalog/chunk-021.json',
+    'catalog/chunk-022.json',
+    'catalog/chunk-023.json',
+    'catalog/chunk-024.json',
+    'catalog/chunk-025.json',
+    'catalog/chunk-026.json',
+    'catalog/chunk-027.json',
+    'catalog/chunk-028.json',
+    'catalog/chunk-029.json',
+    'catalog/chunk-030.json',
+    'catalog/chunk-031.json',
+    'catalog/chunk-032.json',
+    'catalog/chunk-033.json',
+    'catalog/chunk-034.json',
+    'catalog/chunk-035.json',
+    'catalog/chunk-036.json',
+    'catalog/chunk-037.json',
+    'catalog/chunk-038.json',
+    'catalog/chunk-039.json',
+    'catalog/chunk-040.json',
+    'catalog/chunk-041.json',
+    'catalog/chunk-042.json',
+    'catalog/chunk-043.json',
+    'catalog/chunk-044.json',
+    'catalog/chunk-045.json',
+    'catalog/chunk-046.json',
+    'catalog/chunk-047.json',
+    'data/.keep'
+}
+
+client_scripts { 'preferences.lua', 'motion.lua', 'scene_geometry.lua', 'drag_ground.lua', 'vehicle_cues.lua', 'camera_rig.lua', 'obstacles.lua', 'ped_cues.lua', 'model_browser.lua', 'client.lua' }
+server_scripts { 'access.lua', 'server.lua' }
+
+-- Keep operator configuration editable after uploading to FiveM Asset Escrow.
+escrow_ignore { 'config.lua', 'README.md' }

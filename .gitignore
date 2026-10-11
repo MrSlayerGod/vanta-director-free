@@ -1,0 +1,10 @@
+# Generated/local files
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Keep the empty data directory placeholder, never commit player projects
+/data/*
+!/data/.keep
