@@ -29,7 +29,7 @@ local function boundedPayload(value)
     local nodes,bytes,seen=0,0,{}
     local function visit(v,depth)
         nodes=nodes+1
-        if nodes>32000 or depth>24 then return false end
+        if nodes>Config.PayloadNodeLimit or depth>24 then return false end
         local kind=type(v)
         if kind=='string' then bytes=bytes+#v;return bytes<=Config.ProjectFileLimit end
         if kind=='number' then return v==v and v~=math.huge and v~=-math.huge end

@@ -17,11 +17,13 @@ local function choice(t,k,f,values,prefix)
 end
 local numeric={
  ServerRequestBurst={40,10,100,true},ServerRequestWindowMs={10000,1000,60000,true},
- ProjectFileLimit={131072,16384,131072,true},MaximumProjects={20,1,20,true},MaximumKeyframes={120,1,120,true},
- MaximumActors={20,1,20,true},MaximumActionsPerActor={40,1,40,true},MinimumDuration={1,1,300},MaximumDuration={300,1,300},DefaultDuration={20,1,300},
+ ProjectFileLimit={1048576,16384,67108864,true},MaximumProjects={100,1,100000,true},MaximumKeyframes={1000,1,100000,true},
+ MaximumActors={100,1,10000,true},MaximumActionsPerActor={200,1,100000,true},MinimumDuration={1,1,86400},MaximumDuration={600,1,86400},DefaultDuration={20,1,86400},
+ MaximumCameraShots={200,1,100000,true},MaximumRoutePoints={256,1,100000,true},MaximumSavedLocations={200,1,100000,true},MaximumRecordedGestures={200,1,100000,true},
+ MaximumAimCues={1000,1,1000000,true},MaximumTimelineSelection={1000,1,1000000,true},PayloadNodeLimit={500000,1000,10000000,true},
  DefaultCameraSpeed={8,1,30},CameraMoveResponse={.12,.01,1},CameraLookResponse={.10,.01,1},MouseLookSensitivity={.16,.01,1},ActorDragResponse={.045,.01,.5},
  PlacementDistance={150,10,300},ModelLoadTimeoutMs={5000,1000,15000,true},UiUpdateIntervalMs={100,50,250,true},
- CaptureCountdownSeconds={3,1,10,true},RecordingMaximumSeconds={30,1,30,true},MaximumParticipants={8,2,8,true},InvitationSeconds={30,10,120,true},PlaybackLeadMs={1500,500,5000,true}
+ CaptureCountdownSeconds={3,1,10,true},RecordingMaximumSeconds={120,1,3600,true},MaximumParticipants={8,2,1000,true},InvitationSeconds={30,10,120,true},PlaybackLeadMs={1500,500,5000,true}
 }
 for k,v in pairs(numeric) do number(Config,k,v[1],v[2],v[3],v[4]) end
 if Config.MinimumDuration>Config.MaximumDuration then warn('MinimumDuration > MaximumDuration');Config.MinimumDuration=Config.MaximumDuration end

@@ -641,9 +641,9 @@ const physicalKeys = {
 };
 const hintIds = { KeyW: 'forwardKeyLabel', KeyA: 'leftKeyLabel', KeyQ: 'lowerKeyLabel' };
 
-const freeBlockedCalls = new Set(["previewCameraPreset","cancelCameraPreset","applyCameraPreset","createCameraShot","selectCameraShot","updateCameraShot","deleteCameraShot","duplicateCameraShot","startMotionRecording","trimRecording","addRecordedGesture","addAccessory","setAttachment","duplicateActors","setActorGroup","beginRoute","addRoutePoint","beginRoutePoint","moveRoutePoint","endRoutePoint","deleteRoutePoint","cancelRoute","commitRoute","collaboration","vehicleSeats"]);
+const unavailableCalls = new Set(["collaboration"]);
 async function post(name, data = {}) {
-  if(freeBlockedCalls.has(name) || (name==='setCameraRig' && data.mode!=='manual') || (name==='addAction' && (['recording','enterVehicle','exitVehicle'].includes(data.type) || data.points!=null || data.recording!=null))) {
+  if(unavailableCalls.has(name)) {
     const message='Cette fonction est disponible dans Director complet.';showStatus(message);return {ok:false,message};
   }
   if (!bridgeReady) return { ok: false, message: 'Director is closed.' };
@@ -1030,7 +1030,7 @@ function actionLabel(action) {
 
 function renderRuler() {
   const max = Number(project.duration) || 20;
-  const interval = max <= 30 ? 5 : max <= 90 ? 15 : 30;
+  const interval = max <= 30 ? 5 : max <= 90 ? 15 : max <= 300 ? 30 : max <= 1200 ? 120 : 600;
   const ticks = [];
   for (let value = 0; value <= max; value += interval) {
     ticks.push(`<span style="left:${(value / max) * 100}%">${formatTime(value).slice(0, 5)}</span>`);

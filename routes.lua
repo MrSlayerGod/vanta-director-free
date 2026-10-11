@@ -1,7 +1,7 @@
 DirectorRoutes = {}
 local function length(a,b) return math.sqrt((a.x-b.x)^2+(a.y-b.y)^2+(a.z-b.z)^2) end
 function DirectorRoutes.validate(points)
-    if type(points) ~= 'table' or #points < 1 or #points > 64 then return nil, 'A route needs 1 to 64 destinations.' end
+    if type(points) ~= 'table' or #points < 1 or #points > Config.MaximumRoutePoints then return nil, ('A route needs 1 to %d destinations.'):format(Config.MaximumRoutePoints) end
     local clean = {}
     for _, point in ipairs(points) do
         if type(point) ~= 'table' then return nil, 'Invalid route point.' end

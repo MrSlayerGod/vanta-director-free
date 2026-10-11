@@ -2,7 +2,7 @@ DirectorStaging={}
 local S=DirectorStaging
 function S.bookmarks(source)
     if source==nil then return {} end
-    if type(source)~='table' or #source>30 then return nil,'Maximum 30 saved locations.' end
+    if type(source)~='table' or #source>Config.MaximumSavedLocations then return nil,('Maximum %d saved locations.'):format(Config.MaximumSavedLocations) end
     local out={}
     for _,b in ipairs(source) do
         if type(b)~='table' then return nil,'Invalid saved location.' end
