@@ -1,10 +1,10 @@
-DirectorRecording={maximumSeconds=30,maximumSamples=602}
+DirectorRecording={maximumSeconds=Config.RecordingMaximumSeconds,maximumSamples=Config.RecordingMaximumSeconds*20+2}
 local R=DirectorRecording
 R.weapons={'weapon_pistol','weapon_combatpistol','weapon_appistol','weapon_pistol50','weapon_smg','weapon_microsmg','weapon_carbinerifle','weapon_assaultrifle','weapon_pumpshotgun','weapon_sniperrifle'}
 local weaponAllowed={};for _,name in ipairs(R.weapons) do weaponAllowed[name]=true end
 function R.validateAimCues(cues,seconds)
     if cues==nil then return {} end
-    if type(cues)~='table' or #cues>150 then return nil,'Too many recorded aim cues.' end
+    if type(cues)~='table' or #cues>Config.MaximumAimCues then return nil,'Too many recorded aim cues.' end
     local clean={};local finish=-1
     for _,c in ipairs(cues) do
         if type(c)~='table' or not weaponAllowed[c.weapon] or type(c.time)~='number' or c.time~=c.time or c.time<finish-.00001 or c.time<0 or
@@ -45,7 +45,7 @@ R.gestures={
 }
 function R.validateCues(cues,seconds)
     if cues==nil then return {} end
-    if type(cues)~='table' or #cues>30 then return nil,'Maximum 30 recorded gestures.' end
+    if type(cues)~='table' or #cues>Config.MaximumRecordedGestures then return nil,('Maximum %d recorded gestures.'):format(Config.MaximumRecordedGestures) end
     local clean={}
     for _,cue in ipairs(cues) do
         if type(cue)~='table' or not R.gestures[cue.gesture] or type(cue.time)~='number' or cue.time~=cue.time or cue.time<0 or type(cue.duration)~='number' or cue.duration~=cue.duration or cue.duration<.1 or cue.time+cue.duration>seconds+.001 then return nil,'Invalid recorded gesture.' end

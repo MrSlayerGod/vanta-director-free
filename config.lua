@@ -2,8 +2,8 @@
 -- Edit values, then restart vanta_director_free. See README.md.
 -- Saved player preferences take priority over initial defaults.
 -- RequireAce: true restricts access using AcePermission; false allows everyone.
--- Limits: projects 1..3, subjects 1..6, camera positions 1..30, actions 1..20.
--- Scene duration: 1..60 seconds. Project file limit: 16384..131072 bytes.
+-- Limits: projects 1..100000, subjects 1..10000, camera positions 1..100000, actions 1..100000.
+-- Scene duration: 1..86400 seconds. Project file limit: 16384..67108864 bytes.
 -- Camera speed: metres/second. Response settings: seconds; lower is more direct.
 -- ModelLoadTimeoutMs and UiUpdateIntervalMs use milliseconds.
 -- Clean takes require OBS or another recorder; no built-in MP4 export.
@@ -22,13 +22,13 @@ Config.CancelRecordingKey = 'F11'
 Config.RequireAce = true
 Config.AcePermission = 'vanta.director.free'
 
-Config.ProjectFileLimit = 131072
-Config.MaximumProjects = 3
-Config.MaximumKeyframes = 30
-Config.MaximumActors = 6
-Config.MaximumActionsPerActor = 20
+Config.ProjectFileLimit = 1048576
+Config.MaximumProjects = 100
+Config.MaximumKeyframes = 1000
+Config.MaximumActors = 100
+Config.MaximumActionsPerActor = 200
 Config.MinimumDuration = 1.0
-Config.MaximumDuration = 60.0
+Config.MaximumDuration = 600.0
 Config.DefaultDuration = 20.0
 
 Config.DefaultCameraSpeed = 8.0
@@ -44,7 +44,15 @@ Config.ModelLoadTimeoutMs = 5000
 Config.UiUpdateIntervalMs = 100
 
 Config.CaptureCountdownSeconds = 3
-Config.RecordingMaximumSeconds = 30
+Config.RecordingMaximumSeconds = 120
+
+Config.MaximumCameraShots = 200
+Config.MaximumRoutePoints = 256
+Config.MaximumSavedLocations = 200
+Config.MaximumRecordedGestures = 200
+Config.MaximumAimCues = 1000
+Config.MaximumTimelineSelection = 1000
+Config.PayloadNodeLimit = 500000
 
 Config.DefaultPreferences = {
     layout = 'azerty',

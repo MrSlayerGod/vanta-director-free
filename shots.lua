@@ -53,7 +53,7 @@ function S.frames(frames,start,finish)
 end
 function S.validate(shots,duration,actors,baseCount,preserveIds)
     if shots==nil then return {} end
-    if type(shots)~='table' or #shots>30 then return nil,'Maximum 30 camera shots.' end
+    if type(shots)~='table' or #shots>Config.MaximumCameraShots then return nil,('Maximum %d camera shots.'):format(Config.MaximumCameraShots) end
     local clean,seen,total={},{},baseCount or 0
     for _,shot in ipairs(shots) do
         if type(shot)~='table' then return nil,'Invalid camera shot.' end

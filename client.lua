@@ -1752,7 +1752,7 @@ editorCallback('setPlaybackRange',function(data,callback)
     previewing=false;playbackRange={first=first,last=last,loop=data.loop==true};sendProject();callback({ok=true})
 end)
 editorCallback('copyTimeline',function(data,callback)
-    if type(data.items)~='table' or #data.items==0 or #data.items>120 then callback({ok=false,message='Ctrl-click timeline items to select them.'});return end
+    if type(data.items)~='table' or #data.items==0 or #data.items>Config.MaximumTimelineSelection then callback({ok=false,message='Ctrl-click timeline items to select them.'});return end
     local list,start={},math.huge
     for _,item in ipairs(data.items) do
         if type(item)~='table' then callback({ok=false,message='Invalid selection.'});return end
@@ -1798,7 +1798,7 @@ editorCallback('pasteTimeline',function(_,callback)
 end)
 
 editorCallback('saveLocation',function(data,callback)
-    if #bookmarks>=30 then callback({ok=false,message='Location limit reached.'});return end
+    if #bookmarks>=Config.MaximumSavedLocations then callback({ok=false,message='Location limit reached.'});return end
     local state=getCameraState();if not state then callback({ok=false,message='Camera unavailable.'});return end
     state.time=0;bookmarks[#bookmarks+1]={name=tostring(data.name or 'Location'):sub(1,48),camera=state}
     sendProject();callback({ok=true})
