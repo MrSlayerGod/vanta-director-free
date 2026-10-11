@@ -43,7 +43,7 @@ let lookTabActive = false;
 let saveDirty = false;
 let savePending = false;
 let savePendingTimeout = null;
-let libraryState = { activeId: null, projects: [], limit: 3 };
+let libraryState = { activeId: null, projects: [], limit: Infinity };
 let libraryBusy = false;
 let libraryWaitTimer = null;
 let pendingLibraryConfirm = null;
@@ -785,7 +785,7 @@ function renderLibrary() {
   const allItems = libraryState.projects;
   const query = (document.getElementById('librarySearch').value || '').trim().toLowerCase();
   const items = allItems.filter(item => item.name.toLowerCase().includes(query));
-  document.getElementById('libraryCount').textContent = `${allItems.length} / ${libraryState.limit}`;
+  document.getElementById('libraryCount').textContent = Number.isFinite(libraryState.limit) ? `${allItems.length} / ${libraryState.limit}` : `${allItems.length}`;
   document.getElementById('newProjectButton').disabled = allItems.length >= libraryState.limit || allItems.length === 0;
   libraryList.innerHTML = '';
   if (!items.length) {
@@ -2497,7 +2497,7 @@ window.addEventListener('message', (event) => {
     clearKeys();
     saveDirty = false;
     document.getElementById('saveState').textContent = 'Not saved yet';
-    libraryState = { activeId: null, projects: [], limit: 20 };
+    libraryState = { activeId: null, projects: [], limit: Infinity };
     renderLibrary();
   }
   if (data.action === 'captureCountdown') {
@@ -2578,7 +2578,7 @@ window.addEventListener('message', (event) => {
   }
   if (data.action === 'library') {
     const previousId = libraryState.activeId;
-    libraryState = { activeId: data.activeId, projects: Array.isArray(data.projects) ? data.projects : [], limit: Number(data.limit) || 20 };
+    libraryState = { activeId: data.activeId, projects: Array.isArray(data.projects) ? data.projects : [], limit: Number(data.limit) || Infinity };
     if (previousId !== data.activeId) {
       timelineSelection.clear();updateTimelineSelection();
       copiedSequence=null;timelineCopied=false;
