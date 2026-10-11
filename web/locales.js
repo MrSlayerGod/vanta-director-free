@@ -751,8 +751,8 @@ window.VantaLocales={
       "fr": "Enregistrer le mouvement"
     },
     "ui.f9dc61c6e0da": {
-      "en": "Play normally. F10 saves the take; F11 cancels. Maximum 30 seconds. Records movement and supported gestures, not a full replay.",
-      "fr": "Joue normalement. F10 conserve la prise ; F11 l’annule. Maximum 30 secondes. Les mouvements et les gestes compatibles sont enregistrés."
+      "en": "Play normally. F10 saves the take; F11 cancels. Records movement and supported gestures, not a full replay.",
+      "fr": "Joue normalement. F10 conserve la prise ; F11 l’annule. Les mouvements et les gestes compatibles sont enregistrés."
     },
     "ui.d9cb678a44c6": {
       "en": "Custom model (advanced)",
@@ -4761,8 +4761,8 @@ window.VantaLocales={
       "translate": []
     },
     "ui.f659b582d53c": {
-      "en": "Play normally. {saveKey} saves the take; {cancelKey} cancels. Maximum 30 seconds. Records movement and supported gestures, not a full replay.",
-      "fr": "Joue normalement. {saveKey} conserve la prise ; {cancelKey} l’annule. Maximum 30 secondes. Les mouvements et les gestes compatibles sont enregistrés.",
+      "en": "Play normally. {saveKey} saves the take; {cancelKey} cancels. Records movement and supported gestures, not a full replay.",
+      "fr": "Joue normalement. {saveKey} conserve la prise ; {cancelKey} l’annule. Les mouvements et les gestes compatibles sont enregistrés.",
       "translate": []
     },
     "ui.25c7b09605eb": {
