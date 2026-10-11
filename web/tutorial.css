@@ -1,9 +1,191 @@
-#director .tutorial-coach{position:absolute;z-index:11;padding:20px;background:linear-gradient(130deg,#122c40,#0b1a29);border:1px solid #3d7087;border-radius:10px;box-shadow:0 15px 40px #0006;color:#eaf5fc;font:13px 'Segoe UI',sans-serif;pointer-events:auto;max-height:calc(100vh - 110px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:#3c6e84 transparent;animation:vanta-enter .18s ease-out}
-#director .tutorial-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}#director .tutorial-heading>span{font-size:9px;letter-spacing:1.3px;color:#6bd7ef;font-weight:700}#director .tutorial-coach button{cursor:pointer;border:1px solid #345468;background:#142d40;color:#d8ebf7;border-radius:5px;font:600 11px 'Segoe UI',sans-serif;padding:9px 12px}#director #tutorialSkip{border:0;background:none;color:#9bb5c6;padding:3px 0;font-weight:400}#director .tutorial-progress{height:3px;background:#254153;border-radius:3px;margin-bottom:15px;overflow:hidden}#director #tutorialProgress{display:block;height:100%;background:#68d5ef;transition:width .2s ease}#director #tutorialCount{font-size:9px;letter-spacing:1.4px;color:#8bafc5}#director .tutorial-coach h2{font-size:18px;line-height:1.3;margin:8px 0 10px;letter-spacing:-.3px}#director .tutorial-coach p{font-size:12px;line-height:1.75;color:#b6ccdb;margin:0 0 14px}#director #tutorialHint{display:block;line-height:1.6;color:#70c8dd;font-size:10px}#director .tutorial-coach footer{display:flex;justify-content:space-between;margin-top:20px}#director .tutorial-coach .tutorial-primary{background:linear-gradient(#79def0,#43b5d6);border-color:#72d3e7;color:#082438}#director .tutorial-coach button:hover{filter:brightness(1.12)}#director .tutorial-coach button:disabled{opacity:.35;cursor:default}#director .tutorial-coach button:focus-visible{outline:2px solid #75dff2;outline-offset:3px}#director .tutorial-focus{position:absolute;z-index:10;border:2px solid #6fdcef;border-radius:6px;box-shadow:0 0 0 4px #5bd1ef19;pointer-events:none}#director.reduce-motion .tutorial-coach{animation:none}#director.reduce-motion #tutorialProgress{transition:none}@media(prefers-reduced-motion:reduce){#director .tutorial-coach{animation:none}#director #tutorialProgress{transition:none}}
-#director .tutorial-coach{padding:18px;border-radius:9px}#director .tutorial-coach p{font-size:13px;line-height:1.65}#director .tutorial-coach footer{margin-top:16px}#director .tutorial-done #tutorialHint{color:#7ee6b8}#director .tutorial-coach[data-side=left]{border-left:3px solid #6fdcef}#director .tutorial-coach[data-side=right]{border-right:3px solid #6fdcef}#director .tutorial-coach[data-side=top]{border-top:3px solid #6fdcef}#director .tutorial-coach[data-side=bottom]{border-bottom:3px solid #6fdcef}
-#director .tutorial-coach{z-index:72}#director .tutorial-focus{z-index:71}
-#director.tutorial-active .vanta-tooltip{display:none!important}
-#director #tutorialReturn{margin-top:12px;width:100%}
-#director #tutorialReturn[hidden]{display:none!important}
-#director .tutorial-coach{max-height:calc(100vh - 145px)}
-@media(max-height:800px){#director .tutorial-coach{padding:14px}#director .tutorial-coach h2{font-size:16px}#director .tutorial-coach p{font-size:12px}#director .tutorial-heading{margin-bottom:10px}#director .tutorial-coach footer{margin-top:12px}}
+#director .tutorial-coach {
+  position: absolute;
+  z-index: 11;
+  padding: 20px;
+  background: linear-gradient(130deg, #122c40, #0b1a29);
+  border: 1px solid #3d7087;
+  border-radius: 10px;
+  box-shadow: 0 15px 40px #0006;
+  color: #eaf5fc;
+  font:
+    13px "Segoe UI",
+    sans-serif;
+  pointer-events: auto;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #3c6e84 transparent;
+  animation: vanta-enter 0.18s ease-out;
+}
+#director .tutorial-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+#director .tutorial-heading > span {
+  font-size: 9px;
+  letter-spacing: 1.3px;
+  color: #6bd7ef;
+  font-weight: 700;
+}
+#director .tutorial-coach button {
+  cursor: pointer;
+  border: 1px solid #345468;
+  background: #142d40;
+  color: #d8ebf7;
+  border-radius: 5px;
+  font:
+    600 11px "Segoe UI",
+    sans-serif;
+  padding: 9px 12px;
+}
+#director #tutorialSkip {
+  border: 0;
+  background: none;
+  color: #9bb5c6;
+  padding: 3px 0;
+  font-weight: 400;
+}
+#director .tutorial-progress {
+  height: 3px;
+  background: #254153;
+  border-radius: 3px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+#director #tutorialProgress {
+  display: block;
+  height: 100%;
+  background: #68d5ef;
+  transition: width 0.2s ease;
+}
+#director #tutorialCount {
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  color: #8bafc5;
+}
+#director .tutorial-coach h2 {
+  font-size: 18px;
+  line-height: 1.3;
+  margin: 8px 0 10px;
+  letter-spacing: -0.3px;
+}
+#director .tutorial-coach p {
+  font-size: 12px;
+  line-height: 1.75;
+  color: #b6ccdb;
+  margin: 0 0 14px;
+}
+#director #tutorialHint {
+  display: block;
+  line-height: 1.6;
+  color: #70c8dd;
+  font-size: 10px;
+}
+#director .tutorial-coach footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+#director .tutorial-coach .tutorial-primary {
+  background: linear-gradient(#79def0, #43b5d6);
+  border-color: #72d3e7;
+  color: #082438;
+}
+#director .tutorial-coach button:hover {
+  filter: brightness(1.12);
+}
+#director .tutorial-coach button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+#director .tutorial-coach button:focus-visible {
+  outline: 2px solid #75dff2;
+  outline-offset: 3px;
+}
+#director .tutorial-focus {
+  position: absolute;
+  z-index: 10;
+  border: 2px solid #6fdcef;
+  border-radius: 6px;
+  box-shadow: 0 0 0 4px #5bd1ef19;
+  pointer-events: none;
+}
+#director.reduce-motion .tutorial-coach {
+  animation: none;
+}
+#director.reduce-motion #tutorialProgress {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  #director .tutorial-coach {
+    animation: none;
+  }
+  #director #tutorialProgress {
+    transition: none;
+  }
+}
+#director .tutorial-coach {
+  padding: 18px;
+  border-radius: 9px;
+}
+#director .tutorial-coach p {
+  font-size: 13px;
+  line-height: 1.65;
+}
+#director .tutorial-coach footer {
+  margin-top: 16px;
+}
+#director .tutorial-done #tutorialHint {
+  color: #7ee6b8;
+}
+#director .tutorial-coach[data-side="left"] {
+  border-left: 3px solid #6fdcef;
+}
+#director .tutorial-coach[data-side="right"] {
+  border-right: 3px solid #6fdcef;
+}
+#director .tutorial-coach[data-side="top"] {
+  border-top: 3px solid #6fdcef;
+}
+#director .tutorial-coach[data-side="bottom"] {
+  border-bottom: 3px solid #6fdcef;
+}
+#director .tutorial-coach {
+  z-index: 72;
+}
+#director .tutorial-focus {
+  z-index: 71;
+}
+#director.tutorial-active .vanta-tooltip {
+  display: none !important;
+}
+#director #tutorialReturn {
+  margin-top: 12px;
+  width: 100%;
+}
+#director #tutorialReturn[hidden] {
+  display: none !important;
+}
+#director .tutorial-coach {
+  max-height: calc(100vh - 145px);
+}
+@media (max-height: 800px) {
+  #director .tutorial-coach {
+    padding: 14px;
+  }
+  #director .tutorial-coach h2 {
+    font-size: 16px;
+  }
+  #director .tutorial-coach p {
+    font-size: 12px;
+  }
+  #director .tutorial-heading {
+    margin-bottom: 10px;
+  }
+  #director .tutorial-coach footer {
+    margin-top: 12px;
+  }
+}

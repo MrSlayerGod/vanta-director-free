@@ -36,18 +36,24 @@ ensure vanta_director_free
 
 The full edition and Free use separate commands, events and project storage. Stop the full edition while testing Free so their camera and mouse focus do not overlap.
 
-## Free edition limits
+## Limits
 
-| Limit | Free edition |
-|---|---:|
-| Projects per player | 3 |
-| Scene duration | 60 seconds |
-| Subjects per scene | 6 |
-| Camera positions | 30 |
-| Actions per subject | 20 |
-| Curated animations | 40 |
+Every limit is set in `config.lua`. Defaults:
 
-Multi-point routes, automatic cameras, camera sequences, motion recording, attached accessories, grouped duplication, vehicle entry/exit and shared filming are part of the full edition. Free rejects projects that use unsupported features; keep the original export and open it in the edition that supports those features.
+| Limit | Default | Allowed range |
+|---|---:|---:|
+| Projects per player | 100 | 1 to 100000 |
+| Scene duration | 600 seconds | 1 to 86400 seconds |
+| Subjects per scene | 100 | 1 to 10000 |
+| Camera positions | 1000 | 1 to 100000 |
+| Actions per subject | 200 | 1 to 100000 |
+| Camera shots | 200 | 1 to 100000 |
+| Route points | 256 | 1 to 100000 |
+| Saved locations | 200 | 1 to 100000 |
+| Recording length | 120 seconds | 1 to 3600 seconds |
+| Project file size | 1 MiB | 16 KiB to 64 MiB |
+
+Automatic camera modes (target, follow, orbit) are enabled. Shared filming is not included in this build.
 
 ## Compatibility and data
 

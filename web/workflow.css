@@ -1,58 +1,377 @@
 /* Preserve the transparent game viewport and existing modal/focus hierarchy. */
-#director .workflow-nav{position:absolute;top:60px;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 16px;background:#091725;border-bottom:1px solid #22384d;z-index:12;pointer-events:auto}
-#director .workflow-nav button{display:flex;align-items:center;gap:9px;min-height:36px;border:1px solid transparent;border-radius:5px;padding:0 18px;background:transparent;color:#9ab1c6;font:600 12px 'Segoe UI',sans-serif;cursor:pointer}
-#director .workflow-nav button:hover:not(:disabled){background:#173449;color:#e4f6ff}
-#director .workflow-nav button.active{color:#9deaff;background:#15384c;border-color:#31718b}
-#director .workflow-number{display:grid;place-items:center;width:21px;height:21px;border:1px solid #365268;border-radius:50%;font:11px Consolas,monospace;color:#9ec7d8}
-#director .workflow-nav button.active .workflow-number{background:#70dbec;color:#092438;border-color:#70dbec}
-#director .workflow-nav .workflow-mode{margin-left:auto;border-color:#2c465e;font-size:11px;padding:0 12px}
-#director :is(.left-panel,.right-panel,.look-surface){top:112px}
-#director .view-caption,#director .view-tools,#director .viewport-tools{top:126px}
-#director .workflow-guide{display:none;padding:20px;border-bottom:1px solid #243c50;background:linear-gradient(135deg,#122c40,#0b1829)}
-#director.guided .workflow-guide{display:block}
-#director .workflow-guide>span{font:10px Consolas,monospace;letter-spacing:1.6px;color:#6fd6e8}
-#director .workflow-guide h2{font-size:18px;line-height:1.3;margin:10px 0;color:#edf7ff;letter-spacing:-.3px}
-#director .workflow-guide p{font-size:12px;line-height:1.65;color:#9bb8cc;margin:0 0 12px}
-#director .workflow-actions{display:flex;flex-direction:column;gap:8px}
-#director .workflow-guide button,#director .workflow-issue button{border:1px solid #355a72;border-radius:5px;min-height:34px;padding:8px 10px;font:600 12px 'Segoe UI',sans-serif;background:#132d41;color:#c2e6f3;cursor:pointer}
-#director #workflowPrimary{background:linear-gradient(#7adeee,#49b7d8);color:#072a3a;border-color:#72d5e7;min-height:38px}
-#director #workflowPrimary:disabled{background:#1b3345;border-color:#2c475b;color:#819cad;opacity:1;cursor:not-allowed}
-#director #workflowReason{margin:10px 0 0;color:#ebbf8c;font-size:11px}
-#director .workflow-guide .workflow-next{margin-top:12px;width:100%;border:0;background:transparent;color:#78d5ed;text-align:right;padding-right:0}
-#director.guided .right-panel>.panel-heading{min-height:0;padding-top:14px}
-#director.guided .right-panel>.panel-heading h2{font-size:14px}
-#director.guided .right-panel>.panel-heading .eyebrow{display:none}
-#director.guided .scene-tabs{margin-top:12px}
-#director.guided .inspector-footer{display:none}
-#director.guided :is(.scene-tabs,.inspector-tabs){display:none}
-#director.workflow-review #actorsPane>:is(#browseModelsButton,#stagingTools,#motionRecordPanel,#actorCreate){display:none}
-#director .workflow-review-pane{display:none;padding:20px;overflow:auto}
-#director.workflow-review .workflow-review-pane{display:block}
-#director.workflow-review .right-panel>:is(.panel-heading,.inspector-tabs,#cameraInspector,#actorInspector,#lookPane,.inspector-footer){display:none!important}
-#director .workflow-review-pane h3{font-size:13px;margin:0 0 14px}
-#director .workflow-check{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid #1e3548}
-#director .workflow-check>span{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:13px;background:#254131;color:#99debe}
-#director .workflow-check.attention>span{background:#443722;color:#ecc58e}
-#director .workflow-check strong{font-size:12px;font-weight:600;display:block}
-#director .workflow-check small{display:block;color:#8eabbf;line-height:1.5;font-size:11px;margin-top:3px}
-#director .workflow-issue{border:1px solid #344d5f;border-radius:5px;padding:12px;margin-top:12px;background:#112639}
-#director .workflow-issue.blocking{border-color:#795145;background:#322520}
-#director .workflow-issue p{font:11px/1.6 'Segoe UI',sans-serif;margin:0;color:#c6d9e6;overflow-wrap:anywhere}
-#director .workflow-issue button{margin-top:8px;padding:5px 9px;min-height:29px;font-size:11px}
-#director .workflow-recording{margin-top:20px;border-top:1px solid #244158;padding-top:18px}
-#director .workflow-recording strong{font-size:13px;color:#9bdeef}
-#director .workflow-recording ol{padding-left:18px;font-size:12px;color:#bbcedd;line-height:1.7}
-#director .workflow-recording li{padding:4px 0}
-#director .workflow-recording p{font-size:11px;color:#8ba8bc;line-height:1.6}
-#director .workflow-guide [hidden],#director .workflow-recording[hidden]{display:none!important}
-#director .workflow-nav button:focus-visible,#director .workflow-guide button:focus-visible,#director .workflow-issue button:focus-visible{outline:2px solid #8ae9ff;outline-offset:2px}
-#director.guided .right-panel{overflow:auto;display:block}
-#director.guided :is(#cameraInspector,#actorInspector,.right-panel>#lookPane){overflow:visible;flex:none}
-#director.guided .left-panel .panel-note{display:none}
-#director .workflow-nav button:disabled{opacity:.5;cursor:not-allowed}
-#director #routeEstimate{color:#8fdded;font:12px/1.5 'Segoe UI',sans-serif;margin:9px 0}
-#director #routeError{color:#f1b59e;font:12px/1.5 'Segoe UI',sans-serif;max-width:600px;white-space:normal;margin:9px 0}
-#director #routeError[hidden]{display:none}
-@media(max-width:1450px){#director .workflow-nav button{padding:0 12px}#director .workflow-guide{padding:16px}#director .workflow-guide h2{font-size:16px}#director .workflow-guide p{font-size:11px}#director .workflow-review-pane{padding:16px}}
-@media(max-width:1050px){#director .workflow-nav{padding:6px;gap:1px}#director .workflow-nav button{padding:0 7px;gap:5px;font-size:11px}#director .workflow-nav .workflow-mode{padding:0 7px}#director .workflow-number{width:18px;height:18px}}
-@media(max-height:800px){#director.guided{--editor-bottom:210px}#director .workflow-guide{padding:13px 16px}#director .workflow-guide h2{font-size:15px;margin:7px 0}#director .workflow-guide p{font-size:11px;margin-bottom:9px}#director .workflow-guide .workflow-next{margin-top:7px}#director .workflow-guide>span{font-size:9px}}
+#director .workflow-nav {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: #091725;
+  border-bottom: 1px solid #22384d;
+  z-index: 12;
+  pointer-events: auto;
+}
+#director .workflow-nav button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 36px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 0 18px;
+  background: transparent;
+  color: #9ab1c6;
+  font:
+    600 12px "Segoe UI",
+    sans-serif;
+  cursor: pointer;
+}
+#director .workflow-nav button:hover:not(:disabled) {
+  background: #173449;
+  color: #e4f6ff;
+}
+#director .workflow-nav button.active {
+  color: #9deaff;
+  background: #15384c;
+  border-color: #31718b;
+}
+#director .workflow-number {
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 21px;
+  border: 1px solid #365268;
+  border-radius: 50%;
+  font:
+    11px Consolas,
+    monospace;
+  color: #9ec7d8;
+}
+#director .workflow-nav button.active .workflow-number {
+  background: #70dbec;
+  color: #092438;
+  border-color: #70dbec;
+}
+#director .workflow-nav .workflow-mode {
+  margin-left: auto;
+  border-color: #2c465e;
+  font-size: 11px;
+  padding: 0 12px;
+}
+#director :is(.left-panel, .right-panel, .look-surface) {
+  top: 112px;
+}
+#director .view-caption,
+#director .view-tools,
+#director .viewport-tools {
+  top: 126px;
+}
+#director .workflow-guide {
+  display: none;
+  padding: 20px;
+  border-bottom: 1px solid #243c50;
+  background: linear-gradient(135deg, #122c40, #0b1829);
+}
+#director.guided .workflow-guide {
+  display: block;
+}
+#director .workflow-guide > span {
+  font:
+    10px Consolas,
+    monospace;
+  letter-spacing: 1.6px;
+  color: #6fd6e8;
+}
+#director .workflow-guide h2 {
+  font-size: 18px;
+  line-height: 1.3;
+  margin: 10px 0;
+  color: #edf7ff;
+  letter-spacing: -0.3px;
+}
+#director .workflow-guide p {
+  font-size: 12px;
+  line-height: 1.65;
+  color: #9bb8cc;
+  margin: 0 0 12px;
+}
+#director .workflow-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#director .workflow-guide button,
+#director .workflow-issue button {
+  border: 1px solid #355a72;
+  border-radius: 5px;
+  min-height: 34px;
+  padding: 8px 10px;
+  font:
+    600 12px "Segoe UI",
+    sans-serif;
+  background: #132d41;
+  color: #c2e6f3;
+  cursor: pointer;
+}
+#director #workflowPrimary {
+  background: linear-gradient(#7adeee, #49b7d8);
+  color: #072a3a;
+  border-color: #72d5e7;
+  min-height: 38px;
+}
+#director #workflowPrimary:disabled {
+  background: #1b3345;
+  border-color: #2c475b;
+  color: #819cad;
+  opacity: 1;
+  cursor: not-allowed;
+}
+#director #workflowReason {
+  margin: 10px 0 0;
+  color: #ebbf8c;
+  font-size: 11px;
+}
+#director .workflow-guide .workflow-next {
+  margin-top: 12px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #78d5ed;
+  text-align: right;
+  padding-right: 0;
+}
+#director.guided .right-panel > .panel-heading {
+  min-height: 0;
+  padding-top: 14px;
+}
+#director.guided .right-panel > .panel-heading h2 {
+  font-size: 14px;
+}
+#director.guided .right-panel > .panel-heading .eyebrow {
+  display: none;
+}
+#director.guided .scene-tabs {
+  margin-top: 12px;
+}
+#director.guided .inspector-footer {
+  display: none;
+}
+#director.guided :is(.scene-tabs, .inspector-tabs) {
+  display: none;
+}
+#director.workflow-review
+  #actorsPane
+  > :is(#browseModelsButton, #stagingTools, #motionRecordPanel, #actorCreate) {
+  display: none;
+}
+#director .workflow-review-pane {
+  display: none;
+  padding: 20px;
+  overflow: auto;
+}
+#director.workflow-review .workflow-review-pane {
+  display: block;
+}
+#director.workflow-review
+  .right-panel
+  > :is(
+    .panel-heading,
+    .inspector-tabs,
+    #cameraInspector,
+    #actorInspector,
+    #lookPane,
+    .inspector-footer
+  ) {
+  display: none !important;
+}
+#director .workflow-review-pane h3 {
+  font-size: 13px;
+  margin: 0 0 14px;
+}
+#director .workflow-check {
+  display: flex;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid #1e3548;
+}
+#director .workflow-check > span {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+  font-size: 13px;
+  background: #254131;
+  color: #99debe;
+}
+#director .workflow-check.attention > span {
+  background: #443722;
+  color: #ecc58e;
+}
+#director .workflow-check strong {
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+}
+#director .workflow-check small {
+  display: block;
+  color: #8eabbf;
+  line-height: 1.5;
+  font-size: 11px;
+  margin-top: 3px;
+}
+#director .workflow-issue {
+  border: 1px solid #344d5f;
+  border-radius: 5px;
+  padding: 12px;
+  margin-top: 12px;
+  background: #112639;
+}
+#director .workflow-issue.blocking {
+  border-color: #795145;
+  background: #322520;
+}
+#director .workflow-issue p {
+  font:
+    11px/1.6 "Segoe UI",
+    sans-serif;
+  margin: 0;
+  color: #c6d9e6;
+  overflow-wrap: anywhere;
+}
+#director .workflow-issue button {
+  margin-top: 8px;
+  padding: 5px 9px;
+  min-height: 29px;
+  font-size: 11px;
+}
+#director .workflow-recording {
+  margin-top: 20px;
+  border-top: 1px solid #244158;
+  padding-top: 18px;
+}
+#director .workflow-recording strong {
+  font-size: 13px;
+  color: #9bdeef;
+}
+#director .workflow-recording ol {
+  padding-left: 18px;
+  font-size: 12px;
+  color: #bbcedd;
+  line-height: 1.7;
+}
+#director .workflow-recording li {
+  padding: 4px 0;
+}
+#director .workflow-recording p {
+  font-size: 11px;
+  color: #8ba8bc;
+  line-height: 1.6;
+}
+#director .workflow-guide [hidden],
+#director .workflow-recording[hidden] {
+  display: none !important;
+}
+#director .workflow-nav button:focus-visible,
+#director .workflow-guide button:focus-visible,
+#director .workflow-issue button:focus-visible {
+  outline: 2px solid #8ae9ff;
+  outline-offset: 2px;
+}
+#director.guided .right-panel {
+  overflow: auto;
+  display: block;
+}
+#director.guided
+  :is(#cameraInspector, #actorInspector, .right-panel > #lookPane) {
+  overflow: visible;
+  flex: none;
+}
+#director.guided .left-panel .panel-note {
+  display: none;
+}
+#director .workflow-nav button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#director #routeEstimate {
+  color: #8fdded;
+  font:
+    12px/1.5 "Segoe UI",
+    sans-serif;
+  margin: 9px 0;
+}
+#director #routeError {
+  color: #f1b59e;
+  font:
+    12px/1.5 "Segoe UI",
+    sans-serif;
+  max-width: 600px;
+  white-space: normal;
+  margin: 9px 0;
+}
+#director #routeError[hidden] {
+  display: none;
+}
+@media (max-width: 1450px) {
+  #director .workflow-nav button {
+    padding: 0 12px;
+  }
+  #director .workflow-guide {
+    padding: 16px;
+  }
+  #director .workflow-guide h2 {
+    font-size: 16px;
+  }
+  #director .workflow-guide p {
+    font-size: 11px;
+  }
+  #director .workflow-review-pane {
+    padding: 16px;
+  }
+}
+@media (max-width: 1050px) {
+  #director .workflow-nav {
+    padding: 6px;
+    gap: 1px;
+  }
+  #director .workflow-nav button {
+    padding: 0 7px;
+    gap: 5px;
+    font-size: 11px;
+  }
+  #director .workflow-nav .workflow-mode {
+    padding: 0 7px;
+  }
+  #director .workflow-number {
+    width: 18px;
+    height: 18px;
+  }
+}
+@media (max-height: 800px) {
+  #director.guided {
+    --editor-bottom: 210px;
+  }
+  #director .workflow-guide {
+    padding: 13px 16px;
+  }
+  #director .workflow-guide h2 {
+    font-size: 15px;
+    margin: 7px 0;
+  }
+  #director .workflow-guide p {
+    font-size: 11px;
+    margin-bottom: 9px;
+  }
+  #director .workflow-guide .workflow-next {
+    margin-top: 7px;
+  }
+  #director .workflow-guide > span {
+    font-size: 9px;
+  }
+}
