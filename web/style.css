@@ -1697,8 +1697,8 @@ kbd {
   width: calc(100% - 55px);
   height: 100%;
   padding: 21px 16px;
-  background: radial-gradient(circle at 0 0, #16345a77, transparent 38%),
-    linear-gradient(#0a1b31, #081426);
+  background:
+    radial-gradient(circle at 0 0, #16345a77, transparent 38%), linear-gradient(#0a1b31, #081426);
 }
 .left-panel .panel-heading {
   margin-bottom: 17px;
@@ -1877,8 +1877,8 @@ kbd {
   border: 0;
   border-left: 1px solid #31618b;
   border-radius: 0;
-  background: radial-gradient(circle at 110% 0, #12375a55, transparent 38%),
-    linear-gradient(#0c1c31, #081529);
+  background:
+    radial-gradient(circle at 110% 0, #12375a55, transparent 38%), linear-gradient(#0c1c31, #081529);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #2c5576 transparent;
@@ -2687,12 +2687,14 @@ kbd {
 .animation-body {
   display: grid;
   grid-template-columns: 43% 57%;
-  min-height: 440px;
+  grid-template-rows: minmax(0, 1fr);
+  min-height: 0;
   overflow: hidden;
 }
 .animation-browser {
   display: flex;
   flex-direction: column;
+  min-height: 0;
   min-width: 0;
   border-right: 1px solid #2c5575;
   padding: 17px 13px 15px 20px;
@@ -2782,6 +2784,7 @@ kbd {
 .animation-detail {
   display: flex;
   flex-direction: column;
+  min-height: 0;
   padding: 27px 28px 23px;
   min-width: 0;
   background: radial-gradient(circle at 100% 0, #164b7047, transparent 55%);

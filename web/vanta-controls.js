@@ -29,8 +29,7 @@
       "data-i18n-user",
       Boolean(option?.hasAttribute("data-i18n-user")),
     );
-    if (widget.caption.textContent !== caption)
-      widget.caption.textContent = caption;
+    if (widget.caption.textContent !== caption) widget.caption.textContent = caption;
     widget.button.disabled = widget.select.disabled;
     widget.button.setAttribute(
       "aria-label",
@@ -43,9 +42,7 @@
   const options = () =>
     Array.from(active.select.options).filter(
       (option) =>
-        !option.hidden &&
-        !option.disabled &&
-        option.textContent.toLowerCase().includes(query),
+        !option.hidden && !option.disabled && option.textContent.toLowerCase().includes(query),
     );
   const position = () => {
     if (!active) return;
@@ -53,19 +50,14 @@
     const below = window.innerHeight - bounds.bottom - 12;
     const above = bounds.top - 12;
     const height = Math.min(310, Math.max(below, above));
-    popup.style.width =
-      Math.min(Math.max(bounds.width, 190), window.innerWidth - 24) + "px";
+    popup.style.width = Math.min(Math.max(bounds.width, 190), window.innerWidth - 24) + "px";
     popup.style.left =
-      Math.max(
-        12,
-        Math.min(bounds.left, window.innerWidth - popup.offsetWidth - 12),
-      ) + "px";
+      Math.max(12, Math.min(bounds.left, window.innerWidth - popup.offsetWidth - 12)) + "px";
     popup.style.maxHeight = height + "px";
     popup.style.top =
       (below >= Math.min(popup.scrollHeight, 240) || below >= above
         ? bounds.bottom + 6
-        : Math.max(12, bounds.top - Math.min(popup.scrollHeight, height) - 6)) +
-      "px";
+        : Math.max(12, bounds.top - Math.min(popup.scrollHeight, height) - 6)) + "px";
   };
   const choose = (option) => {
     const widget = active;
@@ -85,10 +77,7 @@
       row.className = "vanta-select-option";
       row.id = "vanta-option-" + index;
       row.setAttribute("role", "option");
-      row.setAttribute(
-        "aria-selected",
-        String(option.value === active.select.value),
-      );
+      row.setAttribute("aria-selected", String(option.value === active.select.value));
       row.textContent = option.textContent;
       if (option.hasAttribute("data-i18n-user")) row.dataset.i18nUser = "true";
       row.classList.toggle("highlighted", index === highlighted);
@@ -176,10 +165,7 @@
       open(widget);
     });
     button.addEventListener("keydown", (event) => {
-      if (
-        !active &&
-        ["ArrowDown", "ArrowUp", "Enter", " "].includes(event.key)
-      ) {
+      if (!active && ["ArrowDown", "ArrowUp", "Enter", " "].includes(event.key)) {
         event.preventDefault();
         event.stopPropagation();
         open(widget);
@@ -201,10 +187,7 @@
         "--range-fill",
         Math.max(
           0,
-          Math.min(
-            100,
-            ((Number(input.value) - min) / Math.max(0.001, max - min)) * 100,
-          ),
+          Math.min(100, ((Number(input.value) - min) / Math.max(0.001, max - min)) * 100),
         ) + "%",
       );
     });
@@ -212,11 +195,7 @@
     if (event.target.matches("input[type=range]")) refreshRanges();
   });
   window.addEventListener("message", (event) => {
-    if (
-      ["open", "project", "camera", "look", "modelPreview"].includes(
-        event.data?.action,
-      )
-    )
+    if (["open", "project", "camera", "look", "modelPreview"].includes(event.data?.action))
       refreshRanges();
   });
   refreshRanges();
@@ -250,10 +229,7 @@
       target.setAttribute("aria-describedby", tip.id);
       const bounds = target.getBoundingClientRect();
       tip.style.left =
-        Math.max(
-          8,
-          Math.min(bounds.left, window.innerWidth - tip.offsetWidth - 8),
-        ) + "px";
+        Math.max(8, Math.min(bounds.left, window.innerWidth - tip.offsetWidth - 8)) + "px";
       tip.style.top =
         (bounds.bottom + tip.offsetHeight + 14 < window.innerHeight
           ? bounds.bottom + 7
@@ -261,15 +237,12 @@
     }, 400);
   };
   document.addEventListener("pointerover", (event) => {
-    if (!tipTarget?.contains(event.target))
-      showTip(event.target.closest("[title]"));
+    if (!tipTarget?.contains(event.target)) showTip(event.target.closest("[title]"));
   });
   document.addEventListener("pointerout", (event) => {
     if (tipTarget && !tipTarget.contains(event.relatedTarget)) hideTip();
   });
-  document.addEventListener("focusin", (event) =>
-    showTip(event.target.closest("[title]")),
-  );
+  document.addEventListener("focusin", (event) => showTip(event.target.closest("[title]")));
   document.addEventListener("focusout", hideTip);
   document.addEventListener("mousedown", hideTip);
   document.addEventListener("keydown", hideTip);
@@ -279,10 +252,7 @@
     const changed = new Set();
     let removedControls = false;
     records.forEach((record) => {
-      const element =
-        record.target.nodeType === 1
-          ? record.target
-          : record.target.parentElement;
+      const element = record.target.nodeType === 1 ? record.target : record.target.parentElement;
       const select = element?.closest("select");
       if (select && widgets.has(select)) changed.add(widgets.get(select));
       for (const node of record.addedNodes || [])
@@ -291,10 +261,7 @@
           node.querySelectorAll("select").forEach(enhance);
         }
       for (const node of record.removedNodes || [])
-        if (
-          node.nodeType === 1 &&
-          (node.matches("select") || node.querySelector("select"))
-        )
+        if (node.nodeType === 1 && (node.matches("select") || node.querySelector("select")))
           removedControls = true;
     });
     if (removedControls)
@@ -313,37 +280,24 @@
     attributeFilter: ["disabled"],
   });
   window.addEventListener("message", (event) => {
-    if (event.data?.action === "modelCatalog" && event.data.complete === false)
-      return;
+    if (event.data?.action === "modelCatalog" && event.data.complete === false) return;
     if (
-      [
-        "open",
-        "project",
-        "look",
-        "tab",
-        "modelCatalog",
-        "routeControls",
-      ].includes(event.data?.action)
+      ["open", "project", "look", "tab", "modelCatalog", "routeControls"].includes(
+        event.data?.action,
+      )
     ) {
       if (["open", "project", "tab"].includes(event.data.action)) close();
       widgets.forEach(refresh);
     }
     if (
-      ["close", "capture", "captureCountdown", "motionRecordStarted"].includes(
-        event.data?.action,
-      )
+      ["close", "capture", "captureCountdown", "motionRecordStarted"].includes(event.data?.action)
     ) {
       close();
       hideTip();
     }
   });
   document.addEventListener("mousedown", (event) => {
-    if (
-      active &&
-      !popup.contains(event.target) &&
-      !active.button.contains(event.target)
-    )
-      close();
+    if (active && !popup.contains(event.target) && !active.button.contains(event.target)) close();
   });
   document.addEventListener(
     "keydown",
@@ -358,9 +312,7 @@
       }
       const entries = options();
       if (
-        ["ArrowDown", "ArrowUp", "Home", "End", "Enter", " "].includes(
-          event.key,
-        ) &&
+        ["ArrowDown", "ArrowUp", "Home", "End", "Enter", " "].includes(event.key) &&
         !(event.target.matches("input") && event.key === " ")
       ) {
         event.preventDefault();
@@ -376,10 +328,7 @@
               ? entries.length - 1
               : Math.max(
                   0,
-                  Math.min(
-                    entries.length - 1,
-                    highlighted + (event.key === "ArrowDown" ? 1 : -1),
-                  ),
+                  Math.min(entries.length - 1, highlighted + (event.key === "ArrowDown" ? 1 : -1)),
                 );
         renderOptions();
       } else if (
@@ -392,9 +341,7 @@
         event.stopImmediatePropagation();
         clearTimeout(typeTimer);
         typeAhead += event.key.toLowerCase();
-        const index = entries.findIndex((o) =>
-          o.textContent.toLowerCase().startsWith(typeAhead),
-        );
+        const index = entries.findIndex((o) => o.textContent.toLowerCase().startsWith(typeAhead));
         if (index >= 0) {
           highlighted = index;
           renderOptions();

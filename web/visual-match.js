@@ -2,10 +2,8 @@
 (() => {
   const q = (id) => document.getElementById(id);
   const paths = {
-    camera:
-      '<path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/>',
-    person:
-      '<circle cx="12" cy="7" r="3"/><path d="M6 21v-5a6 6 0 0 1 12 0v5"/>',
+    camera: '<path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/>',
+    person: '<circle cx="12" cy="7" r="3"/><path d="M6 21v-5a6 6 0 0 1 12 0v5"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2"/>',
     film: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4m-4 8h4m10-8h4m-4 8h4"/>',
     folder: '<path d="M3 5h7l2 3h9v12H3z"/>',
@@ -13,22 +11,18 @@
     close: '<path d="m6 6 12 12M18 6 6 18"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
     copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/>',
-    paste:
-      '<path d="M8 5H4v16h16V5h-4"/><rect x="8" y="2" width="8" height="6" rx="2"/>',
+    paste: '<path d="M8 5H4v16h16V5h-4"/><rect x="8" y="2" width="8" height="6" rx="2"/>',
     play: '<path d="m8 5 11 7-11 7z" fill="currentColor" stroke="none"/>',
     pause: '<path d="M8 5v14M16 5v14" stroke-width="4"/>',
     stop: '<rect x="7" y="7" width="10" height="10" rx="1" fill="currentColor" stroke="none"/>',
     skip: '<path d="M5 5v14m14-14L8 12l11 7z"/>',
     undo: '<path d="m8 4-5 5 5 5M3 9h11a6 6 0 0 1 0 12"/>',
-    focus:
-      '<path d="M8 3H3v5m13-5h5v5M3 16v5h5m8 0h5v-5"/><circle cx="12" cy="12" r="3"/>',
+    focus: '<path d="M8 3H3v5m13-5h5v5M3 16v5h5m8 0h5v-5"/><circle cx="12" cy="12" r="3"/>',
     grid: '<rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>',
     eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
   };
   const icon = (name) =>
-    '<svg class="design-icon" viewBox="0 0 24 24" aria-hidden="true">' +
-    paths[name] +
-    "</svg>";
+    '<svg class="design-icon" viewBox="0 0 24 24" aria-hidden="true">' + paths[name] + "</svg>";
   const buttonContent = (id, name, label) => {
     q(id).innerHTML = icon(name) + (label ? "<span>" + label + "</span>" : "");
   };
@@ -89,14 +83,12 @@
   pane.append(advanced);
   const caption = document.createElement("div");
   caption.className = "selected-sequence-label";
-  caption.innerHTML =
-    '<span>Selected sequence</span><span id="selectedSequenceNumber">—</span>';
+  caption.innerHTML = '<span>Selected sequence</span><span id="selectedSequenceNumber">—</span>';
   pane.insertBefore(caption, q("addKeyframeButton"));
   const intro = pane.querySelector(".panel-intro");
   intro.textContent = "Move the camera, then capture its position.";
   pane.insertBefore(intro, q("addKeyframeButton"));
-  q("shotLibrary").querySelector("summary").firstChild.textContent =
-    "Shot presets ";
+  q("shotLibrary").querySelector("summary").firstChild.textContent = "Shot presets ";
   // Motion/options are secondary to timing in the inspector.
   const timing = q("sequenceInspector");
   timing.className = "shot-timing-inspector";
@@ -120,8 +112,7 @@
   for (const id of ["sequenceTime", "sequenceDuration"])
     q(id).addEventListener("change", () => q("sequenceUpdate").click());
   q("sequenceTime").closest("label").firstChild.textContent = "Start / seconds";
-  q("sequenceDuration").closest("label").firstChild.textContent =
-    "Length / seconds";
+  q("sequenceDuration").closest("label").firstChild.textContent = "Length / seconds";
   const context = document.createElement("div");
   context.className = "shot-context";
   context.id = "shotContext";
@@ -129,17 +120,14 @@
   const transform = q("cameraInspector").querySelector(".camera-transform");
   transform
     .querySelector("summary")
-    .insertAdjacentHTML(
-      "beforeend",
-      '<span class="transform-meta">X · Y · Z</span>',
-    );
+    .insertAdjacentHTML("beforeend", '<span class="transform-meta">X · Y · Z</span>');
   // Matching viewport toolbar; every action uses an existing functional control.
   const view = document.createElement("div");
   view.className = "view-caption";
   view.innerHTML =
     icon("camera") +
     '<span id="viewCaption">Live camera</span><span class="view-live">● LIVE</span>';
-  root.append(view);
+  window.DirectorEditor.elements.root.append(view);
   const tools = document.querySelector(".viewport-tools");
   tools.insertAdjacentHTML(
     "afterbegin",
@@ -160,20 +148,20 @@
   };
   q("viewSubject").onclick = () => {
     if (
-      !project.actors.some((a) => a.id === selectedActorId) ||
-      sessionRole === "viewer"
+      !window.DirectorEditor.state.project.actors.some(
+        (a) => a.id === window.DirectorEditor.state.selectedActorId,
+      ) ||
+      window.DirectorEditor.state.sessionRole === "viewer"
     )
       return;
     q("rigMode").value = "target";
     q("rigMode").dispatchEvent(new Event("change", { bubbles: true }));
-    q("rigTarget").value = selectedActorId;
+    q("rigTarget").value = window.DirectorEditor.state.selectedActorId;
     q("rigApply").click();
   };
   q("lookHint").innerHTML =
     '<span data-view-hint><b>Right drag</b> Look</span><span data-view-hint><b id="viewMoveKeys">Z Q S D</b> Move</span><span data-view-hint><b>Shift + drag</b> Actor height</span><span id="viewDragHint" hidden></span>';
-  const defaultHints = Array.from(
-    q("lookHint").querySelectorAll("[data-view-hint]"),
-  );
+  const defaultHints = Array.from(q("lookHint").querySelectorAll("[data-view-hint]"));
   const dragHint = q("viewDragHint");
   window.VantaViewHint = (message) => {
     defaultHints.forEach((el) => (el.hidden = Boolean(message)));
@@ -187,22 +175,16 @@
   restart.setAttribute("aria-label", "Go to start");
   restart.title = "Go to start";
   restart.innerHTML = icon("skip");
-  restart.onclick = () => seek(0);
+  restart.onclick = () => window.DirectorEditor.timeline.seek(0);
   document.querySelector(".transport").prepend(restart);
-  q("timeReadout").insertAdjacentHTML(
-    "beforebegin",
-    '<span class="transport-divider"></span>',
-  );
+  q("timeReadout").insertAdjacentHTML("beforebegin", '<span class="transport-divider"></span>');
   const duration = document.querySelector(".duration-control");
   duration.firstChild.textContent = "Duration ";
   duration.lastElementChild.textContent = "sec";
   document.querySelector(".timeline-zoom").firstChild.textContent = "Zoom";
   const cameraLabel = q("trackLane").previousElementSibling;
   cameraLabel.innerHTML =
-    icon("camera") +
-    '<span>CAMERA</span><span class="track-eye">' +
-    icon("eye") +
-    "</span>";
+    icon("camera") + '<span>CAMERA</span><span class="track-eye">' + icon("eye") + "</span>";
   q("keyframeLane").previousElementSibling.innerHTML =
     '<svg class="design-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12z"/></svg><span>KEYFRAMES</span>';
   q("statusMessage").insertAdjacentHTML(
@@ -222,70 +204,73 @@
   q("lookTimeOfDay").oninput = () => timeDisplay();
   q("lookTimeOfDay").onchange = async () => {
     const value = Number(q("lookTimeOfDay").value);
-    const response = await post("setSceneLook", {
+    const response = await window.DirectorEditor.transport.post("setSceneLook", {
       field: "hour",
       value: Math.floor(value / 60),
     });
     if (response.ok)
-      await post("setSceneLook", { field: "minute", value: value % 60 });
+      await window.DirectorEditor.transport.post("setSceneLook", {
+        field: "minute",
+        value: value % 60,
+      });
   };
   q("lookServerTime").onclick = () =>
-    post("setSceneLook", { field: "hour", value: -1 });
+    window.DirectorEditor.transport.post("setSceneLook", { field: "hour", value: -1 });
   const copy = q("lookPane").querySelector(".look-copy");
   copy.classList.add("is-hidden");
   // No telemetry observer: update only context, icons and changed values.
   function timeDisplay() {
     const range = q("lookTimeOfDay"),
       v = Number(range.value);
-    setText(
+    window.DirectorEditor.status.setText(
       q("lookTimeLabel"),
-      String(Math.floor(v / 60)).padStart(2, "0") +
-        ":" +
-        String(v % 60).padStart(2, "0"),
+      String(Math.floor(v / 60)).padStart(2, "0") + ":" + String(v % 60).padStart(2, "0"),
     );
     range.style.setProperty("--range-fill", (v / 1439) * 100 + "%");
   }
   let playing = null;
   function refresh() {
-    const shot = selectedSequence(),
-      actor = project.actors.find((a) => a.id === selectedActorId),
+    const shot = window.DirectorEditor.sequences.selectedSequence(),
+      actor = window.DirectorEditor.state.project.actors.find(
+        (a) => a.id === window.DirectorEditor.state.selectedActorId,
+      ),
       prefs = window.VantaPreferences || {};
     leftTabs
       .querySelector("#cameraTab")
-      .classList.toggle("active", !sceneTabActive);
-    q("inspectorCameraTab").classList.toggle("active", !lookTabActive);
-    q("lookTab").classList.toggle("active", lookTabActive);
-    tabs.classList.toggle("is-hidden", sceneTabActive);
-    setText(
+      .classList.toggle("active", !window.DirectorEditor.state.sceneTabActive);
+    q("inspectorCameraTab").classList.toggle("active", !window.DirectorEditor.state.lookTabActive);
+    q("lookTab").classList.toggle("active", window.DirectorEditor.state.lookTabActive);
+    tabs.classList.toggle("is-hidden", window.DirectorEditor.state.sceneTabActive);
+    window.DirectorEditor.status.setText(
       q("viewCaption"),
       shot
         ? shot.name +
             " / Camera " +
-            String((project.cameraShots || []).indexOf(shot) + 1).padStart(
-              2,
-              "0",
-            )
+            String(
+              (window.DirectorEditor.state.project.cameraShots || []).indexOf(shot) + 1,
+            ).padStart(2, "0")
         : "Live camera",
     );
-    setText(
+    window.DirectorEditor.status.setText(
       q("selectedSequenceNumber"),
       shot
-        ? String((project.cameraShots || []).indexOf(shot) + 1).padStart(2, "0")
+        ? String(
+            (window.DirectorEditor.state.project.cameraShots || []).indexOf(shot) + 1,
+          ).padStart(2, "0")
         : "—",
     );
     more.classList.toggle("is-hidden", !shot);
-    setText(
+    window.DirectorEditor.status.setText(
       q("frameCount"),
-      String((project.cameraShots || []).length).padStart(2, "0"),
+      String((window.DirectorEditor.state.project.cameraShots || []).length).padStart(2, "0"),
     );
-    setText(
+    window.DirectorEditor.status.setText(
       q("shotContext"),
       shot
         ? "Shot " +
-            String((project.cameraShots || []).indexOf(shot) + 1).padStart(
-              2,
-              "0",
-            ) +
+            String(
+              (window.DirectorEditor.state.project.cameraShots || []).indexOf(shot) + 1,
+            ).padStart(2, "0") +
             " · " +
             shot.time.toFixed(1) +
             "–" +
@@ -293,69 +278,62 @@
             " sec"
         : "Live camera · Capture a position to start",
     );
-    if (!sceneTabActive) q("inspectorTitle").removeAttribute("data-i18n-user");
-    if (!sceneTabActive)
-      setText(
+    if (!window.DirectorEditor.state.sceneTabActive)
+      q("inspectorTitle").removeAttribute("data-i18n-user");
+    if (!window.DirectorEditor.state.sceneTabActive)
+      window.DirectorEditor.status.setText(
         q("inspectorTitle"),
-        lookTabActive ? "Camera & scene look" : shot?.name || "Live camera",
+        window.DirectorEditor.state.lookTabActive
+          ? "Camera & scene look"
+          : shot?.name || "Live camera",
       );
-    setText(
+    window.DirectorEditor.status.setText(
       q("viewMoveKeys"),
       prefs.layout === "qwerty" ? "W A S D" : "Z Q S D",
     );
-    q("viewGrid").setAttribute(
-      "aria-pressed",
-      String(q("framingGuide").value === "thirds"),
-    );
-    q("viewSubject").disabled = !actor || sessionRole === "viewer";
+    q("viewGrid").setAttribute("aria-pressed", String(q("framingGuide").value === "thirds"));
+    q("viewSubject").disabled = !actor || window.DirectorEditor.state.sessionRole === "viewer";
     for (const [id, name, label] of [
       [
         "primaryEdit",
         "plus",
-        lookTabActive
+        window.DirectorEditor.state.lookTabActive
           ? "Reset look"
-          : sceneTabActive
+          : window.DirectorEditor.state.sceneTabActive
             ? "Add action"
             : "Capture keyframe",
       ],
-      ["secondaryEdit", sceneTabActive ? "focus" : "undo", ""],
+      ["secondaryEdit", window.DirectorEditor.state.sceneTabActive ? "focus" : "undo", ""],
     ]) {
       const button = q(id),
         signature = name + label;
-      if (
-        button.dataset.designContent !== signature ||
-        !button.querySelector("svg")
-      ) {
+      if (button.dataset.designContent !== signature || !button.querySelector("svg")) {
         buttonContent(id, name, label);
         button.dataset.designContent = signature;
       }
     }
-    q("secondaryEdit").title = sceneTabActive
+    q("secondaryEdit").title = window.DirectorEditor.state.sceneTabActive
       ? "Place at camera aim"
       : "Update keyframe from view";
     q("secondaryEdit").setAttribute("aria-label", q("secondaryEdit").title);
-    transport(previewPlaying);
-    const hour = Number(project.look?.hour ?? -1);
+    transport(window.DirectorEditor.state.previewPlaying);
+    const hour = Number(window.DirectorEditor.state.project.look?.hour ?? -1);
     if (document.activeElement !== q("lookTimeOfDay")) {
       q("lookTimeOfDay").value =
-        hour < 0 ? 720 : hour * 60 + Number(project.look?.minute || 0);
+        hour < 0 ? 720 : hour * 60 + Number(window.DirectorEditor.state.project.look?.minute || 0);
       timeDisplay();
-      if (hour < 0) setText(q("lookTimeLabel"), "Server time");
+      if (hour < 0) window.DirectorEditor.status.setText(q("lookTimeLabel"), "Server time");
     }
     q("lookTimeOfDay").disabled = q("lookServerTime").disabled =
-      sessionRole === "viewer";
+      window.DirectorEditor.state.sessionRole === "viewer";
     // Newly built track labels get the matching type icon, once per project render.
-    for (const label of q("actorTracks").querySelectorAll(
-      ".track-name:not([data-styled])",
-    )) {
+    for (const label of q("actorTracks").querySelectorAll(".track-name:not([data-styled])")) {
       const text = label.textContent,
-        kind = project.actors.find(
+        kind = window.DirectorEditor.state.project.actors.find(
           (a) => Number(text.split(" ").at(-1)) === a.id,
         )?.kind;
       label.innerHTML =
-        icon(
-          kind === "vehicle" ? "film" : kind === "prop" ? "grid" : "person",
-        ) +
+        icon(kind === "vehicle" ? "film" : kind === "prop" ? "grid" : "person") +
         '<span></span><span class="track-eye">' +
         icon("eye") +
         "</span>";
@@ -365,7 +343,7 @@
     const transform = q("actorInspector").querySelector(".actor-transform");
     if (transform?.dataset.styled)
       transform.querySelector("input[type=range]").disabled =
-        sessionRole === "viewer";
+        window.DirectorEditor.state.sessionRole === "viewer";
     if (transform && !transform.dataset.styled) {
       transform.dataset.styled = "true";
       const heading = transform.querySelector("label:last-child"),
@@ -378,34 +356,29 @@
       range.step = prefs.rotation || 1;
       range.value = ((Number(input.value) % 360) + 360) % 360;
       range.setAttribute("aria-label", "Actor heading");
-      const paint = () =>
-        range.style.setProperty(
-          "--range-fill",
-          Number(range.value) / 3.6 + "%",
-        );
+      const paint = () => range.style.setProperty("--range-fill", Number(range.value) / 3.6 + "%");
       paint();
-      range.disabled = input.disabled || sessionRole === "viewer";
+      range.disabled = input.disabled || window.DirectorEditor.state.sessionRole === "viewer";
       range.oninput = () => {
         input.value = Number(range.value).toFixed(1);
         paint();
       };
-      range.onchange = () =>
-        input.dispatchEvent(new Event("change", { bubbles: true }));
+      range.onchange = () => input.dispatchEvent(new Event("change", { bubbles: true }));
       input.addEventListener("change", () => {
         range.value = ((Number(input.value) % 360) + 360) % 360;
         paint();
       });
       heading.append(range);
     }
-    root.classList.toggle("empty-scene-inspector", sceneTabActive && !actor);
+    window.DirectorEditor.elements.root.classList.toggle(
+      "empty-scene-inspector",
+      window.DirectorEditor.state.sceneTabActive && !actor,
+    );
   }
   function transport(on) {
     if (playing !== on || !q("previewButton").querySelector("svg")) {
       buttonContent("previewButton", on ? "pause" : "play");
-      q("previewButton").setAttribute(
-        "aria-label",
-        on ? "Pause preview" : "Play preview",
-      );
+      q("previewButton").setAttribute("aria-label", on ? "Pause preview" : "Play preview");
       playing = on;
     }
   }
@@ -418,18 +391,13 @@
   window.addEventListener("directorPreferences", refresh);
   window.addEventListener("message", (event) => {
     if (
-      [
-        "open",
-        "project",
-        "actors",
-        "tab",
-        "sessionState",
-        "captureEnd",
-      ].includes(event.data?.action)
+      ["open", "project", "actors", "tab", "sessionState", "captureEnd"].includes(
+        event.data?.action,
+      )
     )
       refresh();
   });
-  window.addEventListener("resize", updateFraming);
+  window.addEventListener("resize", window.DirectorEditor.production.updateFraming);
   refresh();
-  updateFraming();
+  window.DirectorEditor.production.updateFraming();
 })();

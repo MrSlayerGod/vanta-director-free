@@ -50,10 +50,7 @@
     color 0.14s,
     box-shadow 0.14s;
 }
-.director
-  button:not(.timeline-marker):not(.timeline-action):not(.plain-button):not(
-    .delete-frame
-  ) {
+.director button:not(.timeline-marker):not(.timeline-action):not(.plain-button):not(.delete-frame) {
   border-radius: var(--v-radius);
 }
 .director button:disabled {
@@ -65,8 +62,7 @@
   outline: 2px solid var(--v-cyan);
   outline-offset: 2px;
 }
-.director
-  input:is([type="text"], [type="search"], [type="number"]):not(#projectName) {
+.director input:is([type="text"], [type="search"], [type="number"]):not(#projectName) {
   color: var(--v-text);
   background: var(--v-surface);
   border: 1px solid var(--v-border);
@@ -225,8 +221,7 @@
 .director .panel {
   box-shadow: none;
 }
-.director
-  :is(.library-panel, .animation-modal, .exit-dialog, .library-confirm) {
+.director :is(.library-panel, .animation-modal, .exit-dialog, .library-confirm) {
   background: #0b1e30;
   border: 1px solid #345871;
   border-radius: 8px;
@@ -1040,7 +1035,8 @@
   z-index: 1;
 }
 .framing-overlay.thirds {
-  background: linear-gradient(
+  background:
+    linear-gradient(
       90deg,
       transparent 33.2%,
       #ffffff55 33.3%,

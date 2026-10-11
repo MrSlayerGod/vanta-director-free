@@ -7,20 +7,13 @@
     const keys = project.keyframes || [];
     const hasCamera =
       keys.length > 0 ||
-      shots.some(
-        (s) =>
-          (s.frames || []).length > 0 ||
-          (s.rig?.mode && s.rig.mode !== "manual"),
-      ) ||
+      shots.some((s) => (s.frames || []).length > 0 || (s.rig?.mode && s.rig.mode !== "manual")) ||
       (project.cameraRig?.mode && project.cameraRig.mode !== "manual");
     const first = Number(project.playback?.first ?? 0),
       last = Number(project.playback?.last ?? project.duration);
-    const missing = actors.filter(
-      (a) => a.modelAvailable === false || a._missing,
-    );
+    const missing = actors.filter((a) => a.modelAvailable === false || a._missing);
     const problems = [];
-    if (!hasCamera)
-      problems.push({ step: "camera", text: "Ajoute une position de caméra." });
+    if (!hasCamera) problems.push({ step: "camera", text: "Ajoute une position de caméra." });
     if (missing.length)
       problems.push({
         step: "subject",
@@ -50,16 +43,11 @@
       problems.push({
         text: "Tu regardes une session partagée. L’hôte pilote le tournage.",
       });
-    if (context.saving)
-      problems.push({ text: "Attends la fin de la sauvegarde." });
+    if (context.saving) problems.push({ text: "Attends la fin de la sauvegarde." });
     const warnings = [];
     for (const actor of actors) {
       const spans = (actor.actions || [])
-        .filter(
-          (a) =>
-            a.duration > 0 &&
-            ["move", "animation", "recording"].includes(a.type),
-        )
+        .filter((a) => a.duration > 0 && ["move", "animation", "recording"].includes(a.type))
         .sort((a, b) => a.time - b.time);
       let end = -1;
       for (const clip of spans) {
@@ -67,9 +55,7 @@
           warnings.push({
             step: "route",
             text:
-              "Actions superposées pour " +
-              actor.model +
-              " : vérifie leur priorité à la lecture.",
+              "Actions superposées pour " + actor.model + " : vérifie leur priorité à la lecture.",
           });
           break;
         }
@@ -90,9 +76,7 @@
       hasCamera: Boolean(hasCamera),
       actors: actors.length,
       movement: actors.some((a) =>
-        (a.actions || []).some((c) =>
-          ["move", "route", "recording"].includes(c.type),
-        ),
+        (a.actions || []).some((c) => ["move", "route", "recording"].includes(c.type)),
       ),
       missing: missing.length,
       first,
@@ -142,12 +126,14 @@
   mode.type = "button";
   mode.onclick = () => {
     if (root.classList.contains("editing-route"))
-      return showStatus("Valide ou annule le trajet avant de changer de mode.");
+      return window.DirectorEditor.status.showStatus(
+        "Valide ou annule le trajet avant de changer de mode.",
+      );
     guided = !guided;
     root.classList.toggle("guided", guided);
     root.classList.remove("workflow-review");
     render();
-    updateFraming();
+    window.DirectorEditor.production.updateFraming();
   };
   nav.append(mode);
   root.append(nav);
@@ -177,7 +163,9 @@
     true,
   );
   q("workflowAtmosphere").onclick = () => {
-    selectSceneTab(lookTabActive ? step === "subject" : "look");
+    window.DirectorEditor.tabs.selectSceneTab(
+      window.DirectorEditor.state.lookTabActive ? step === "subject" : "look",
+    );
     schedule();
   };
   q("workflowNext").onclick = () =>
@@ -187,16 +175,18 @@
     if (step === "camera") q("addKeyframeButton").click();
     else if (step === "subject") q("browseModelsButton").click();
     else if (step === "route") {
-      const a = project.actors.find((a) => a.id === selectedActorId);
+      const a = window.DirectorEditor.state.project.actors.find(
+        (a) => a.id === window.DirectorEditor.state.selectedActorId,
+      );
       if (a) {
-        const details = [
-          ...q("actorInspector").querySelectorAll("details"),
-        ].find((d) => d.querySelector(".free-move-action"));
+        const details = [...q("actorInspector").querySelectorAll("details")].find((d) =>
+          d.querySelector(".free-move-action"),
+        );
         if (details) details.open = true;
         const move = q("actorInspector").querySelector(".free-move-action");
         move?.scrollIntoView({ block: "nearest" });
         move?.focus();
-        showStatus(
+        window.DirectorEditor.status.showStatus(
           "Vise une destination avec la caméra, puis ajoute le déplacement au temps choisi.",
         );
       }
@@ -205,35 +195,35 @@
       if (!state().ready) return render();
       launching = true;
       render();
-      const result = await post("capture");
+      const result = await window.DirectorEditor.transport.post("capture");
       launching = false;
       if (!result.ok)
-        showStatus(result.message || "La prise ne peut pas démarrer.");
+        window.DirectorEditor.status.showStatus(result.message || "La prise ne peut pas démarrer.");
       schedule();
     }
   };
   function state() {
-    return assess(project, {
+    return assess(window.DirectorEditor.state.project, {
       editing: root.classList.contains("editing-route"),
-      viewer: sessionRole === "viewer",
-      saving: savePending,
-      dirty: saveDirty,
+      viewer: window.DirectorEditor.state.sessionRole === "viewer",
+      saving: window.DirectorEditor.state.savePending,
+      dirty: window.DirectorEditor.state.saveDirty,
       previewed,
     });
   }
   function choose(id) {
     if (!steps.some((s) => s[0] === id)) return;
     if (root.classList.contains("editing-route"))
-      return showStatus(
+      return window.DirectorEditor.status.showStatus(
         "Valide ou annule le trajet pour passer à une autre étape.",
       );
     step = id;
     switching = true;
     root.classList.remove("collapsed-left", "collapsed-right");
-    selectSceneTab(id !== "camera");
+    window.DirectorEditor.tabs.selectSceneTab(id !== "camera");
     switching = false;
     render();
-    updateFraming();
+    window.DirectorEditor.production.updateFraming();
   }
   function schedule() {
     if (queued) return;
@@ -276,11 +266,7 @@
   }
   function renderChecks(result) {
     const rows = [
-      [
-        "Caméra",
-        result.hasCamera ? "Plan configuré" : "Aucun plan configuré",
-        result.hasCamera,
-      ],
+      ["Caméra", result.hasCamera ? "Plan configuré" : "Aucun plan configuré", result.hasCamera],
       [
         "Sujets",
         result.missing
@@ -299,27 +285,20 @@
       ],
       [
         "Sauvegarde",
-        savePending
+        window.DirectorEditor.state.savePending
           ? "Enregistrement en cours"
-          : saveDirty
+          : window.DirectorEditor.state.saveDirty
             ? "Modifications non enregistrées"
             : "À jour",
-        !saveDirty && !savePending,
+        !window.DirectorEditor.state.saveDirty && !window.DirectorEditor.state.savePending,
       ],
       [
         "Aperçu",
-        previewed
-          ? "Lecture lancée · vérifie le rendu en jeu"
-          : "À relire en jeu",
+        previewed ? "Lecture lancée · vérifie le rendu en jeu" : "À relire en jeu",
         previewed,
       ],
     ];
-    const signature = JSON.stringify([
-      rows,
-      result.problems,
-      result.warnings,
-      step,
-    ]);
+    const signature = JSON.stringify([rows, result.problems, result.warnings, step]);
     if (review.dataset.signature === signature) return;
     review.dataset.signature = signature;
     q("workflowChecks").replaceChildren();
@@ -344,8 +323,7 @@
       ...result.warnings,
     ]) {
       const box = document.createElement("div");
-      box.className =
-        "workflow-issue " + (item.blocking ? "blocking" : "warning");
+      box.className = "workflow-issue " + (item.blocking ? "blocking" : "warning");
       const text = document.createElement("p");
       text.textContent = item.text;
       box.append(text);
@@ -358,7 +336,9 @@
             ? "Lire la scène"
             : "Corriger";
         button.disabled = Boolean(
-          item.save && (savePending || sessionRole === "viewer"),
+          item.save &&
+          (window.DirectorEditor.state.savePending ||
+            window.DirectorEditor.state.sessionRole === "viewer"),
         );
         button.onclick = () => {
           if (item.save) q("saveButton").click();
@@ -378,14 +358,13 @@
   }
   function render() {
     const result = state(),
-      actor = project.actors.find((a) => a.id === selectedActorId),
+      actor = window.DirectorEditor.state.project.actors.find(
+        (a) => a.id === window.DirectorEditor.state.selectedActorId,
+      ),
       busy = root.classList.contains("editing-route");
     root.classList.toggle("guided", guided);
     root.dataset.workflowStep = step;
-    root.classList.toggle(
-      "workflow-review",
-      guided && ["check", "film"].includes(step),
-    );
+    root.classList.toggle("workflow-review", guided && ["check", "film"].includes(step));
     setText(mode, guided ? "Mode libre" : "Mode guidé");
     mode.setAttribute("aria-pressed", String(guided));
     const progress = [
@@ -395,44 +374,36 @@
       previewed,
       false,
     ];
-    for (const [i, button] of [
-      ...nav.querySelectorAll("[data-step]"),
-    ].entries()) {
+    for (const [i, button] of [...nav.querySelectorAll("[data-step]")].entries()) {
       button.classList.toggle("active", guided && button.dataset.step === step);
       button.setAttribute(
         "aria-current",
         guided && button.dataset.step === step ? "step" : "false",
       );
       button.disabled = busy;
-      button.title = busy
-        ? "Valide ou annule le trajet en cours."
-        : steps[i][1];
-      setText(
-        button.querySelector(".workflow-number"),
-        progress[i] ? "✓" : String(i + 1),
-      );
+      button.title = busy ? "Valide ou annule le trajet en cours." : steps[i][1];
+      setText(button.querySelector(".workflow-number"), progress[i] ? "✓" : String(i + 1));
     }
     const [title, hint, label] = copy[step];
-    setText(
-      q("workflowEyebrow"),
-      "ÉTAPE " + (steps.findIndex((s) => s[0] === step) + 1) + " / 5",
-    );
+    setText(q("workflowEyebrow"), "ÉTAPE " + (steps.findIndex((s) => s[0] === step) + 1) + " / 5");
     setText(q("workflowTitle"), title);
     setText(q("workflowHint"), hint);
     const primary = q("workflowPrimary");
     let reason = "";
-    if (sessionRole === "viewer" && step !== "check")
+    if (window.DirectorEditor.state.sessionRole === "viewer" && step !== "check")
       reason = "Seul l’hôte peut modifier cette scène.";
     else if (busy) reason = "Valide ou annule le trajet dans la vue.";
     else if (step === "route" && !actor)
       reason = "Choisis d’abord un sujet dans la liste de gauche.";
     else if (step === "route" && actor.modelAvailable === false)
-      reason =
-        "Ce modèle est indisponible. Recharge le projet ou retire ce sujet.";
+      reason = "Ce modèle est indisponible. Recharge le projet ou retire ce sujet.";
     else if (step === "film" && !result.ready) reason = result.problems[0].text;
     else if (step === "check" && !result.hasCamera)
       reason = "Ajoute d’abord une position de caméra.";
-    else if (previewPlaying && ["camera", "subject", "route"].includes(step))
+    else if (
+      window.DirectorEditor.state.previewPlaying &&
+      ["camera", "subject", "route"].includes(step)
+    )
       reason = "Arrête la lecture pour modifier la scène.";
     primary.disabled = Boolean(reason || launching);
     primary.title = reason || label;
@@ -440,7 +411,7 @@
       primary,
       launching
         ? "Lancement…"
-        : step === "check" && previewPlaying
+        : step === "check" && window.DirectorEditor.state.previewPlaying
           ? "Arrêter la lecture"
           : label,
     );
@@ -450,21 +421,16 @@
     q("workflowAtmosphere").disabled = busy;
     setText(
       q("workflowAtmosphere"),
-      lookTabActive ? "Revenir au cadrage / sujet" : "Météo et lumière",
+      window.DirectorEditor.state.lookTabActive ? "Revenir au cadrage / sujet" : "Météo et lumière",
     );
     const index = steps.findIndex((s) => s[0] === step);
     q("workflowNext").hidden = step === "film";
     q("workflowNext").disabled = busy;
-    setText(
-      q("workflowNext"),
-      "Suivant : " + (steps[index + 1]?.[1] || "Filmer") + " →",
-    );
+    setText(q("workflowNext"), "Suivant : " + (steps[index + 1]?.[1] || "Filmer") + " →");
     q("workflowRecording").hidden = step !== "film";
     renderChecks(result);
     // Progressive disclosure, applied once to each newly rendered inspector section.
-    for (const section of q("actorInspector").querySelectorAll(
-      ":scope > details",
-    )) {
+    for (const section of q("actorInspector").querySelectorAll(":scope > details")) {
       if (section.dataset.workflowReady) continue;
       section.dataset.workflowReady = "true";
       const summary = section.querySelector("summary"),
@@ -477,8 +443,7 @@
         Attachment: "Attache",
         "Recorded take": "Prise enregistrée",
       };
-      if (summary && translations[original])
-        summary.textContent = translations[original];
+      if (summary && translations[original]) summary.textContent = translations[original];
       if (guided)
         section.open =
           original === "Position" ||
@@ -487,17 +452,20 @@
           original === "Recorded take";
     }
     if (guided && step === "route") {
-      const movement = [
-        ...q("actorInspector").querySelectorAll(":scope > details"),
-      ].find((d) => d.dataset.sectionKey === "Movement");
+      const movement = [...q("actorInspector").querySelectorAll(":scope > details")].find(
+        (d) => d.dataset.sectionKey === "Movement",
+      );
       if (movement) movement.open = true;
     }
-    setText(q("saveButton"), savePending ? "Enregistrement…" : "Enregistrer");
+    setText(
+      q("saveButton"),
+      window.DirectorEditor.state.savePending ? "Enregistrement…" : "Enregistrer",
+    );
     setText(
       q("saveState"),
-      savePending
+      window.DirectorEditor.state.savePending
         ? "Enregistrement…"
-        : saveDirty
+        : window.DirectorEditor.state.saveDirty
           ? "Modifications non enregistrées"
           : "Enregistré sur le serveur",
     );
@@ -514,26 +482,16 @@
       else if (b) setText(b, text);
     }
     if (guided && step === "route")
-      for (const button of q("actorInspector").querySelectorAll(
-        ".route-open,.route-edit-action",
-      ))
+      for (const button of q("actorInspector").querySelectorAll(".route-open,.route-edit-action"))
         setText(
           button,
-          button.classList.contains("route-open")
-            ? "Dessiner un trajet"
-            : "Modifier le trajet",
+          button.classList.contains("route-open") ? "Dessiner un trajet" : "Modifier le trajet",
         );
     if (guided) {
       setText(q("cameraPane").querySelector("h1"), "Plans et positions");
       setText(q("actorsPane").querySelector("h2"), "Sujets de la scène");
-      setText(
-        q("cameraPane").querySelector(".panel-heading .eyebrow"),
-        "CADRAGE",
-      );
-      setText(
-        q("actorsPane").querySelector(".panel-heading .eyebrow"),
-        "MISE EN SCÈNE",
-      );
+      setText(q("cameraPane").querySelector(".panel-heading .eyebrow"), "CADRAGE");
+      setText(q("actorsPane").querySelector(".panel-heading .eyebrow"), "MISE EN SCÈNE");
       setText(
         q("cameraPane").querySelector(".panel-intro"),
         "Place la caméra, puis ajoute sa position au temps choisi.",
@@ -541,19 +499,20 @@
       setText(
         q("frameCount"),
         String(
-          project.cameraShots?.length || project.keyframes.length,
+          window.DirectorEditor.state.project.cameraShots?.length ||
+            window.DirectorEditor.state.project.keyframes.length,
         ).padStart(2, "0"),
       );
       const details = q("cameraPane").querySelector(".keyframe-browser");
       const key =
-        (project.id || "") +
+        (window.DirectorEditor.state.project.id || "") +
         ":" +
-        (project.selectedShotId || 0) +
+        (window.DirectorEditor.state.project.selectedShotId || 0) +
         ":" +
-        project.keyframes.length;
+        window.DirectorEditor.state.project.keyframes.length;
       if (details.dataset.workflowContext !== key) {
         details.dataset.workflowContext = key;
-        details.open = project.keyframes.length > 0;
+        details.open = window.DirectorEditor.state.project.keyframes.length > 0;
       }
       for (const [target, text] of [
         [details, "Positions enregistrées"],
@@ -587,19 +546,13 @@
       ["routeControls", "close"].includes(data.action)
     )
       previewed = false;
-    if (
-      data.action === "previewStarted" ||
-      (data.action === "playhead" && data.playing)
-    ) {
+    if (data.action === "previewStarted" || (data.action === "playhead" && data.playing)) {
       if (!previewed) {
         previewed = true;
         schedule();
       }
     }
-    if (
-      data.action === "library" &&
-      data.activeId !== review.dataset.projectId
-    ) {
+    if (data.action === "library" && data.activeId !== review.dataset.projectId) {
       previewed = false;
       review.dataset.projectId = data.activeId;
     }
@@ -620,8 +573,7 @@
       schedule();
     if (
       data.action === "playhead" &&
-      Boolean(data.playing) !==
-        (q("workflowPrimary").dataset.playing === "true")
+      Boolean(data.playing) !== (q("workflowPrimary").dataset.playing === "true")
     ) {
       q("workflowPrimary").dataset.playing = String(Boolean(data.playing));
       schedule();

@@ -1,4 +1,3 @@
-/* Complete bilingual presentation catalog. Generated from reviewed source translations. */
 window.VantaLocales = {
   version: 1,
   fallback: "en",
@@ -6195,6 +6194,562 @@ window.VantaLocales = {
       en: "{label} - {operation}",
       fr: "{label} - {operation}",
       translate: ["label", "operation"],
+    },
+    community_0: {
+      en: "Passout 2",
+      fr: "Revenir d’un malaise",
+    },
+    community_1: {
+      en: "Passout 3",
+      fr: "Corps allongé",
+    },
+    community_2: {
+      en: "Fall Over",
+      fr: "Perdre l’équilibre",
+    },
+    community_3: {
+      en: "Fall Over 4",
+      fr: "Tomber, assommé",
+    },
+    community_4: {
+      en: "Prone",
+      fr: "Allongé sur le ventre",
+    },
+    community_5: {
+      en: "Crawl",
+      fr: "Ramper, blessé",
+    },
+    community_6: {
+      en: "Threaten",
+      fr: "Intimidation",
+    },
+    community_7: {
+      en: "Argue",
+      fr: "Discussion animée",
+    },
+    community_8: {
+      en: "Argue 2",
+      fr: "Dispute",
+    },
+    community_9: {
+      en: "No 2",
+      fr: "Refus appuyé",
+    },
+    community_10: {
+      en: "Shrug",
+      fr: "Hausser les épaules",
+    },
+    community_11: {
+      en: "Shrug 2",
+      fr: "Ne pas savoir",
+    },
+    community_12: {
+      en: "No Way",
+      fr: "Incrédulité",
+    },
+    community_13: {
+      en: "Facepalm",
+      fr: "Se prendre la tête",
+    },
+    community_14: {
+      en: "Facepalm 2",
+      fr: "Découragement",
+    },
+    community_15: {
+      en: "Think",
+      fr: "Réfléchir debout",
+    },
+    community_16: {
+      en: "Think 2",
+      fr: "Réfléchir, hésiter",
+    },
+    community_17: {
+      en: "Think 3",
+      fr: "Réflexion, main au visage",
+    },
+    community_18: {
+      en: "Think 4",
+      fr: "Réflexion discrète",
+    },
+    community_19: {
+      en: "Damn",
+      fr: "Déception",
+    },
+    community_20: {
+      en: "Damn 2",
+      fr: "Frustration",
+    },
+    community_21: {
+      en: "Clap Angry",
+      fr: "Applaudir avec ironie",
+    },
+    community_22: {
+      en: "Clap",
+      fr: "Applaudir",
+    },
+    community_23: {
+      en: "LOL",
+      fr: "Rire",
+    },
+    community_24: {
+      en: "Thumbs Up 2",
+      fr: "Approbation",
+    },
+    community_25: {
+      en: "Thumbs Up 3",
+      fr: "Accord bref",
+    },
+    community_26: {
+      en: "Me",
+      fr: "Se désigner",
+    },
+    community_27: {
+      en: "Point Down",
+      fr: "Montrer le sol",
+    },
+    community_28: {
+      en: "Countdown",
+      fr: "Faire un décompte",
+    },
+    community_29: {
+      en: "Whistle",
+      fr: "Siffler",
+    },
+    community_30: {
+      en: "Handshake",
+      fr: "Serrer une main",
+    },
+    community_31: {
+      en: "Adjust Tie",
+      fr: "Ajuster sa cravate",
+    },
+    community_32: {
+      en: "Phone",
+      fr: "Lire son téléphone",
+    },
+    community_33: {
+      en: "Phone Call",
+      fr: "Écouter un appel",
+    },
+    community_34: {
+      en: "Coffee",
+      fr: "Boire un café",
+    },
+    community_35: {
+      en: "Map",
+      fr: "Consulter une carte",
+    },
+    community_36: {
+      en: "Smoke 2",
+      fr: "Fumer",
+    },
+    community_37: {
+      en: "Umbrella",
+      fr: "Tenir un parapluie",
+    },
+    community_38: {
+      en: "Idle",
+      fr: "Attente sobre",
+    },
+    community_39: {
+      en: "Idle 3",
+      fr: "Attente expressive",
+    },
+    community_40: {
+      en: "Sit",
+      fr: "Assis, attente",
+    },
+    community_41: {
+      en: "Sit 5",
+      fr: "Assis, posture basse",
+    },
+    community_42: {
+      en: "Sit 6",
+      fr: "Assis, relâché",
+    },
+    community_43: {
+      en: "Sit Sad",
+      fr: "Assis, triste",
+    },
+    community_44: {
+      en: "Sit Chair 2",
+      fr: "Assis sur une chaise",
+    },
+    community_45: {
+      en: "Sit Chair 3",
+      fr: "Assis sur une chaise, variante",
+    },
+    community_46: {
+      en: "Cloudgaze",
+      fr: "Allongé sur le dos",
+    },
+    community_47: {
+      en: "Chill",
+      fr: "Repos au sol",
+    },
+    community_48: {
+      en: "Notepad",
+      fr: "Prendre des notes",
+    },
+    community_49: {
+      en: "Clipboard",
+      fr: "Consulter un dossier",
+    },
+    community_50: {
+      en: "Inspect",
+      fr: "Inspecter au sol",
+    },
+    community_51: {
+      en: "Clean",
+      fr: "Nettoyer une surface",
+    },
+    community_52: {
+      en: "Type",
+      fr: "Travailler sur un clavier",
+    },
+    community_53: {
+      en: "Push",
+      fr: "Pousser",
+    },
+    community_54: {
+      en: "Knock",
+      fr: "Frapper à une porte",
+    },
+    community_55: {
+      en: "Stretch",
+      fr: "S’étirer",
+    },
+    community_56: {
+      en: "Jumping Jacks",
+      fr: "Exercice, sauts",
+    },
+    community_57: {
+      en: "Boxing",
+      fr: "Boxer dans le vide",
+    },
+    community_58: {
+      en: "Radio",
+      fr: "Parler à la radio",
+    },
+    community_59: {
+      en: "Box",
+      fr: "Porter un carton",
+    },
+    community_60: {
+      en: "A movement after a low pose.",
+      fr: "Un mouvement après une posture basse.",
+    },
+    community_61: {
+      en: "Leave space around the subject.",
+      fr: "Prévoir de l’espace autour du sujet.",
+    },
+    community_62: {
+      en: "A motionless body pose.",
+      fr: "Une pose de corps immobile.",
+    },
+    community_63: {
+      en: "Adjust the height to the ground or a table.",
+      fr: "Ajuster la hauteur au sol ou sur une table.",
+    },
+    community_64: {
+      en: "A fall for a fainting scene.",
+      fr: "Une chute pour une scène de malaise.",
+    },
+    community_65: {
+      en: "Use a flat, clear surface.",
+      fr: "Prévoir un sol plat et dégagé.",
+    },
+    community_66: {
+      en: "A fall after an impact.",
+      fr: "Une chute après un choc.",
+    },
+    community_67: {
+      en: "A low pose for hiding or watching.",
+      fr: "Une position basse pour se cacher ou observer.",
+    },
+    community_68: {
+      en: "A crawling movement.",
+      fr: "Une gestuelle de déplacement au sol.",
+    },
+    community_69: {
+      en: "Leave clearance and check how the pose moves.",
+      fr: "Prévoir du dégagement ; vérifier le mouvement de la pose.",
+    },
+    community_70: {
+      en: "A threatening stance facing someone.",
+      fr: "Une posture menaçante face à quelqu’un.",
+    },
+    community_71: {
+      en: "Talk with insistent gestures.",
+      fr: "Parler avec des gestes insistants.",
+    },
+    community_72: {
+      en: "A more tense conversation.",
+      fr: "Une discussion plus tendue.",
+    },
+    community_73: {
+      en: "Express stronger disagreement.",
+      fr: "Exprimer un désaccord plus marqué.",
+    },
+    community_74: {
+      en: "React with uncertainty.",
+      fr: "Réagir avec incertitude.",
+    },
+    community_75: {
+      en: "Another hesitant reaction.",
+      fr: "Une autre réaction d’hésitation.",
+    },
+    community_76: {
+      en: "React to news that is hard to believe.",
+      fr: "Réagir à une nouvelle difficile à croire.",
+    },
+    community_77: {
+      en: "A disappointed reaction.",
+      fr: "Une réaction de dépit.",
+    },
+    community_78: {
+      en: "A stronger gesture of frustration.",
+      fr: "Un geste de frustration plus marqué.",
+    },
+    community_79: {
+      en: "A thinking pause during an investigation.",
+      fr: "Une pause de réflexion pendant une enquête.",
+    },
+    community_80: {
+      en: "A variation of the thinking pose.",
+      fr: "Une variante de réflexion.",
+    },
+    community_81: {
+      en: "A pose for assessing a situation.",
+      fr: "Une pose pour examiner une situation.",
+    },
+    community_82: {
+      en: "A subtle thinking pose for dialogue.",
+      fr: "Une réflexion sobre pour les dialogues.",
+    },
+    community_83: {
+      en: "A brief annoyed reaction.",
+      fr: "Une réaction courte de contrariété.",
+    },
+    community_84: {
+      en: "Another brief disappointed reaction.",
+      fr: "Une autre réaction courte de dépit.",
+    },
+    community_85: {
+      en: "A provocative reaction.",
+      fr: "Une réaction provocatrice.",
+    },
+    community_86: {
+      en: "A positive reaction during an encounter.",
+      fr: "Une réaction positive pendant une rencontre.",
+    },
+    community_87: {
+      en: "A visible reaction to a conversation.",
+      fr: "Donner une réaction visible à une conversation.",
+    },
+    community_88: {
+      en: "A variation of a positive gesture.",
+      fr: "Une variante de geste positif.",
+    },
+    community_89: {
+      en: "A one-off gesture of approval.",
+      fr: "Un geste d’approbation joué une fois.",
+    },
+    community_90: {
+      en: "Point to yourself while speaking.",
+      fr: "Montrer que l’on parle de soi.",
+    },
+    community_91: {
+      en: "Draw attention to a nearby detail.",
+      fr: "Attirer l’attention sur un détail proche.",
+    },
+    community_92: {
+      en: "Count on your fingers.",
+      fr: "Compter avec les doigts.",
+    },
+    community_93: {
+      en: "A gesture to attract attention.",
+      fr: "Un geste pour attirer l’attention.",
+    },
+    community_94: {
+      en: "A greeting gesture with another person.",
+      fr: "Un geste de rencontre avec une autre personne.",
+    },
+    community_95: {
+      en: "Place a second subject within reach; the characters are not automatically synchronized.",
+      fr: "Placer un second sujet à portée ; les deux personnages ne sont pas synchronisés automatiquement.",
+    },
+    community_96: {
+      en: "A small gesture before a meeting.",
+      fr: "Un petit geste avant une rencontre.",
+    },
+    community_97: {
+      en: "Look at a phone screen.",
+      fr: "Regarder l’écran d’un téléphone.",
+    },
+    community_98: {
+      en: "Hold a phone to your ear.",
+      fr: "Tenir un téléphone à l’oreille.",
+    },
+    community_99: {
+      en: "A relaxed gesture with a cup.",
+      fr: "Un geste calme avec une tasse.",
+    },
+    community_100: {
+      en: "Study a map while exploring.",
+      fr: "Étudier une carte pendant une exploration.",
+    },
+    community_101: {
+      en: "A gesture with a cigarette.",
+      fr: "Un geste avec une cigarette.",
+    },
+    community_102: {
+      en: "A pose in the rain.",
+      fr: "Une pose sous la pluie.",
+    },
+    community_103: {
+      en: "A calm presence in a shot.",
+      fr: "Une présence calme dans un plan.",
+    },
+    community_104: {
+      en: "A more expressive pose to bring the scene to life.",
+      fr: "Une posture plus expressive pour animer le décor.",
+    },
+    community_105: {
+      en: "A seated pose with subtle gestures.",
+      fr: "Une pose assise avec une gestuelle discrète.",
+    },
+    community_106: {
+      en: "Adjust the height of the pose.",
+      fr: "Ajuster la hauteur de la pose.",
+    },
+    community_107: {
+      en: "Another seated position.",
+      fr: "Une autre position assise.",
+    },
+    community_108: {
+      en: "A relaxed seated idle.",
+      fr: "Une attente assise calme.",
+    },
+    community_109: {
+      en: "A sad posture.",
+      fr: "Une posture de tristesse.",
+    },
+    community_110: {
+      en: "A pose for a seated conversation.",
+      fr: "Une pose pour une discussion assise.",
+    },
+    community_111: {
+      en: "Place a chair and align the pose; no chair is created automatically.",
+      fr: "Placer une chaise et aligner la pose ; aucune chaise n’est créée automatiquement.",
+    },
+    community_112: {
+      en: "Another posture for a seated conversation.",
+      fr: "Une autre posture pour une discussion assise.",
+    },
+    community_113: {
+      en: "Place a chair and align the pose.",
+      fr: "Placer une chaise et aligner la pose.",
+    },
+    community_114: {
+      en: "Watch the sky or remain still.",
+      fr: "Observer le ciel ou rester immobile.",
+    },
+    community_115: {
+      en: "A relaxed resting pose.",
+      fr: "Une pose de repos détendue.",
+    },
+    community_116: {
+      en: "Write in a notebook.",
+      fr: "Écrire sur un carnet.",
+    },
+    community_117: {
+      en: "A pose with a clipboard.",
+      fr: "Une posture avec un porte-documents.",
+    },
+    community_118: {
+      en: "Examine a detail near the ground.",
+      fr: "Examiner un détail proche du sol.",
+    },
+    community_119: {
+      en: "Align the subject with the detail to examine.",
+      fr: "Aligner le sujet avec le détail à examiner.",
+    },
+    community_120: {
+      en: "A cleaning gesture.",
+      fr: "Un geste de nettoyage.",
+    },
+    community_121: {
+      en: "Align the subject with the surface.",
+      fr: "Aligner le sujet avec la surface.",
+    },
+    community_122: {
+      en: "A working gesture at a desk.",
+      fr: "Une gestuelle de travail à un bureau.",
+    },
+    community_123: {
+      en: "Place a desk and keyboard at the correct height.",
+      fr: "Placer un bureau et un clavier à la bonne hauteur.",
+    },
+    community_124: {
+      en: "A pushing gesture.",
+      fr: "Une gestuelle de poussée.",
+    },
+    community_125: {
+      en: "Align the subject with the object to push; the object remains independent.",
+      fr: "Aligner le sujet avec l’objet à pousser ; l’objet reste indépendant.",
+    },
+    community_126: {
+      en: "Draw attention at an entrance.",
+      fr: "Attirer l’attention à une entrée.",
+    },
+    community_127: {
+      en: "Place the subject facing a door.",
+      fr: "Placer le sujet face à une porte.",
+    },
+    community_128: {
+      en: "A warm-up movement.",
+      fr: "Un mouvement de préparation physique.",
+    },
+    community_129: {
+      en: "An exercise in place.",
+      fr: "Un exercice sur place.",
+    },
+    community_130: {
+      en: "Leave clearance around the subject.",
+      fr: "Prévoir du dégagement autour du sujet.",
+    },
+    community_131: {
+      en: "A short training sequence.",
+      fr: "Une courte séquence d’entraînement.",
+    },
+    community_132: {
+      en: "A communication gesture.",
+      fr: "Une gestuelle de communication.",
+    },
+    community_133: {
+      en: "Place a radio if it should be visible in the shot.",
+      fr: "Placer une radio si elle doit être visible dans le plan.",
+    },
+    community_134: {
+      en: "A carrying pose with a box.",
+      fr: "Une posture de transport avec un carton.",
+    },
+    community_135: {
+      en: "Create multi-point route",
+      fr: "Créer un trajet multi-points",
+    },
+    community_136: {
+      en: "Estimated duration: {value} s",
+      fr: "Durée estimée : {value} s",
+    },
+    community_137: {
+      en: "Average speed: {value} m/s",
+      fr: "Vitesse moyenne : {value} m/s",
+    },
+    community_138: {
+      en: "Place a destination to estimate the duration.",
+      fr: "Place une destination pour estimer la durée.",
     },
   },
 };

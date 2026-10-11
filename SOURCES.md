@@ -11,4 +11,3 @@ The `catalog/` directory contains model and asset identifiers for in-game browsi
 - [FiveM NUI callbacks](https://docs.fivem.net/docs/scripting-manual/nui-development/nui-callbacks/) and [fullscreen NUI](https://docs.fivem.net/docs/scripting-manual/nui-development/full-screen-nui/).
 
 Selected animations do not automatically create props. Some poses require a wall, seat or appropriate placement; follow the hints shown in the animation library.
-

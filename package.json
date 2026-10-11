@@ -1,0 +1,34 @@
+{
+  "name": "vanta-director-free",
+  "version": "0.2.0-beta.2",
+  "description": "A free, standalone cinematic scene editor for **FiveM GTA V Legacy**. Build short scenes with a camera timeline, characters, vehicles, objects, curated animations, lighting and weather controls. The editor can hide its interface for a clean take; use OBS or another recorder to capture the footage.",
+  "scripts": {
+    "catalog": "node scripts/catalog.cjs",
+    "format": "prettier --write web animations.json scripts tests *.md *.json && stylua --glob \"**/*.lua\" --glob \"!node_modules/**\" .",
+    "format:check": "prettier --check web animations.json scripts tests *.md *.json && stylua --check --glob \"**/*.lua\" --glob \"!node_modules/**\" .",
+    "check": "node scripts/check.cjs",
+    "test": "node --test tests/*.test.cjs && node scripts/test-lua.cjs",
+    "test:ui": "node tests/ui.cjs",
+    "package": "node scripts/package.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SraxDev/vanta-director-free.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SraxDev/vanta-director-free/issues"
+  },
+  "homepage": "https://github.com/SraxDev/vanta-director-free#readme",
+  "devDependencies": {
+    "@johnnymorganz/stylua-bin": "2.6.0",
+    "fflate": "0.8.3",
+    "playwright": "1.64.0",
+    "prettier": "3.9.10",
+    "wasmoon": "1.16.0"
+  },
+  "private": true
+}

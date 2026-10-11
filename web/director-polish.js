@@ -2,9 +2,7 @@
 (() => {
   const q = (id) => document.getElementById(id);
   const icon = (path) =>
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' +
-    path +
-    '"/></svg>';
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + path + '"/></svg>';
   const right = document.querySelector(".right-panel"),
     cameraPane = q("cameraInspector");
   right.append(q("lookPane"));
@@ -35,7 +33,7 @@
     "beforeend",
     '<div class="inspector-footer"><button id="primaryEdit" class="primary-button" type="button">Capture keyframe</button><button id="secondaryEdit" class="aim-button" type="button">Update from view</button></div>',
   );
-  root.insertAdjacentHTML(
+  window.DirectorEditor.elements.root.insertAdjacentHTML(
     "beforeend",
     '<div class="viewport-tools"><button id="foldLeft" title="Toggle scene browser" aria-label="Toggle scene browser">' +
       icon("M3 4h18v16H3zM8 4v16") +
@@ -55,8 +53,7 @@
   ]) {
     const range = q(id),
       label =
-        range.closest(".control-block")?.querySelector(".control-label") ||
-        range.closest("label");
+        range.closest(".control-block")?.querySelector(".control-label") || range.closest("label");
     const factor = id === "lookStrength" ? 100 : 1;
     const box = document.createElement("input");
     box.type = "number";
@@ -107,74 +104,75 @@
       box.value = initial * factor;
       commit();
     };
-    range.addEventListener(
-      "input",
-      () => (box.value = Number(range.value) * factor),
-    );
+    range.addEventListener("input", () => (box.value = Number(range.value) * factor));
     controls.push({ range, box, factor });
   }
   function refresh() {
     const primary = q("primaryEdit"),
       secondary = q("secondaryEdit"),
-      actor = project.actors.find((a) => a.id === selectedActorId);
-    primary.textContent = lookTabActive
+      actor = window.DirectorEditor.state.project.actors.find(
+        (a) => a.id === window.DirectorEditor.state.selectedActorId,
+      );
+    primary.textContent = window.DirectorEditor.state.lookTabActive
       ? "Reset look"
-      : sceneTabActive
+      : window.DirectorEditor.state.sceneTabActive
         ? "Add action"
         : "Capture keyframe";
     primary.disabled =
-      sessionRole === "viewer" || (sceneTabActive && !actor) || savePending;
+      window.DirectorEditor.state.sessionRole === "viewer" ||
+      (window.DirectorEditor.state.sceneTabActive && !actor) ||
+      window.DirectorEditor.state.savePending;
     secondary.classList.toggle(
       "is-hidden",
-      lookTabActive || (!sceneTabActive && !selectedFrame()),
+      window.DirectorEditor.state.lookTabActive ||
+        (!window.DirectorEditor.state.sceneTabActive &&
+          !window.DirectorEditor.camera.selectedFrame()),
     );
-    secondary.textContent = sceneTabActive
+    secondary.textContent = window.DirectorEditor.state.sceneTabActive
       ? "Place at aim"
       : "Update from view";
     secondary.disabled =
-      sessionRole === "viewer" ||
-      (sceneTabActive &&
-        (!actor ||
-          actor.attachment ||
-          actor.actions?.some((a) => a.type === "recording")));
-    if (lookTabActive) {
+      window.DirectorEditor.state.sessionRole === "viewer" ||
+      (window.DirectorEditor.state.sceneTabActive &&
+        (!actor || actor.attachment || actor.actions?.some((a) => a.type === "recording")));
+    if (window.DirectorEditor.state.lookTabActive) {
       q("inspectorTitle").textContent = "Scene look";
       q("liveTag").classList.add("is-hidden");
     }
     controls.forEach(({ range, box, factor }) => {
       const value = String(Number(range.value) * factor);
-      if (document.activeElement !== box && box.value !== value)
-        box.value = value;
+      if (document.activeElement !== box && box.value !== value) box.value = value;
       range.style.setProperty(
         "--range-fill",
         ((range.value - range.min) / (range.max - range.min)) * 100 + "%",
       );
     });
-    q("sequenceInspector").classList.toggle("is-hidden", !selectedSequence());
+    q("sequenceInspector").classList.toggle(
+      "is-hidden",
+      !window.DirectorEditor.sequences.selectedSequence(),
+    );
     const prefs = window.VantaPreferences || {};
     document
       .querySelectorAll("#actorInspector .actor-transform input[type=number]")
       .forEach(
         (el) =>
-          (el.step = el
-            .closest("label")
-            .matches(".actor-transform label:last-child")
+          (el.step = el.closest("label").matches(".actor-transform label:last-child")
             ? prefs.rotation || 1
             : prefs.move || 0.05),
       );
-    updateFraming();
+    window.DirectorEditor.production.updateFraming();
   }
   q("primaryEdit").onclick = async () => {
-    if (lookTabActive) {
+    if (window.DirectorEditor.state.lookTabActive) {
       for (const [field, value] of [
         ["weather", "SERVER"],
         ["hour", -1],
         ["dof", false],
       ]) {
-        const r = await post("setSceneLook", { field, value });
+        const r = await window.DirectorEditor.transport.post("setSceneLook", { field, value });
         if (!r.ok) break;
       }
-    } else if (sceneTabActive) {
+    } else if (window.DirectorEditor.state.sceneTabActive) {
       const section = [...q("actorInspector").querySelectorAll("details")].find(
         (el) =>
           el.dataset.sectionKey === "Actions" ||
@@ -183,51 +181,48 @@
       if (section) {
         section.open = true;
         section.scrollIntoView({ block: "nearest", behavior: "auto" });
-      } else showStatus("Select a scene element with editable actions.");
+      } else
+        window.DirectorEditor.status.showStatus("Select a scene element with editable actions.");
     } else q("addKeyframeButton").click();
   };
   q("secondaryEdit").onclick = () => {
-    if (sceneTabActive) {
-      const button = q("actorInspector").querySelector(
-        ".inspector-placement .aim-button",
-      );
+    if (window.DirectorEditor.state.sceneTabActive) {
+      const button = q("actorInspector").querySelector(".inspector-placement .aim-button");
       button?.click();
     } else q("updateFrameButton").click();
   };
   function folded() {
-    updateFraming();
-    if (window.VantaPreferences?.workspace && bridgeReady) {
+    window.DirectorEditor.production.updateFraming();
+    if (window.VantaPreferences?.workspace && window.DirectorEditor.state.bridgeReady) {
       clearTimeout(folded.timer);
       folded.timer = setTimeout(async () => {
         const p = {
           ...window.VantaPreferences,
-          leftCollapsed: root.classList.contains("collapsed-left"),
-          rightCollapsed: root.classList.contains("collapsed-right"),
+          leftCollapsed: window.DirectorEditor.elements.root.classList.contains("collapsed-left"),
+          rightCollapsed: window.DirectorEditor.elements.root.classList.contains("collapsed-right"),
         };
-        const r = await post("setPreferences", { preferences: p });
+        const r = await window.DirectorEditor.transport.post("setPreferences", { preferences: p });
         if (r.ok) {
           window.VantaPreferences = r.preferences;
-          window.dispatchEvent(
-            new CustomEvent("preferencesUpdated", { detail: r.preferences }),
-          );
+          window.dispatchEvent(new CustomEvent("preferencesUpdated", { detail: r.preferences }));
         }
       }, 650);
     }
   }
   q("foldLeft").onclick = () => {
-    root.classList.toggle("collapsed-left");
+    window.DirectorEditor.elements.root.classList.toggle("collapsed-left");
     folded();
   };
   q("foldRight").onclick = () => {
-    root.classList.toggle("collapsed-right");
+    window.DirectorEditor.elements.root.classList.toggle("collapsed-right");
     folded();
   };
   q("foldBoth").onclick = () => {
     const on =
-      !root.classList.contains("collapsed-left") ||
-      !root.classList.contains("collapsed-right");
-    root.classList.toggle("collapsed-left", on);
-    root.classList.toggle("collapsed-right", on);
+      !window.DirectorEditor.elements.root.classList.contains("collapsed-left") ||
+      !window.DirectorEditor.elements.root.classList.contains("collapsed-right");
+    window.DirectorEditor.elements.root.classList.toggle("collapsed-left", on);
+    window.DirectorEditor.elements.root.classList.toggle("collapsed-right", on);
     folded();
   };
   const grip = document.createElement("div");
@@ -247,42 +242,45 @@
   };
   grip.onpointermove = (e) => {
     if (resize) {
-      root.style.setProperty(
+      window.DirectorEditor.elements.root.style.setProperty(
         "--editor-bottom",
-        Math.max(
-          210,
-          Math.min(innerHeight * 0.55, resize.height + resize.y - e.clientY),
-        ) + "px",
+        Math.max(210, Math.min(innerHeight * 0.55, resize.height + resize.y - e.clientY)) + "px",
       );
-      updateFraming();
+      window.DirectorEditor.production.updateFraming();
     }
   };
   grip.onpointerup = grip.onpointercancel = () => (resize = null);
   grip.onkeydown = (e) => {
     if (e.key === "ArrowUp" || e.key === "ArrowDown") {
       e.preventDefault();
-      root.style.setProperty(
+      window.DirectorEditor.elements.root.style.setProperty(
         "--editor-bottom",
         Math.max(
           210,
           Math.min(
             innerHeight * 0.55,
-            document.querySelector(".timeline").offsetHeight +
-              (e.key === "ArrowUp" ? 20 : -20),
+            document.querySelector(".timeline").offsetHeight + (e.key === "ArrowUp" ? 20 : -20),
           ),
         ) + "px",
       );
-      updateFraming();
+      window.DirectorEditor.production.updateFraming();
     }
   };
   q("keyframeLane").onmousedown = (e) => {
-    if (e.target === q("keyframeLane")) beginSeekDrag(e, q("keyframeLane"));
+    if (e.target === q("keyframeLane"))
+      window.DirectorEditor.timeline.beginSeekDrag(e, q("keyframeLane"));
   };
   window.VantaPolish = { render: refresh };
   window.addEventListener("directorPreferences", (e) => {
     const p = e.detail;
-    root.classList.toggle("collapsed-left", p.workspace && p.leftCollapsed);
-    root.classList.toggle("collapsed-right", p.workspace && p.rightCollapsed);
+    window.DirectorEditor.elements.root.classList.toggle(
+      "collapsed-left",
+      p.workspace && p.leftCollapsed,
+    );
+    window.DirectorEditor.elements.root.classList.toggle(
+      "collapsed-right",
+      p.workspace && p.rightCollapsed,
+    );
     q("forwardKeyLabel").textContent = p.layout === "qwerty" ? "W" : "Z";
     q("leftKeyLabel").textContent = p.layout === "qwerty" ? "A" : "Q";
     q("lowerKeyLabel").textContent = p.layout === "qwerty" ? "Q" : "A";
@@ -290,12 +288,10 @@
   });
   window.addEventListener("message", (e) => {
     const d = e.data || {};
-    if (["project", "actors", "tab", "sessionState"].includes(d.action))
-      refresh();
+    if (["project", "actors", "tab", "sessionState"].includes(d.action)) refresh();
     if (d.action === "camera")
       controls.slice(0, 1).forEach(({ range, box }) => {
-        if (document.activeElement !== box && box.value !== range.value)
-          box.value = range.value;
+        if (document.activeElement !== box && box.value !== range.value) box.value = range.value;
       });
     if (d.action === "close") {
       clearTimeout(folded.timer);

@@ -6,17 +6,14 @@
     chevron: '<path d="m6 9 6 6 6-6"/>',
     close: '<path d="m6 6 12 12M18 6 6 18"/>',
     undo: '<path d="m8 4-5 5 5 5M3 9h11a6 6 0 0 1 0 12"/>',
-    camera:
-      '<rect x="3" y="6" width="18" height="15" rx="2"/><circle cx="12" cy="13" r="4"/>',
+    camera: '<rect x="3" y="6" width="18" height="15" rx="2"/><circle cx="12" cy="13" r="4"/>',
     grid: '<rect x="3" y="3" width="18" height="18"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>',
     film: '<rect x="3" y="3" width="18" height="18"/><path d="M7 3v18M17 3v18M3 8h4m-4 8h4m10-8h4m-4 8h4"/>',
     save: '<path d="M4 3h13l3 3v15H4zM8 3v6h8V3M8 21v-7h8v7"/>',
     info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v1"/>',
   };
   const icon = (name) =>
-    '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">' +
-    paths[name] +
-    "</svg>";
+    '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">' + paths[name] + "</svg>";
   const gear =
     '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 3-1 3-3 1-2 3 2 2v3l3 2 1 4h6l1-4 3-2v-3l2-2-2-3-3-1-1-3z"/><circle cx="12" cy="12" r="3"/></svg>';
   q(".top-actions").insertAdjacentHTML(
@@ -36,11 +33,7 @@
     options
       .map(
         (v, i) =>
-          '<button type="button" class="' +
-          (i === 0 ? "chosen" : "") +
-          '">' +
-          v +
-          "</button>",
+          '<button type="button" class="' + (i === 0 ? "chosen" : "") + '">' + v + "</button>",
       )
       .join("") +
     "</div></details></div>";
@@ -91,11 +84,7 @@
     control +
     "</div>";
   const note = (text) =>
-    '<div class="setting-note">' +
-    icon("info") +
-    "<span>" +
-    text +
-    "</span></div>";
+    '<div class="setting-note">' + icon("info") + "<span>" + text + "</span></div>";
   const tabs = [
     ["controls", "Controls", "camera"],
     ["interface", "Interface", "grid"],
@@ -103,7 +92,7 @@
     ["saving", "Saving", "save"],
     ["general", "General", "info"],
   ];
-  root.insertAdjacentHTML(
+  window.DirectorEditor.elements.root.insertAdjacentHTML(
     "beforeend",
     '<dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-heading"><div class="settings-shell"><header class="settings-header"><div class="settings-title"><span class="settings-emblem">' +
       gear +
@@ -158,11 +147,7 @@
       row(
         "UI scale",
         "Choose the size of panels and controls.",
-        dropdown("scale", [
-          "100% · Default",
-          "110% · Comfortable",
-          "125% · Large",
-        ]),
+        dropdown("scale", ["100% · Default", "110% · Comfortable", "125% · Large"]),
       ) +
       row(
         "Text size",
@@ -195,12 +180,7 @@
       row(
         "Snap interval",
         "The smallest step for timeline edits.",
-        dropdown("interval", [
-          "0.1 second",
-          "0.25 second",
-          "0.5 second",
-          "1 second",
-        ]),
+        dropdown("interval", ["0.1 second", "0.25 second", "0.5 second", "1 second"]),
       ) +
       row(
         "Move increment",
@@ -225,11 +205,7 @@
       row(
         "Save interval",
         "How often Director should save your changes.",
-        dropdown("save-interval", [
-          "Every 2 minutes",
-          "Every minute",
-          "Every 5 minutes",
-        ]),
+        dropdown("save-interval", ["Every 2 minutes", "Every minute", "Every 5 minutes"]),
       ) +
       row(
         "Unsaved changes warning",
@@ -251,9 +227,7 @@
         "Restore your panel layout when reopening.",
         toggle("workspace", true, "Remember workspace"),
       ) +
-      note(
-        "Personal preferences are stored locally. Project data remains saved on the server.",
-      ) +
+      note("Personal preferences are stored locally. Project data remains saved on the server.") +
       "</section>" +
       '</div></div><footer class="settings-footer"><button class="btn reset" id="reset-settings">' +
       icon("undo") +
@@ -266,13 +240,15 @@
     paint(prefs);
     dialog.showModal();
     trigger.setAttribute("aria-expanded", "true");
-    const wasDragging = actorDragging || leftHeld;
-    clearKeys();
-    looking = false;
-    actorDragging = leftHeld = false;
-    setLookHint(null);
-    lookSurface.classList.remove("looking", "dragging-actor");
-    if (bridgeReady && wasDragging) post("endActorDrag");
+    const wasDragging =
+      window.DirectorEditor.state.actorDragging || window.DirectorEditor.state.leftHeld;
+    window.DirectorEditor.input.clearKeys();
+    window.DirectorEditor.state.looking = false;
+    window.DirectorEditor.state.actorDragging = window.DirectorEditor.state.leftHeld = false;
+    window.DirectorEditor.status.setLookHint(null);
+    window.DirectorEditor.elements.lookSurface.classList.remove("looking", "dragging-actor");
+    if (window.DirectorEditor.state.bridgeReady && wasDragging)
+      window.DirectorEditor.transport.post("endActorDrag");
     q("#close-settings").focus();
   };
   q("#close-settings").onclick = () => dialog.close();
@@ -296,12 +272,7 @@
   dialog.addEventListener("click", (e) => {
     if (e.target === dialog) {
       const b = dialog.getBoundingClientRect();
-      if (
-        e.clientX < b.left ||
-        e.clientX > b.right ||
-        e.clientY < b.top ||
-        e.clientY > b.bottom
-      )
+      if (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom)
         dialog.close();
     }
   });
@@ -314,8 +285,7 @@
     });
     tabs.forEach(([key]) => (q("#settings-" + key).hidden = key !== id));
     q(".settings-content").scrollTop = 0;
-    q("#settings-status").textContent =
-      "Personal settings · Saved on this device";
+    q("#settings-status").textContent = "Personal settings · Saved on this device";
   }
   qa("[data-settings-tab]").forEach((b, i) => {
     b.onclick = () => tab(b.dataset.settingsTab);
@@ -327,8 +297,7 @@
             ? 0
             : e.key === "End"
               ? tabs.length - 1
-              : (i + (e.key === "ArrowDown" ? 1 : -1) + tabs.length) %
-                tabs.length;
+              : (i + (e.key === "ArrowDown" ? 1 : -1) + tabs.length) % tabs.length;
         tab(tabs[next][0]);
         q("#settings-tab-" + tabs[next][0]).focus();
       }
@@ -337,10 +306,7 @@
   qa(".settings-dialog .switch").forEach((b) => {
     b.dataset.initial = b.getAttribute("aria-checked");
     b.onclick = () => {
-      b.setAttribute(
-        "aria-checked",
-        String(b.getAttribute("aria-checked") !== "true"),
-      );
+      b.setAttribute("aria-checked", String(b.getAttribute("aria-checked") !== "true"));
       if (b.id === "pref-autosave") {
         q("#pref-save-interval").classList.toggle(
           "inactive",
@@ -352,26 +318,17 @@
   });
   qa(".settings-dialog .range").forEach((el) => {
     const update = () => {
-      el.style.setProperty(
-        "--fill",
-        ((el.value - el.min) / (el.max - el.min)) * 100 + "%",
-      );
+      el.style.setProperty("--fill", ((el.value - el.min) / (el.max - el.min)) * 100 + "%");
       q("#" + el.id + "-number").value = el.value;
     };
     el.oninput = update;
     const number = q("#" + el.id + "-number");
     number.onchange = () => {
-      if (
-        number.value.trim() === "" ||
-        !Number.isFinite(Number(number.value))
-      ) {
+      if (number.value.trim() === "" || !Number.isFinite(Number(number.value))) {
         update();
         return;
       }
-      el.value = Math.max(
-        Number(el.min),
-        Math.min(Number(el.max), Number(number.value)),
-      );
+      el.value = Math.max(Number(el.min), Math.min(Number(el.max), Number(number.value)));
       update();
     };
     number.onkeydown = (e) => {
@@ -387,17 +344,12 @@
       (b.onclick = () => {
         const menu = b.closest(".dropdown");
         menu.querySelector("summary span").textContent = b.textContent;
-        menu
-          .querySelectorAll("button")
-          .forEach((el) => el.classList.toggle("chosen", el === b));
+        menu.querySelectorAll("button").forEach((el) => el.classList.toggle("chosen", el === b));
         menu.open = false;
         if (menu.id === "pref-layout") {
-          q(".keymap-row:nth-child(2) kbd").textContent =
-            b.textContent === "AZERTY" ? "A" : "Q";
+          q(".keymap-row:nth-child(2) kbd").textContent = b.textContent === "AZERTY" ? "A" : "Q";
           q("#movement-keys").innerHTML = (
-            b.textContent === "AZERTY"
-              ? ["Z", "Q", "S", "D"]
-              : ["W", "A", "S", "D"]
+            b.textContent === "AZERTY" ? ["Z", "Q", "S", "D"] : ["W", "A", "S", "D"]
           )
             .map((v) => "<kbd>" + v + "</kbd>")
             .join("");
@@ -451,9 +403,7 @@
   let prefs = { ...defaults },
     timer = null;
   function choice(id, index) {
-    const item = q(
-      "#pref-" + id + " .menu button:nth-child(" + (index + 1) + ")",
-    );
+    const item = q("#pref-" + id + " .menu button:nth-child(" + (index + 1) + ")");
     if (item) item.click();
   }
   function paint(value) {
@@ -490,8 +440,7 @@
   }
   function read() {
     const out = { ...prefs };
-    for (const id of ["sensitivity", "speed"])
-      out[id] = Number(q("#pref-" + id).value);
+    for (const id of ["sensitivity", "speed"]) out[id] = Number(q("#pref-" + id).value);
     for (const id of [
       "invert",
       "motion",
@@ -514,39 +463,37 @@
     return out;
   }
   function apply() {
-    root.classList.toggle("reduce-motion", prefs.motion);
-    root.classList.toggle("large-text", prefs.text === "larger");
-    root.classList.toggle("hide-help", !prefs.help);
+    window.DirectorEditor.elements.root.classList.toggle("reduce-motion", prefs.motion);
+    window.DirectorEditor.elements.root.classList.toggle("large-text", prefs.text === "larger");
+    window.DirectorEditor.elements.root.classList.toggle("hide-help", !prefs.help);
     q("#lookHint").classList.toggle("is-hidden", !prefs.tips);
-    root.style.setProperty("--ui-scale", prefs.scale);
+    window.DirectorEditor.elements.root.style.setProperty("--ui-scale", prefs.scale);
     document.getElementById("speed").value = prefs.speed;
     document.getElementById("speedValue").textContent = prefs.speed.toFixed(1);
     window.VantaPreferences = prefs;
-    window.dispatchEvent(
-      new CustomEvent("directorPreferences", { detail: prefs }),
-    );
+    window.dispatchEvent(new CustomEvent("directorPreferences", { detail: prefs }));
     scheduleAutosave();
   }
   function scheduleAutosave() {
     clearTimeout(timer);
-    if (!bridgeReady || !prefs.autosave) return;
+    if (!window.DirectorEditor.state.bridgeReady || !prefs.autosave) return;
     timer = setTimeout(() => {
       if (
-        saveDirty &&
-        !savePending &&
-        sessionRole !== "viewer" &&
-        !previewPlaying &&
-        !looking &&
-        !actorDragging &&
-        !timelineDrag &&
-        !Object.values(keyState).some(Boolean) &&
+        window.DirectorEditor.state.saveDirty &&
+        !window.DirectorEditor.state.savePending &&
+        window.DirectorEditor.state.sessionRole !== "viewer" &&
+        !window.DirectorEditor.state.previewPlaying &&
+        !window.DirectorEditor.state.looking &&
+        !window.DirectorEditor.state.actorDragging &&
+        !window.DirectorEditor.state.timelineDrag &&
+        !Object.values(window.DirectorEditor.state.keyState).some(Boolean) &&
         !dialog.open &&
-        !isTyping() &&
-        !root.classList.contains("is-hidden") &&
+        !window.DirectorEditor.input.isTyping() &&
+        !window.DirectorEditor.elements.root.classList.contains("is-hidden") &&
         q("#routeEditor").classList.contains("is-hidden") &&
-        qa(
-          ".library-overlay,.model-overlay,.animation-overlay,.exit-overlay",
-        ).every((el) => el.classList.contains("is-hidden"))
+        qa(".library-overlay,.model-overlay,.animation-overlay,.exit-overlay").every((el) =>
+          el.classList.contains("is-hidden"),
+        )
       )
         q("#saveButton").click();
       scheduleAutosave();
@@ -557,14 +504,14 @@
     if (button.disabled) return;
     button.disabled = true;
     try {
-      const result = await post("setPreferences", { preferences: read() });
+      const result = await window.DirectorEditor.transport.post("setPreferences", {
+        preferences: read(),
+      });
       if (result.ok) {
         paint(result.preferences);
         apply();
         q("#settings-status").textContent = "Settings saved on this device";
-      } else
-        q("#settings-status").textContent =
-          result.message || "Could not save settings";
+      } else q("#settings-status").textContent = result.message || "Could not save settings";
     } finally {
       button.disabled = false;
     }
@@ -587,17 +534,10 @@
       if (dialog.open) dialog.close();
       clearTimeout(timer);
     }
-    if (
-      d.action === "open" ||
-      d.action === "captureEnd" ||
-      d.action === "motionRecordFinished"
-    )
+    if (d.action === "open" || d.action === "captureEnd" || d.action === "motionRecordFinished")
       scheduleAutosave();
   });
-  window.addEventListener(
-    "preferencesUpdated",
-    (e) => (prefs = { ...prefs, ...e.detail }),
-  );
+  window.addEventListener("preferencesUpdated", (e) => (prefs = { ...prefs, ...e.detail }));
   window.addEventListener("beforeunload", () => clearTimeout(timer));
   window.VantaPreferences = { ...defaults };
 })();

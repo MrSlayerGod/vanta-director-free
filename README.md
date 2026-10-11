@@ -2,7 +2,9 @@
 
 A free, standalone cinematic scene editor for **FiveM GTA V Legacy**. Build short scenes with a camera timeline, characters, vehicles, objects, curated animations, lighting and weather controls. The editor can hide its interface for a clean take; use OBS or another recorder to capture the footage.
 
-[**Download the latest installer**](https://github.com/SraxDev/vanta-director-free/releases/download/v0.1.0-beta.2/VANTA_Director_Free_0.1.0-beta.2_EN_Install.zip) · [All releases](https://github.com/SraxDev/vanta-director-free/releases) · [Vanta Discord](https://discord.gg/BUdg2bx6H)
+[**Download a release**](https://github.com/SraxDev/vanta-director-free/releases) · [Installation guide](INSTALL.md) · [Vanta Discord](https://discord.gg/BUdg2bx6H)
+
+Current version: **0.2.0-beta.2**. Download the matching EN Install ZIP from [this release](https://github.com/SraxDev/vanta-director-free/releases/tag/v0.2.0-beta.2). Previous releases do not include all changes below.
 
 ## Interface preview
 
@@ -14,7 +16,11 @@ Click the image to watch the trailer from the interface walkthrough at 00:15.
 
 - Keyframed camera positions and a timeline for arranging the scene.
 - Place and stage peds, vehicles and objects, with simple movement and appearance controls.
-- Curated animation library with search, previews, favourites and recent items.
+- 100 curated animations with search, previews, favourites, recent items and English/French placement hints.
+- Multi-point pedestrian and vehicle routes, live motion recording, recorded gestures and trimming.
+- Camera presets, automatic target/follow/orbit modes and shot sequences.
+- Subject grouping and duplication, accessories, attachments and vehicle entry/exit actions.
+- Invitation-based shared filming: the host publishes scenes and controls synchronized playback.
 - Scene weather, time, vehicle cues, object visibility, save/load and JSON import/export.
 - English and French interface, help and interactive tutorial.
 - Clean-take mode for recording cinematic footage with OBS.
@@ -36,24 +42,26 @@ ensure vanta_director_free
 
 The full edition and Free use separate commands, events and project storage. Stop the full edition while testing Free so their camera and mouse focus do not overlap.
 
-## Limits
+## Configurable workload budgets
 
-Every limit is set in `config.lua`. Defaults:
+There are no paid-edition feature locks in this version. Server owners control workload budgets in `config.lua` to bound storage, memory, entities and network traffic. These are not purchase requirements. Defaults:
 
-| Limit | Default | Allowed range |
-|---|---:|---:|
-| Projects per player | 100 | 1 to 100000 |
-| Scene duration | 600 seconds | 1 to 86400 seconds |
-| Subjects per scene | 100 | 1 to 10000 |
-| Camera positions | 1000 | 1 to 100000 |
-| Actions per subject | 200 | 1 to 100000 |
-| Camera shots | 200 | 1 to 100000 |
-| Route points | 256 | 1 to 100000 |
-| Saved locations | 200 | 1 to 100000 |
-| Recording length | 120 seconds | 1 to 3600 seconds |
-| Project file size | 1 MiB | 16 KiB to 64 MiB |
+| Limit               |     Default |      Allowed range |
+| ------------------- | ----------: | -----------------: |
+| Projects per player |         100 |        1 to 100000 |
+| Scene duration      | 600 seconds | 1 to 86400 seconds |
+| Subjects per scene  |         100 |         1 to 10000 |
+| Camera positions    |        1000 |        1 to 100000 |
+| Actions per subject |         200 |        1 to 100000 |
+| Camera shots        |         200 |        1 to 100000 |
+| Route points        |         256 |        1 to 100000 |
+| Saved locations     |         200 |        1 to 100000 |
+| Recording length    | 120 seconds |  1 to 3600 seconds |
+| Project file size   |       1 MiB |   16 KiB to 64 MiB |
 
-Automatic camera modes (target, follow, orbit) are enabled. Shared filming is not included in this build.
+Shared filming is enabled by default and can be disabled by the server owner. Its default session budget is eight participants. It is shared playback, not simultaneous project editing.
+
+For development, formatting, automated checks and packaging, see [CONTRIBUTING.md](CONTRIBUTING.md). Runtime installation does not require Node.js.
 
 ## Compatibility and data
 

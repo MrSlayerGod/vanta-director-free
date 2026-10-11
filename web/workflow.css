@@ -287,8 +287,7 @@
   overflow: auto;
   display: block;
 }
-#director.guided
-  :is(#cameraInspector, #actorInspector, .right-panel > #lookPane) {
+#director.guided :is(#cameraInspector, #actorInspector, .right-panel > #lookPane) {
   overflow: visible;
   flex: none;
 }

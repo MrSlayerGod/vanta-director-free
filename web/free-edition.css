@@ -7,17 +7,7 @@
   padding: 3px 5px;
   margin-left: 5px;
 }
-.edition-free #shotLibrary,
-.edition-free #cameraSequencePanel,
-.edition-free #collaborationPanel,
-.edition-free #motionRecordPanel,
-.edition-free #stagingTools,
-.edition-free #routeEditor,
-.edition-free .accessory-panel,
-.edition-free .route-open,
-.edition-free .vehicle-interaction-panel {
-  display: none !important;
-}
+
 .free-community {
   padding: 12px 16px;
   margin-top: 8px;
@@ -52,11 +42,4 @@
 }
 .edition-free .brand {
   white-space: nowrap;
-}
-.edition-free .sequence-options,
-.edition-free #sequenceInspector,
-.edition-free #legacyCameraEdit,
-.edition-free #viewSubject,
-.edition-free #selectedSequenceNumber {
-  display: none !important;
 }

@@ -25,15 +25,14 @@
   }
   libraryTab.addEventListener("click", () => setTab(false));
   transferTab.addEventListener("click", () => setTab(true));
-  search.addEventListener("input", renderLibrary);
+  search.addEventListener("input", window.DirectorEditor.library.renderLibrary);
   function enhanceRows() {
     document.getElementById("libraryResults").textContent =
       `${list.querySelectorAll(".library-row").length} SAVED PROJECTS`;
-    const active = libraryState.projects.find(
-      (item) => item.id === libraryState.activeId,
+    const active = window.DirectorEditor.state.libraryState.projects.find(
+      (item) => item.id === window.DirectorEditor.state.libraryState.activeId,
     );
-    document.getElementById("libraryExportName").textContent =
-      active?.name || "Current project";
+    document.getElementById("libraryExportName").textContent = active?.name || "Current project";
     document
       .getElementById("libraryExportName")
       .toggleAttribute("data-i18n-user", Boolean(active?.name));
@@ -44,25 +43,21 @@
         actions = row.lastElementChild;
       info.classList.add("library-info");
       const buttons = Array.from(actions.children),
-        open = buttons.find((button) =>
-          button.classList.contains("library-open"),
-        );
+        open = buttons.find((button) => button.classList.contains("library-open"));
       if (!open) {
-        const continueButton = libraryButton(
+        const continueButton = window.DirectorEditor.library.libraryButton(
           "Continue editing",
-          closeLibrary,
+          window.DirectorEditor.library.closeLibrary,
           "library-current",
         );
         actions.prepend(continueButton);
       }
-      const more = libraryButton("⋯", () => {}, "library-more");
+      const more = window.DirectorEditor.library.libraryButton("⋯", () => {}, "library-more");
       more.setAttribute("aria-label", "Project actions");
       more.setAttribute("aria-expanded", "false");
       const menu = document.createElement("div");
       menu.className = "library-menu is-hidden";
-      buttons
-        .filter((button) => button !== open)
-        .forEach((button) => menu.append(button));
+      buttons.filter((button) => button !== open).forEach((button) => menu.append(button));
       actions.append(more, menu);
       more.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -72,17 +67,12 @@
         more.setAttribute("aria-expanded", String(opening));
         if (opening) {
           const bounds = menu.getBoundingClientRect();
-          menu.classList.toggle(
-            "flip",
-            bounds.bottom > panel.getBoundingClientRect().bottom - 24,
-          );
+          menu.classList.toggle("flip", bounds.bottom > panel.getBoundingClientRect().bottom - 24);
           menu.querySelector("button:not(:disabled)")?.focus();
         }
       });
       menu.addEventListener("click", () => closeMenus());
-      const rename = buttons.find(
-        (button) => button.dataset.actionLabel === "Rename",
-      );
+      const rename = buttons.find((button) => button.dataset.actionLabel === "Rename");
       rename?.addEventListener("click", () => {
         const input = info.querySelector("input");
         if (input) {
@@ -97,7 +87,7 @@
             if (event.key === "Escape") {
               event.preventDefault();
               event.stopPropagation();
-              renderLibrary();
+              window.DirectorEditor.library.renderLibrary();
             }
           });
         }
@@ -110,12 +100,12 @@
     const opened = !overlay.classList.contains("is-hidden");
     if (opened !== wasOpen) {
       wasOpen = opened;
-      post("projectDialog", { open: opened });
+      window.DirectorEditor.transport.post("projectDialog", { open: opened });
       if (opened) {
         returnFocus = document.activeElement;
         setTab(false);
         search.value = "";
-        renderLibrary();
+        window.DirectorEditor.library.renderLibrary();
         document.getElementById("libraryCloseButton").focus();
       } else {
         closeMenus();
@@ -132,51 +122,40 @@
     if (!event.target.closest(".library-actions")) closeMenus();
   });
   overlay.addEventListener("keydown", (event) => {
-    if (
-      event.key === "Escape" &&
-      panel.querySelector(".library-menu:not(.is-hidden)")
-    ) {
+    if (event.key === "Escape" && panel.querySelector(".library-menu:not(.is-hidden)")) {
       event.preventDefault();
       event.stopPropagation();
-      const trigger = panel.querySelector(
-        ".library-menu:not(.is-hidden)",
-      ).previousElementSibling;
+      const trigger = panel.querySelector(".library-menu:not(.is-hidden)").previousElementSibling;
       closeMenus();
       trigger.focus();
       return;
     }
     if (event.key !== "Tab") return;
-    const scope = !document
-      .getElementById("libraryConfirm")
-      .classList.contains("is-hidden")
+    const scope = !document.getElementById("libraryConfirm").classList.contains("is-hidden")
       ? document.getElementById("libraryConfirm")
       : panel;
-    const nodes = Array.from(
-      scope.querySelectorAll("button,input,textarea"),
-    ).filter((el) => !el.disabled && el.getClientRects().length);
+    const nodes = Array.from(scope.querySelectorAll("button,input,textarea")).filter(
+      (el) => !el.disabled && el.getClientRects().length,
+    );
     const first = nodes[0],
       last = nodes[nodes.length - 1];
     if (!first) return;
     if (
       event.shiftKey &&
-      (document.activeElement === first ||
-        !scope.contains(document.activeElement))
+      (document.activeElement === first || !scope.contains(document.activeElement))
     ) {
       event.preventDefault();
       last.focus();
     } else if (
       !event.shiftKey &&
-      (document.activeElement === last ||
-        !scope.contains(document.activeElement))
+      (document.activeElement === last || !scope.contains(document.activeElement))
     ) {
       event.preventDefault();
       first.focus();
     }
   });
   new MutationObserver(() => {
-    if (
-      !document.getElementById("libraryConfirm").classList.contains("is-hidden")
-    )
+    if (!document.getElementById("libraryConfirm").classList.contains("is-hidden"))
       document.getElementById("libraryCancelButton").focus();
   }).observe(document.getElementById("libraryConfirm"), {
     attributes: true,

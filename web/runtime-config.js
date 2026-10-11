@@ -17,14 +17,12 @@
     const duration = document.getElementById("duration");
     duration.min = c.minimumDuration;
     duration.max = c.maximumDuration;
+    for (const id of ["playbackFirst", "playbackLast"])
+      document.getElementById(id).max = c.maximumDuration;
     const record = document.getElementById("motionRecordSeconds");
     record.max = c.recordingMaximumSeconds;
-    record.value = Math.min(
-      Number(record.value) || 20,
-      c.recordingMaximumSeconds,
-    );
-    document.getElementById("collaborationPanel").hidden =
-      c.collaborationEnabled === false;
+    record.value = Math.min(Number(record.value) || 20, c.recordingMaximumSeconds);
+    document.getElementById("collaborationPanel").hidden = c.collaborationEnabled === false;
     const replace = (text) =>
       text.replace(
         /\b(F9|F10|F11)\b/g,

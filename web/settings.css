@@ -151,11 +151,7 @@
 .settings-dialog .range::-webkit-slider-runnable-track {
   height: 4px;
   border-radius: 8px;
-  background: linear-gradient(
-    90deg,
-    #58b7cf var(--fill, 50%),
-    #263d4f var(--fill, 50%)
-  );
+  background: linear-gradient(90deg, #58b7cf var(--fill, 50%), #263d4f var(--fill, 50%));
 }
 .settings-dialog :is(button, summary, input):focus-visible {
   outline: 2px solid #78d7ee;
@@ -597,9 +593,5 @@
 .director .settings-dialog .range::-webkit-slider-runnable-track {
   height: 4px;
   border-radius: 8px;
-  background: linear-gradient(
-    90deg,
-    #58b7cf var(--fill, 50%),
-    #263d4f var(--fill, 50%)
-  );
+  background: linear-gradient(90deg, #58b7cf var(--fill, 50%), #263d4f var(--fill, 50%));
 }

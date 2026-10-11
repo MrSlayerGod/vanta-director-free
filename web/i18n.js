@@ -18,14 +18,9 @@
       console.warn("[Director locale] Empty entry:", key);
       continue;
     }
-    if (!entry.en || !entry.fr)
-      console.warn("[Director locale] Using fallback for:", key);
+    if (!entry.en || !entry.fr) console.warn("[Director locale] Using fallback for:", key);
     if ((entry.en || entry.fr).includes("{")) {
-      for (const source of [
-        entry.en,
-        entry.fr,
-        ...(entry.aliases || []),
-      ].filter(Boolean)) {
+      for (const source of [entry.en, entry.fr, ...(entry.aliases || [])].filter(Boolean)) {
         const names = [];
         const expression = source
           .split(/(\{\w+\})/)
@@ -43,11 +38,7 @@
         });
       }
     } else
-      for (const source of [
-        entry.en,
-        entry.fr,
-        ...(entry.aliases || []),
-      ].filter(Boolean)) {
+      for (const source of [entry.en, entry.fr, ...(entry.aliases || [])].filter(Boolean)) {
         // First canonical entry wins for synonymous source captions.
         if (!exact.has(source)) exact.set(source, entry);
       }
@@ -64,17 +55,14 @@
         continue;
       const match = pattern.regex.exec(source);
       if (!match) continue;
-      const args = Object.fromEntries(
-        pattern.names.map((name, i) => [name, match[i + 1]]),
-      );
+      const args = Object.fromEntries(pattern.names.map((name, i) => [name, match[i + 1]]));
       // Only semantic fragments are translated recursively. Model IDs and user names stay verbatim.
       for (const name of pattern.entry.translate || [])
         if (args[name]) args[name] = core(args[name], depth + 1);
-      return (
-        pattern.entry[language] ||
-        pattern.entry.en ||
-        pattern.entry.fr
-      ).replace(/\{(\w+)\}/g, (_, name) => args[name] ?? "{" + name + "}");
+      return (pattern.entry[language] || pattern.entry.en || pattern.entry.fr).replace(
+        /\{(\w+)\}/g,
+        (_, name) => args[name] ?? "{" + name + "}",
+      );
     }
     // Compound hints and badges consist of known phrases separated by a dot, line break or sentence.
     if (source.includes(" · "))
@@ -87,12 +75,9 @@
         const parts = source.split(separator);
         return parts
           .map((part, i) => {
-            const punctuation =
-              separator === ". " && i < parts.length - 1 ? "." : "";
+            const punctuation = separator === ". " && i < parts.length - 1 ? "." : "";
             const value = core(part + punctuation, depth + 1);
-            return punctuation && value.endsWith(".")
-              ? value.slice(0, -1)
-              : value;
+            return punctuation && value.endsWith(".") ? value.slice(0, -1) : value;
           })
           .join(separator);
       }
@@ -114,17 +99,14 @@
   function excluded(element) {
     return (
       !element ||
-      !!element.closest(
-        'script,style,textarea,code,[contenteditable="true"],[data-i18n-user]',
-      )
+      !!element.closest('script,style,textarea,code,[contenteditable="true"],[data-i18n-user]')
     );
   }
   function text(node) {
     if (excluded(node.parentElement)) return;
     const current = node.nodeValue,
       previous = textState.get(node);
-    const source =
-      previous && current === previous.output ? previous.source : current;
+    const source = previous && current === previous.output ? previous.source : current;
     const output = t(source);
     textState.set(node, { source, output });
     if (output !== current) node.nodeValue = output;
@@ -143,8 +125,7 @@
       if (!node.hasAttribute(name)) continue;
       const current = node.getAttribute(name),
         previous = state[name];
-      const source =
-        previous && current === previous.output ? previous.source : current;
+      const source = previous && current === previous.output ? previous.source : current;
       const output = t(source);
       state[name] = { source, output };
       if (output !== current) node.setAttribute(name, output);
@@ -155,10 +136,7 @@
     if (node.nodeType === Node.TEXT_NODE) return text(node);
     if (node.nodeType !== Node.ELEMENT_NODE || excluded(node)) return;
     element(node);
-    const walk = document.createTreeWalker(
-      node,
-      NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT,
-    );
+    const walk = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
     let child;
     while ((child = walk.nextNode())) {
       if (child.nodeType === Node.TEXT_NODE) text(child);
@@ -167,8 +145,7 @@
   }
   const observer = new MutationObserver((records) => {
     for (const record of records) {
-      if (record.type === "childList")
-        for (const node of record.addedNodes) pending.add(node);
+      if (record.type === "childList") for (const node of record.addedNodes) pending.add(node);
       else pending.add(record.target);
     }
     if (!queued && pending.size) {
@@ -204,9 +181,7 @@
       JSON.stringify(t("Loading 3D preview…")),
     );
     flush(true);
-    window.dispatchEvent(
-      new CustomEvent("directorLanguage", { detail: { language } }),
-    );
+    window.dispatchEvent(new CustomEvent("directorLanguage", { detail: { language } }));
   }
   window.VantaI18n = {
     ready: true,
@@ -225,18 +200,14 @@
     key(key, args = {}) {
       const entry = catalog.messages[key];
       if (!entry) {
-        if (window.VantaRuntimeConfig?.debug)
-          console.warn("[Director locale] Missing key:", key);
+        if (window.VantaRuntimeConfig?.debug) console.warn("[Director locale] Missing key:", key);
         return key;
       }
-      return (entry[language] || entry.en || entry.fr || key).replace(
-        /\{(\w+)\}/g,
-        (_, name) => String(args[name] ?? "{" + name + "}"),
+      return (entry[language] || entry.en || entry.fr || key).replace(/\{(\w+)\}/g, (_, name) =>
+        String(args[name] ?? "{" + name + "}"),
       );
     },
   };
-  window.addEventListener("directorPreferences", (event) =>
-    setLanguage(event.detail?.language),
-  );
+  window.addEventListener("directorPreferences", (event) => setLanguage(event.detail?.language));
   setLanguage(language);
 })();

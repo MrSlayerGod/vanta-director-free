@@ -5,8 +5,7 @@
   if (keyList) keyList.textContent = "Liste des positions";
   const empty = document.getElementById("emptyCamera");
   empty.querySelector("strong").textContent = "Aucune position";
-  empty.querySelector("span").textContent =
-    "Place la caméra, puis appuie sur K pour commencer.";
+  empty.querySelector("span").textContent = "Place la caméra, puis appuie sur K pour commencer.";
   const panel = document.createElement("aside");
   panel.className = "free-community";
   panel.setAttribute("aria-label", "Director Free et communauté");
@@ -24,9 +23,6 @@
     const c = event.data.config || {};
     url = valid(c.discordUrl) ? c.discordUrl : "";
     button.hidden = !url;
-    const maximumDuration = String(c.maximumDuration || 600);
-    for (const id of ["duration", "playbackFirst", "playbackLast"])
-      document.getElementById(id).max = maximumDuration;
   });
   button.onclick = () => {
     if (!valid(url)) return;
@@ -37,7 +33,7 @@
       }
       window.open(url, "_blank", "noopener,noreferrer");
     } catch {
-      showStatus("Lien Vanta : " + url);
+      window.DirectorEditor.status.showStatus("Lien Vanta : " + url);
     }
   };
   window.VantaFree = { ready: true };

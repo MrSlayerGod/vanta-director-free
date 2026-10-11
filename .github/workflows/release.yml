@@ -17,25 +17,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Package resource
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Validate and package resource
         run: |
-          mkdir -p "dist/$RESOURCE_NAME"
-          git archive --format=tar HEAD \
-            ':!.github' ':!.gitignore' \
-            | tar -x -C "dist/$RESOURCE_NAME"
-          cd dist
-          zip -r "$RESOURCE_NAME.zip" "$RESOURCE_NAME"
+          npm run format:check
+          npm run check
+          npm test
+          npx playwright install --with-deps chromium
+          npm run test:ui
+          npm run package
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.RESOURCE_NAME }}
-          path: dist/${{ env.RESOURCE_NAME }}.zip
+          path: dist/*_EN_Install.zip
 
       - name: Publish release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/${{ env.RESOURCE_NAME }}.zip
-          generate_release_notes: true
+          files: dist/*_EN_Install.zip
+          body_path: .github/release-notes.md
           prerelease: ${{ contains(github.ref_name, '-') }}

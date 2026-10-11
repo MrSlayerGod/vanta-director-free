@@ -10,7 +10,7 @@
 -- DefaultPreferences.language: 'fr' or 'en'. Players can switch in Settings.
 -- CustomModels: models must already be streamed to clients.
 -- Example: { kind = 'ped', model = 'my_ped', label = 'My character', category = 'Server' }
--- Collaboration is unavailable in Free; leave CollaborationEnabled false.
+-- Collaboration is included. Server owners may disable it with CollaborationEnabled.
 -- RateLimits use milliseconds. DiscordUrl: empty string hides the button.
 Config = {}
 
@@ -70,7 +70,7 @@ Config.DefaultPreferences = {
     autosave = false,
     saveInterval = 120,
     warning = true,
-    language = "fr",
+    language = "en",
     workspace = true,
     leftCollapsed = false,
     rightCollapsed = false,
@@ -78,7 +78,7 @@ Config.DefaultPreferences = {
 
 Config.CustomModels = {}
 
-Config.CollaborationEnabled = false
+Config.CollaborationEnabled = true
 Config.MaximumParticipants = 8
 Config.InvitationSeconds = 30
 Config.PlaybackLeadMs = 1500

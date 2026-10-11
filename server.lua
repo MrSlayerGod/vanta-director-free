@@ -25,67 +25,12 @@ local function libraryPath(source)
     return ("data/%s.library.json"):format(owner)
 end
 
--- Reject oversized/deep structures before normalization, including ignored fields.
--- Network deserialization has already happened; this bounds subsequent Lua work.
-local function boundedPayload(value)
-    local nodes, bytes, seen = 0, 0, {}
-    local function visit(v, depth)
-        nodes = nodes + 1
-        if nodes > Config.PayloadNodeLimit or depth > 24 then
-            return false
-        end
-        local kind = type(v)
-        if kind == "string" then
-            bytes = bytes + #v
-            return bytes <= Config.ProjectFileLimit
-        end
-        if kind == "number" then
-            return v == v and v ~= math.huge and v ~= -math.huge
-        end
-        if kind == "nil" or kind == "boolean" then
-            return true
-        end
-        if kind ~= "table" or seen[v] then
-            return false
-        end
-        seen[v] = true
-        for k, item in pairs(v) do
-            if
-                (type(k) ~= "string" and type(k) ~= "number")
-                or not visit(k, depth + 1)
-                or not visit(item, depth + 1)
-            then
-                return false
-            end
-        end
-        return true
-    end
-    return visit(value, 0)
-end
-local function denseList(value, maximum)
-    if type(value) ~= "table" or #value > maximum then
-        return false
-    end
-    local count = 0
-    for key in pairs(value) do
-        if type(key) ~= "number" or key % 1 ~= 0 or key < 1 or key > #value then
-            return false
-        end
-        count = count + 1
-        if count > maximum then
-            return false
-        end
-    end
-    return count == #value
-end
+local boundedPayload = DirectorPayload.bounded
+local denseList = DirectorPayload.denseList
 
 local function validateProject(project)
     if not boundedPayload(project) then
         return false, "Project payload is too large or malformed."
-    end
-    local editionAllowed, editionReason = DirectorFree.project(project)
-    if not editionAllowed then
-        return false, editionReason
     end
     if
         type(project) == "table"
@@ -646,7 +591,12 @@ local function readLibraryAttempt(source, override)
         end
         -- Recover an old/missing counter without reusing an existing project ID.
         local nextId = tonumber(library.nextId)
-        library.nextId = nextId and nextId == nextId and nextId % 1 == 0 and nextId > maxId and nextId <= 1000000000 and nextId
+        library.nextId = nextId
+                and nextId == nextId
+                and nextId % 1 == 0
+                and nextId > maxId
+                and nextId <= 1000000000
+                and nextId
             or maxId + 1
         return library, path
     end
@@ -869,12 +819,8 @@ end)
 
 RegisterNetEvent("vanta_director_free:saveProject", function(project, requestId)
     if
-        requestId ~= nil and (
-            type(requestId) ~= "number"
-            or requestId % 1 ~= 0
-            or requestId < 1
-            or requestId > 9007199254740991
-        )
+        requestId ~= nil
+        and (type(requestId) ~= "number" or requestId % 1 ~= 0 or requestId < 1 or requestId > 9007199254740991)
     then
         return
     end
@@ -1083,3 +1029,5 @@ RegisterNetEvent("vanta_director_free:importProject", function(encoded)
     end
     sendLibrary(player, library, "Project imported into your own library.")
 end)
+
+DirectorCollaboration.register(validateProject)

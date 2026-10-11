@@ -8,3 +8,7 @@ Thumbs.db
 # Keep the empty data directory placeholder, never commit player projects
 /data/*
 !/data/.keep
+
+node_modules/
+dist/
+test-results/

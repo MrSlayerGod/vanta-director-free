@@ -79,8 +79,15 @@ function R.trimAimCues(cues, first, last)
     for _, c in ipairs(cues or {}) do
         local start, finish = math.max(first, c.time), math.min(last, c.time + c.duration)
         if finish - start >= 0.02 then
-            out[#out + 1] =
-                { time = start - first, duration = finish - start, weapon = c.weapon, fired = c.fired, x = c.x, y = c.y, z = c.z }
+            out[#out + 1] = {
+                time = start - first,
+                duration = finish - start,
+                weapon = c.weapon,
+                fired = c.fired,
+                x = c.x,
+                y = c.y,
+                z = c.z,
+            }
         end
     end
     return out
@@ -188,7 +195,16 @@ function R.trim(samples, first, last)
     end
     local function row(at, time)
         local p = R.sample(clean, at)
-        return { time, p.x, p.y, p.z, (p.rx + 180) % 360 - 180, (p.ry + 180) % 360 - 180, (p.heading + 180) % 360 - 180, p.speed }
+        return {
+            time,
+            p.x,
+            p.y,
+            p.z,
+            (p.rx + 180) % 360 - 180,
+            (p.ry + 180) % 360 - 180,
+            (p.heading + 180) % 360 - 180,
+            p.speed,
+        }
     end
     local out = { row(first, 0) }
     for _, s in ipairs(clean) do
@@ -373,9 +389,8 @@ function R.apply(actor, handle, clip, time, playing, force)
             clip._travel = { 0 }
             for i = 2, #clip.samples do
                 local a, b = clip.samples[i - 1], clip.samples[i]
-                clip._travel[i] = clip._travel[i - 1] + math.sqrt(
-                    (b[2] - a[2]) ^ 2 + (b[3] - a[3]) ^ 2 + (b[4] - a[4]) ^ 2
-                )
+                clip._travel[i] = clip._travel[i - 1]
+                    + math.sqrt((b[2] - a[2]) ^ 2 + (b[3] - a[3]) ^ 2 + (b[4] - a[4]) ^ 2)
             end
         end
         local lo, hi = 1, #clip.samples

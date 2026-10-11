@@ -38,10 +38,14 @@ function DirectorPreferences.defaults()
     end
     return copy
 end
-local enums = { layout = { azerty = true, qwerty = true }, text = { default = true, larger = true }, language = {
-    en = true,
-    fr = true,
-} }
+local enums = {
+    layout = { azerty = true, qwerty = true },
+    text = { default = true, larger = true },
+    language = {
+        en = true,
+        fr = true,
+    },
+}
 local numbers = {
     sensitivity = { 0.2, 3 },
     speed = { 0.5, 30 },

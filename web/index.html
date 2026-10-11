@@ -18,10 +18,7 @@
       window.addEventListener(
         "error",
         function (e) {
-          if (
-            e.target === window ||
-            ["SCRIPT", "LINK"].includes(e.target.tagName)
-          )
+          if (e.target === window || ["SCRIPT", "LINK"].includes(e.target.tagName))
             window.directorBootFailed = true;
         },
         true,
@@ -38,19 +35,14 @@
     <link rel="stylesheet" href="free-edition.css" />
   </head>
   <body>
-    <main
-      id="director"
-      class="director edition-free is-hidden"
-      aria-label="Vanta Director"
-    >
+    <main id="director" class="director edition-free is-hidden" aria-label="Vanta Director">
       <div
         id="lookSurface"
         class="look-surface"
         title="Right drag: camera. Left drag: actor. Alt drag: rotation."
       >
         <span id="lookHint"
-          >RIGHT DRAG: LOOK · LEFT DRAG: MOVE ACTOR · ALT + DRAG: ROTATE ·
-          SHIFT: HEIGHT</span
+          >RIGHT DRAG: LOOK · LEFT DRAG: MOVE ACTOR · ALT + DRAG: ROTATE · SHIFT: HEIGHT</span
         >
       </div>
       <div id="framingOverlay" class="framing-overlay" aria-hidden="true"></div>
@@ -93,26 +85,13 @@
             aria-label="Redo"
             disabled
           >
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              style="transform: scaleX(-1)"
-            >
+            <svg viewBox="0 0 24 24" aria-hidden="true" style="transform: scaleX(-1)">
               <path d="M9 5 4 10l5 5M4 10h9a6 6 0 0 1 0 12" />
             </svg></button
-          ><button
-            class="library-open-button"
-            id="projectLibraryButton"
-            type="button"
-          >
+          ><button class="library-open-button" id="projectLibraryButton" type="button">
             Projects</button
-          ><button class="controls-button" id="controlsButton" type="button">
-            Shortcuts</button
-          ><button
-            id="captureButton"
-            class="capture-button"
-            title="Clean take for OBS; F9 stops"
-          >
+          ><button class="controls-button" id="controlsButton" type="button">Shortcuts</button
+          ><button id="captureButton" class="capture-button" title="Clean take for OBS; F9 stops">
             Clean take</button
           ><button id="saveButton" class="save-button">Save project</button
           ><button
@@ -128,13 +107,7 @@
 
       <section class="left-panel panel">
         <div class="scene-tabs" aria-label="Editor views">
-          <button
-            id="cameraTab"
-            class="active"
-            type="button"
-            title="Camera"
-            aria-label="Camera"
-          >
+          <button id="cameraTab" class="active" type="button" title="Camera" aria-label="Camera">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="12" cy="12" r="7" />
               <circle cx="12" cy="12" r="3" />
@@ -151,17 +124,10 @@
               <path d="M6 20v-4a6 6 0 0 1 12 0v4" />
             </svg>
             <span>SCENE</span></button
-          ><button
-            id="lookTab"
-            type="button"
-            title="Scene look"
-            aria-label="Scene look"
-          >
+          ><button id="lookTab" type="button" title="Scene look" aria-label="Scene look">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="12" cy="12" r="4" />
-              <path
-                d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2"
-              />
+              <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2" />
             </svg>
             <span>LOOK</span>
           </button>
@@ -182,9 +148,7 @@
               Place the camera in game, then add a shot at the current time.
             </p>
             <details id="shotLibrary" class="rig-panel">
-              <summary>
-                Shot library <span class="accent">PRESETS</span>
-              </summary>
+              <summary>Shot library <span class="accent">PRESETS</span></summary>
               <label
                 >SHOT<select id="shotPreset">
                   <option value="orbit">Orbit · 180° reveal</option>
@@ -234,8 +198,8 @@
                 /></label>
               </div>
               <p id="shotHint">
-                Frames the subject's current position. Aim at a building or
-                choose an actor. Check clearance in the preview.
+                Frames the subject's current position. Aim at a building or choose an actor. Check
+                clearance in the preview.
               </p>
               <div class="shot-buttons">
                 <button id="shotPreview" type="button">Preview shot</button
@@ -247,29 +211,16 @@
             </details>
             <details id="cameraSequencePanel" class="rig-panel">
               <summary>Sequences <span id="sequenceCount">00</span></summary>
-              <button id="newCameraSequence" type="button">
-                New manual shot at playhead</button
-              ><button id="legacyCameraEdit" type="button">
-                Edit original camera path
-              </button>
+              <button id="newCameraSequence" type="button">New manual shot at playhead</button
+              ><button id="legacyCameraEdit" type="button">Edit original camera path</button>
               <div id="sequenceList"></div>
               <div id="sequenceEdit" class="is-hidden">
-                <label
-                  >SHOT NAME<input id="sequenceName" maxlength="48"
-                /></label>
+                <label>SHOT NAME<input id="sequenceName" maxlength="48" /></label>
                 <div class="rig-grid">
                   <label
-                    >START (SEC)<input
-                      id="sequenceTime"
-                      type="number"
-                      min="0"
-                      step="0.1" /></label
+                    >START (SEC)<input id="sequenceTime" type="number" min="0" step="0.1" /></label
                   ><label
-                    >LENGTH (SEC)<input
-                      id="sequenceDuration"
-                      type="number"
-                      min="0.1"
-                      step="0.1"
+                    >LENGTH (SEC)<input id="sequenceDuration" type="number" min="0.1" step="0.1"
                   /></label>
                 </div>
                 <label
@@ -285,30 +236,22 @@
                     <option value="1">Blend · 1 sec</option>
                     <option value="2">Blend · 2 sec</option>
                   </select></label
-                ><button id="sequenceUpdate" type="button">
-                  Apply shot settings
-                </button>
+                ><button id="sequenceUpdate" type="button">Apply shot settings</button>
                 <div class="shot-buttons">
                   <button id="sequenceCopy" type="button">Copy shot</button
-                  ><button id="sequencePaste" type="button">
-                    Paste at playhead</button
-                  ><button id="sequenceDelete" type="button">
-                    Delete shot
-                  </button>
+                  ><button id="sequencePaste" type="button">Paste at playhead</button
+                  ><button id="sequenceDelete" type="button">Delete shot</button>
                 </div>
                 <p>
-                  Each sequence owns its keyframes and camera mode. Cuts switch
-                  at the start of the next shot. Scene actors keep the same
-                  project timeline.
+                  Each sequence owns its keyframes and camera mode. Cuts switch at the start of the
+                  next shot. Scene actors keep the same project timeline.
                 </p>
               </div>
             </details>
             <div id="keyframeList" class="keyframe-list"></div>
             <div id="emptyCamera" class="empty-state">
               <strong>No shots yet</strong
-              ><span
-                >Move the view, then press K or add a camera keyframe.</span
-              >
+              ><span>Move the view, then press K or add a camera keyframe.</span>
             </div>
             <details id="locationPanel" class="rig-panel">
               <summary>Locations &amp; capture</summary>
@@ -317,9 +260,7 @@
                   id="locationName"
                   maxlength="48"
                   placeholder="Current view" /></label
-              ><button id="locationSave" type="button">
-                Save current camera location
-              </button>
+              ><button id="locationSave" type="button">Save current camera location</button>
               <div id="locationList"></div>
               <div class="rig-grid">
                 <label
@@ -330,20 +271,12 @@
                     value="0"
                     step="0.1" /></label
                 ><label
-                  >TO (SEC)<input
-                    id="playbackLast"
-                    type="number"
-                    min="0.1"
-                    value="20"
-                    step="0.1"
+                  >TO (SEC)<input id="playbackLast" type="number" min="0.1" value="20" step="0.1"
                 /></label>
               </div>
               <label class="rig-check"
-                ><input id="playbackLoop" type="checkbox" />Loop playback /
-                clean take</label
-              ><button id="playbackRangeApply" type="button">
-                Set playback range
-              </button>
+                ><input id="playbackLoop" type="checkbox" />Loop playback / clean take</label
+              ><button id="playbackRangeApply" type="button">Set playback range</button>
               <p>Clean take uses this range. F9 stops a looping capture.</p>
               <label
                 >FRAMING GUIDE<select id="framingGuide">
@@ -355,39 +288,31 @@
               >
             </details>
             <details class="rig-panel" id="collaborationPanel">
-              <summary>
-                Shared filming <span id="sessionRole">SOLO</span>
-              </summary>
+              <summary>Shared filming <span id="sessionRole">SOLO</span></summary>
               <p id="sessionHint">
-                The host stages the scene. Participants preview synchronized
-                local copies. Everyone needs the same streamed models.
+                The host stages the scene. Participants preview synchronized local copies. Everyone
+                needs the same streamed models.
               </p>
-              <button id="sessionCreate" type="button">
-                Host current project</button
+              <button id="sessionCreate" type="button">Host current project</button
               ><label
                 >PLAYER SERVER ID<input
                   id="sessionTarget"
                   type="number"
                   min="1"
                   max="65535" /></label
-              ><button id="sessionInviteButton" type="button">
-                Invite player</button
-              ><button id="sessionPublish" type="button">
-                Publish current scene to session
-              </button>
+              ><button id="sessionInviteButton" type="button">Invite player</button
+              ><button id="sessionPublish" type="button">Publish current scene to session</button>
               <div class="shot-buttons">
                 <button id="sessionPlay" type="button">Play together</button
                 ><button id="sessionStop" type="button">Stop together</button>
               </div>
-              <button id="sessionLeave" type="button">
-                Leave / end session
-              </button>
+              <button id="sessionLeave" type="button">Leave / end session</button>
             </details>
             <div id="cameraNote" class="panel-note">
               <span class="note-dot"></span
               ><span
-                >Move the playhead and add a keyframe to shape the shot. Drag
-                markers below to change timing.</span
+                >Move the playhead and add a keyframe to shape the shot. Drag markers below to
+                change timing.</span
               >
             </div>
           </div>
@@ -398,11 +323,7 @@
                 <h2>Scene elements</h2>
               </div>
             </div>
-            <button
-              id="browseModelsButton"
-              class="primary-button full"
-              type="button"
-            >
+            <button id="browseModelsButton" class="primary-button full" type="button">
               ＋ &nbsp; Browse models
             </button>
             <details class="actor-creator" id="motionRecordPanel">
@@ -426,24 +347,17 @@
                     placeholder="Auto-detect model"
                     maxlength="48" /></label
                 ><label class="ped-auto-duration"
-                  ><input id="motionRecordAim" type="checkbox" />Record aim
-                  poses (no bullets or damage)</label
+                  ><input id="motionRecordAim" type="checkbox" />Record aim poses (no bullets or
+                  damage)</label
                 ><label class="ped-auto-duration"
-                  ><input
-                    id="motionRecordOccupants"
-                    type="checkbox"
-                    checked
-                  />Include driver and passengers (vehicle take)</label
-                ><button
-                  id="motionRecordStart"
-                  class="aim-button"
-                  type="button"
-                >
+                  ><input id="motionRecordOccupants" type="checkbox" checked />Include driver and
+                  passengers (vehicle take)</label
+                ><button id="motionRecordStart" class="aim-button" type="button">
                   Start movement recording
                 </button>
                 <p class="scene-hint">
-                  Play normally. F10 saves the take; F11 cancels. Records
-                  movement and supported gestures, not a full replay.
+                  Play normally. F10 saves the take; F11 cancels. Records movement and supported
+                  gestures, not a full replay.
                 </p>
               </div>
             </details>
@@ -464,11 +378,7 @@
                     spellcheck="false"
                 /></label>
               </div>
-              <button
-                id="addActorButton"
-                class="primary-button full"
-                type="button"
-              >
+              <button id="addActorButton" class="primary-button full" type="button">
                 Place selected model
               </button>
             </details>
@@ -483,9 +393,7 @@
                   id="stagingGroupName"
                   maxlength="32"
                   placeholder="e.g. Police unit" /></label
-              ><button id="stagingGroupApply" type="button">
-                Assign group
-              </button>
+              ><button id="stagingGroupApply" type="button">Assign group</button>
               <div class="rig-grid">
                 <label
                   >OFFSET X<input
@@ -505,8 +413,7 @@
                     step="0.1"
                 /></label>
               </div>
-              <button id="stagingDuplicate" type="button">
-                Duplicate selection</button
+              <button id="stagingDuplicate" type="button">Duplicate selection</button
               ><label
                 >TRIM TAKE FROM (SEC)<input
                   id="recordingTrimFirst"
@@ -521,8 +428,7 @@
                   value="1"
                   min="0.1"
                   step="0.1" /></label
-              ><button id="recordingTrim" type="button">
-                Trim selected recorded take</button
+              ><button id="recordingTrim" type="button">Trim selected recorded take</button
               ><label
                 >RECORDED GESTURE<select id="recordedGesture">
                   <option value="salute">Salute</option>
@@ -548,27 +454,23 @@
                 Add gesture to take at playhead
               </button>
               <p>
-                Groups duplicate together, including attached accessories.
-                Trimming keeps only the selected time range; Undo restores the
-                take.
+                Groups duplicate together, including attached accessories. Trimming keeps only the
+                selected time range; Undo restores the take.
               </p>
             </details>
             <div class="list-heading">
-              <span>IN THIS SCENE</span
-              ><span id="actorCount" class="count">00</span>
+              <span>IN THIS SCENE</span><span id="actorCount" class="count">00</span>
             </div>
             <div id="actorList" class="actor-list"></div>
             <div id="emptyActors" class="empty-state">
               <strong>Empty scene</strong
-              ><span
-                >Choose a ped, vehicle or object above to start staging.</span
-              >
+              ><span>Choose a ped, vehicle or object above to start staging.</span>
             </div>
             <div id="actorNote" class="panel-note">
               <span class="note-dot"></span
               ><span
-                >Select a scene element to adjust its position or add an action
-                at the current time.</span
+                >Select a scene element to adjust its position or add an action at the current
+                time.</span
               >
             </div>
           </div>
@@ -580,8 +482,8 @@
               </div>
             </div>
             <p class="look-copy">
-              Set the atmosphere for your preview and clean take. These settings
-              stay with the project.
+              Set the atmosphere for your preview and clean take. These settings stay with the
+              project.
             </p>
             <label class="look-field" for="lookWeather"
               >WEATHER<select id="lookWeather">
@@ -603,19 +505,11 @@
               </select></label
             >
             <label class="look-field" for="lookMinute"
-              >MINUTE<input
-                id="lookMinute"
-                type="number"
-                min="0"
-                max="59"
-                step="1"
-                value="0"
+              >MINUTE<input id="lookMinute" type="number" min="0" max="59" step="1" value="0"
             /></label>
             <div class="look-divider"></div>
             <label class="look-switch" for="lookDof"
-              ><span
-                ><strong>Depth of field</strong
-                ><small>Soft background focus</small></span
+              ><span><strong>Depth of field</strong><small>Soft background focus</small></span
               ><input id="lookDof" type="checkbox"
             /></label>
             <label class="look-field"
@@ -626,40 +520,22 @@
             <div id="lookFocusControls" class="is-hidden">
               <label class="look-field" for="lookNear"
                 >NEAR FOCUS <span id="lookNearValue">2 m</span
-                ><input
-                  id="lookNear"
-                  type="range"
-                  min="0.5"
-                  max="50"
-                  step="0.5"
-                  value="2"
+                ><input id="lookNear" type="range" min="0.5" max="50" step="0.5" value="2"
               /></label>
               <label class="look-field" for="lookFar"
                 >FAR FOCUS <span id="lookFarValue">30 m</span
-                ><input
-                  id="lookFar"
-                  type="range"
-                  min="5"
-                  max="200"
-                  step="1"
-                  value="30"
+                ><input id="lookFar" type="range" min="5" max="200" step="1" value="30"
               /></label>
               <label class="look-field" for="lookStrength"
                 >BLUR STRENGTH <span id="lookStrengthValue">50%</span
-                ><input
-                  id="lookStrength"
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.05"
-                  value="0.5"
+                ><input id="lookStrength" type="range" min="0" max="1" step="0.05" value="0.5"
               /></label>
             </div>
             <div class="panel-note">
               <span class="note-dot"></span
               ><span
-                >Weather and time affect your view only while Director is open.
-                Server sync may also control the scene.</span
+                >Weather and time affect your view only while Director is open. Server sync may also
+                control the scene.</span
               >
             </div>
           </div>
@@ -683,10 +559,7 @@
               ><small id="selectedCameraTime">Keyframe at 00:00.0</small></span
             >
           </div>
-          <label
-            id="shotNameField"
-            class="shot-name-field is-hidden"
-            for="shotNameInput"
+          <label id="shotNameField" class="shot-name-field is-hidden" for="shotNameInput"
             >SHOT NAME<input
               id="shotNameInput"
               type="text"
@@ -695,8 +568,7 @@
               spellcheck="false"
           /></label>
           <div class="readout-section">
-            <span class="eyebrow">POSITION</span
-            ><span class="eyebrow accent">GAME WORLD</span>
+            <span class="eyebrow">POSITION</span><span class="eyebrow accent">GAME WORLD</span>
           </div>
           <div class="readout-grid">
             <div><label>X</label><output id="posX">0.00</output></div>
@@ -713,37 +585,25 @@
           </div>
           <div class="control-block">
             <div class="control-label">
-              <label for="fov">FIELD OF VIEW</label
-              ><output id="fovValue">50°</output>
+              <label for="fov">FIELD OF VIEW</label><output id="fovValue">50°</output>
             </div>
-            <input
-              id="fov"
-              type="range"
-              min="20"
-              max="100"
-              step="1"
-              value="50"
-            />
+            <input id="fov" type="range" min="20" max="100" step="1" value="50" />
           </div>
           <div id="selectedCameraActions" class="inspector-actions is-hidden">
-            <button id="updateFrameButton" type="button">
-              Update from view</button
+            <button id="updateFrameButton" type="button">Update from view</button
             ><button id="deleteFrameButton" type="button">Delete shot</button>
           </div>
           <details id="advancedCamera">
             <summary>Camera controls</summary>
             <div class="control-block">
               <div class="control-label">
-                <label for="speed">CAMERA SPEED</label
-                ><output id="speedValue">8.0</output>
+                <label for="speed">CAMERA SPEED</label><output id="speedValue">8.0</output>
               </div>
               <input id="speed" type="range" min="0.5" step="0.5" value="8" />
             </div>
           </details>
           <details id="automaticCamera" class="rig-panel">
-            <summary>
-              Automatic camera <span id="rigBadge">MANUAL</span>
-            </summary>
+            <summary>Automatic camera <span id="rigBadge">MANUAL</span></summary>
             <label
               >MODE<select id="rigMode">
                 <option value="manual">Manual camera</option>
@@ -764,8 +624,7 @@
                   value="1"
               /></label>
               <label id="rigFollowFields" class="rig-check is-hidden"
-                ><input id="rigRelative" type="checkbox" checked />Turn with
-                subject</label
+                ><input id="rigRelative" type="checkbox" checked />Turn with subject</label
               >
               <div id="rigOrbitFields" class="rig-grid is-hidden">
                 <label
@@ -796,18 +655,14 @@
               </div>
             </div>
             <label class="rig-check"
-              ><input id="rigAvoidObstacles" type="checkbox" />Avoid walls and
-              objects</label
+              ><input id="rigAvoidObstacles" type="checkbox" />Avoid walls and objects</label
             >
-            <p id="rigHint">
-              Move the camera freely or create a keyframe path.
-            </p>
+            <p id="rigHint">Move the camera freely or create a keyframe path.</p>
             <button id="rigApply" type="button">Apply camera mode</button>
           </details>
           <div id="controlsPanel" class="key-help">
-            <kbd id="forwardKeyLabel">Z</kbd><kbd id="leftKeyLabel">Q</kbd
-            ><kbd>S</kbd><kbd>D</kbd><span>move</span
-            ><kbd id="lowerKeyLabel">A</kbd><kbd>E</kbd><span>height</span
+            <kbd id="forwardKeyLabel">Z</kbd><kbd id="leftKeyLabel">Q</kbd><kbd>S</kbd><kbd>D</kbd
+            ><span>move</span><kbd id="lowerKeyLabel">A</kbd><kbd>E</kbd><span>height</span
             ><br /><span>Right drag: look · Left drag: actors</span>
           </div>
         </div>
@@ -816,20 +671,9 @@
       <section class="timeline panel">
         <div class="timeline-top">
           <div class="transport">
-            <button
-              id="previewButton"
-              class="play-button"
-              aria-label="Preview path"
-            >
-              ▶</button
-            ><button
-              id="stopButton"
-              class="plain-button"
-              aria-label="Arrêter l’aperçu"
-            >
-              ■</button
-            ><output id="timeReadout">00:00.0</output
-            ><span class="muted">/</span
+            <button id="previewButton" class="play-button" aria-label="Preview path">▶</button
+            ><button id="stopButton" class="plain-button" aria-label="Arrêter l’aperçu">■</button
+            ><output id="timeReadout">00:00.0</output><span class="muted">/</span
             ><span id="durationReadout" class="muted">00:20.0</span
             ><span class="eyebrow preview-label">PREVIEW</span>
           </div>
@@ -840,26 +684,14 @@
             title="Ctrl-click items, then copy"
           >
             Copy</button
-          ><button id="timelinePaste" class="controls-button" type="button">
-            Paste</button
+          ><button id="timelinePaste" class="controls-button" type="button">Paste</button
           ><span id="timelineSelectionCount" class="eyebrow">0 SELECTED</span
           ><label class="timeline-zoom" title="Zoom timeline"
-            >ZOOM<input
-              id="timelineZoom"
-              type="range"
-              min="1"
-              max="8"
-              step="1"
-              value="1" /></label
+            >ZOOM<input id="timelineZoom" type="range" min="1" max="8" step="1" value="1" /></label
           ><label class="duration-control"
-            >DURATION
-            <input
-              id="duration"
-              type="number"
-              min="1"
-              step="1"
-              value="20"
-            /><span>SEC</span></label
+            >DURATION <input id="duration" type="number" min="1" step="1" value="20" /><span
+              >SEC</span
+            ></label
           >
         </div>
         <div id="timelineViewport" class="timeline-viewport">
@@ -900,30 +732,20 @@
         </div>
       </section>
       <div id="routeLayer" class="route-layer is-hidden">
-        <svg
-          id="routeLines"
-          aria-hidden="true"
-          viewBox="0 0 1 1"
-          preserveAspectRatio="none"
-        ></svg>
+        <svg id="routeLines" aria-hidden="true" viewBox="0 0 1 1" preserveAspectRatio="none"></svg>
         <div id="routeNodes"></div>
       </div>
-      <section
-        id="routeEditor"
-        class="route-editor is-hidden"
-        aria-label="Route editor"
-      >
+      <section id="routeEditor" class="route-editor is-hidden" aria-label="Route editor">
         <div class="route-editor-title">
           <strong id="routeTitle">Edit route</strong
           ><span id="routeMeasure">Click the ground to add points</span>
         </div>
         <p>
-          Click ground: add · Drag point: move · Shift + drag: height ·
-          Right-click point: remove
+          Click ground: add · Drag point: move · Shift + drag: height · Right-click point: remove
         </p>
         <label class="rig-check route-inspection"
-          ><input id="routeInspectObstacles" type="checkbox" />Inspect obstacles
-          before applying</label
+          ><input id="routeInspectObstacles" type="checkbox" />Inspect obstacles before
+          applying</label
         >
         <div class="route-editor-controls">
           <label
@@ -932,12 +754,7 @@
               <option value="speed">Average speed</option>
             </select></label
           ><label id="routeSecondsField"
-            >Seconds<input
-              id="routeSeconds"
-              type="number"
-              min="0.1"
-              step="0.1"
-              value="3" /></label
+            >Seconds<input id="routeSeconds" type="number" min="0.1" step="0.1" value="3" /></label
           ><label id="routeSpeedField" class="is-hidden"
             >m/s<input
               id="routeSpeed"
@@ -954,9 +771,7 @@
               <option value="sprint">Sprint</option>
             </select></label
           ><button id="routeCancel" type="button">Cancel</button
-          ><button id="routeApply" class="save-button" type="button">
-            Apply route
-          </button>
+          ><button id="routeApply" class="save-button" type="button">Apply route</button>
         </div>
       </section>
       <div id="toast" class="toast" role="status"></div>
@@ -1019,13 +834,7 @@
             ><button id="modelSide" type="button">Side</button
             ><button id="modelFit" type="button">Reset view</button>
           </div>
-          <label
-            >ROTATION<input
-              id="modelAngle"
-              type="range"
-              min="0"
-              max="360"
-              value="135" /></label
+          <label>ROTATION<input id="modelAngle" type="range" min="0" max="360" value="135" /></label
           ><label
             >ZOOM<input
               id="modelZoom"
@@ -1051,8 +860,8 @@
           <h2>Filming invitation</h2>
           <p id="sessionInviteText"></p>
           <p>
-            Your current project is kept in memory and restored when you leave.
-            Participants cannot edit the host's scene.
+            Your current project is kept in memory and restored when you leave. Participants cannot
+            edit the host's scene.
           </p>
           <button id="sessionAccept" type="button">Join session</button
           ><button id="sessionDecline" type="button">Decline</button>
@@ -1071,9 +880,7 @@
           <p>Your latest changes have not been saved. Close Director anyway?</p>
           <div>
             <button id="exitCancelButton" type="button">Keep editing</button
-            ><button id="exitConfirmButton" type="button">
-              Close without saving
-            </button>
+            ><button id="exitConfirmButton" type="button">Close without saving</button>
           </div>
         </section>
       </div>
@@ -1131,22 +938,14 @@
               <section class="library-transfer-card">
                 <span class="eyebrow">CURRENT PROJECT</span>
                 <h3 id="libraryExportName">Current project</h3>
-                <p>
-                  Export a copy to share your scene or keep a reusable template.
-                </p>
-                <button id="projectExport" type="button">
-                  Export project JSON</button
-                ><small
-                  >Includes camera paths, actors and scene settings.</small
-                >
+                <p>Export a copy to share your scene or keep a reusable template.</p>
+                <button id="projectExport" type="button">Export project JSON</button
+                ><small>Includes camera paths, actors and scene settings.</small>
               </section>
               <section class="library-transfer-card">
                 <span class="eyebrow">IMPORT A COPY</span>
                 <h3>Bring a scene into Director</h3>
-                <p>
-                  Paste an exported project below. Your original stays
-                  untouched.
-                </p>
+                <p>Paste an exported project below. Your original stays untouched.</p>
                 <textarea
                   id="projectJson"
                   rows="5"
@@ -1171,9 +970,7 @@
             <p id="libraryConfirmText"></p>
             <div>
               <button id="libraryCancelButton" type="button">Cancel</button
-              ><button id="libraryContinueButton" type="button">
-                Continue
-              </button>
+              ><button id="libraryContinueButton" type="button">Continue</button>
             </div>
           </div>
         </section>
@@ -1190,9 +987,7 @@
             <div>
               <span class="eyebrow">VANTA DIRECTOR / SCENE</span>
               <h2>Bibliothèque d’animations</h2>
-              <p id="animationContext">
-                Choisis un personnage pour ajouter une animation.
-              </p>
+              <p id="animationContext">Choisis un personnage pour ajouter une animation.</p>
             </div>
             <button
               id="animationCloseButton"
@@ -1228,31 +1023,20 @@
               <p id="animationDescription"></p>
               <p id="animationRequirements"></p>
               <div class="animation-meta">
-                <span>LECTURE</span><code id="animationLoop">—</code
-                ><span>DICTIONNAIRE</span
+                <span>LECTURE</span><span id="animationLoop">—</span><span>DICTIONNAIRE</span
                 ><code data-i18n-user id="animationDict"></code><span>CLIP</span
                 ><code data-i18n-user id="animationClip"></code>
               </div>
               <label class="scene-label"
-                ><span id="animationDurationLabel"
-                  >DURÉE (SEC) · 0 = JUSQU’À REMPLACEMENT</span
-                ><input
-                  id="animationDuration"
-                  type="number"
-                  min="0"
-                  step="0.1"
-                  value="0"
+                ><span id="animationDurationLabel">DURÉE (SEC) · 0 = JUSQU’À REMPLACEMENT</span
+                ><input id="animationDuration" type="number" min="0" step="0.1" value="0"
               /></label>
               <p id="animationPreviewStatus" class="animation-preview-status">
-                Choisis une animation, puis regarde son aperçu sur le
-                personnage.
+                Choisis une animation, puis regarde son aperçu sur le personnage.
               </p>
               <div class="animation-actions">
-                <button id="animationPlayButton" type="button">
-                  Voir dans la scène</button
-                ><button id="animationStopButton" type="button">
-                  Arrêter l’aperçu
-                </button>
+                <button id="animationPlayButton" type="button">Voir dans la scène</button
+                ><button id="animationStopButton" type="button">Arrêter l’aperçu</button>
               </div>
               <button id="animationAddButton" class="save-button" type="button">
                 Ajouter au curseur
@@ -1263,8 +1047,7 @@
       </div>
       <div id="animationPreviewBar" class="animation-preview-bar is-hidden">
         <div>
-          <span class="eyebrow">APERÇU ANIMATION</span
-          ><strong id="animationBarName">—</strong
+          <span class="eyebrow">APERÇU ANIMATION</span><strong id="animationBarName">—</strong
           ><small id="animationBarStatus">Loading…</small>
         </div>
         <div class="animation-preview-buttons">
@@ -1276,12 +1059,39 @@
         </div>
       </div>
     </main>
-    <div
-      id="captureCountdown"
-      class="capture-countdown is-hidden"
-      aria-live="polite"
-    ></div>
+    <div id="captureCountdown" class="capture-countdown is-hidden" aria-live="polite"></div>
+    <script src="animation-catalog.js"></script>
+    <script src="nui-bridge.js"></script>
+    <script src="editor/runtime.js"></script>
+    <script src="editor/state.js"></script>
+    <script src="editor/animations.js"></script>
+    <script src="editor/transport.js"></script>
+    <script src="editor/saving.js"></script>
+    <script src="editor/lifecycle.js"></script>
+    <script src="editor/camera.js"></script>
+    <script src="editor/status.js"></script>
+    <script src="editor/library.js"></script>
+    <script src="editor/formatting.js"></script>
+    <script src="editor/timeline.js"></script>
+    <script src="editor/collaboration.js"></script>
+    <script src="editor/sequences.js"></script>
+    <script src="editor/staging.js"></script>
+    <script src="editor/production.js"></script>
+    <script src="editor/projectView.js"></script>
+    <script src="editor/inspector.js"></script>
+    <script src="editor/accessories.js"></script>
+    <script src="editor/appearance.js"></script>
+    <script src="editor/actors.js"></script>
+    <script src="editor/pins.js"></script>
+    <script src="editor/tabs.js"></script>
+    <script src="editor/environment.js"></script>
+    <script src="editor/models.js"></script>
+    <script src="editor/input.js"></script>
+    <script src="editor/toolbar.js"></script>
+    <script src="editor/recording.js"></script>
+    <script src="editor/events.js"></script>
     <script src="app.js"></script>
+    <script src="route-editor.js"></script>
     <script src="vanta-controls.js"></script>
 
     <div id="motionRecordOverlay" class="motion-record-overlay is-hidden">
@@ -1305,14 +1115,15 @@
           try {
             if (
               window.directorBootFailed ||
+              !window.DirectorEditor?.ready ||
               !window.VantaFree ||
+              !window.VantaBridge ||
+              !window.VantaRouteEditor ||
               !window.VantaWorkflow ||
               !window.VantaI18n?.ready
             )
               return;
-            for (const link of document.querySelectorAll(
-              'link[rel="stylesheet"]',
-            )) {
+            for (const link of document.querySelectorAll('link[rel="stylesheet"]')) {
               if (!link.sheet) return;
               try {
                 if (!link.sheet.cssRules.length) return;

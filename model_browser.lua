@@ -216,8 +216,12 @@ function browser.sendCatalog()
                 for index = first, last do
                     chunk[#chunk + 1] = catalog[index]
                 end
-                SendNUIMessage({ action = "modelCatalog", models = chunk, append = first > 1, complete = last
-                    == #catalog })
+                SendNUIMessage({
+                    action = "modelCatalog",
+                    models = chunk,
+                    append = first > 1,
+                    complete = last == #catalog,
+                })
                 if last < #catalog then
                     Wait(0)
                 end
@@ -366,9 +370,11 @@ function browser.preview(kind, model, visibleViewport)
         SetBlockingOfNonTemporaryEvents(entity, true)
     end
     local actual = GetEntityCoords(entity)
-    center =
-        { x = actual.x + (minimum.x + maximum.x) * 0.5, y = actual.y + (minimum.y + maximum.y) * 0.5, z = actual.z
-            + (minimum.z + maximum.z) * 0.5 }
+    center = {
+        x = actual.x + (minimum.x + maximum.x) * 0.5,
+        y = actual.y + (minimum.y + maximum.y) * 0.5,
+        z = actual.z + (minimum.z + maximum.z) * 0.5,
+    }
     sphereRadius = size * 0.5
     updateViewport(visibleViewport)
     if returnCamera and DoesCamExist(returnCamera) then

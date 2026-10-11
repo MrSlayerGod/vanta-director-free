@@ -475,17 +475,13 @@
   background: #8dddf2;
 }
 .director .route-layer {
-  clip-path: inset(
-    58px var(--editor-right) var(--editor-bottom) var(--editor-left)
-  ) !important;
+  clip-path: inset(58px var(--editor-right) var(--editor-bottom) var(--editor-left)) !important;
 }
 .director .route-editor {
   bottom: calc(var(--editor-bottom) + 12px) !important;
 }
 .director .actor-pins {
-  clip-path: inset(
-    58px var(--editor-right) var(--editor-bottom) var(--editor-left)
-  );
+  clip-path: inset(58px var(--editor-right) var(--editor-bottom) var(--editor-left));
 }
 .director.reduce-motion *,
 .director.reduce-motion *::before,
@@ -496,8 +492,7 @@
 .director.hide-help .vanta-tooltip {
   display: none !important;
 }
-.director.large-text
-  :is(label, summary, button, .scene-hint, .look-copy, .panel-note) {
+.director.large-text :is(label, summary, button, .scene-hint, .look-copy, .panel-note) {
   font-size: 13px;
 }
 .director input[type="number"] {

@@ -173,9 +173,12 @@ function DirectorSeats.validate(actors, duration)
                         if not entry or entry.vehicleId ~= a.vehicleId or entry.seat ~= a.seat then
                             return false, "Add a matching vehicle entry before exiting."
                         end
-                        reservations[#reservations + 1] =
-                            { vehicle = entry.vehicleId, seat = entry.seat, first = entry.time, last = a.time
-                                + a.duration }
+                        reservations[#reservations + 1] = {
+                            vehicle = entry.vehicleId,
+                            seat = entry.seat,
+                            first = entry.time,
+                            last = a.time + a.duration,
+                        }
                         entry = nil
                         freeAt = a.time + a.duration
                     end
