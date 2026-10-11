@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VANTA DIRECTOR FREE</title>
+  <style>.is-hidden{display:none!important}html.nui-booting #director{display:none!important}</style>
+  <script>document.documentElement.classList.add('nui-booting');window.directorBootFailed=false;window.addEventListener('error',function(e){if(e.target===window||['SCRIPT','LINK'].includes(e.target.tagName))window.directorBootFailed=true;},true);</script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="editor-polish.css">
+  <link rel="stylesheet" href="vanta-system.css">
+  <link rel="stylesheet" href="director-polish.css">
+  <link rel="stylesheet" href="settings.css">
+  <link rel="stylesheet" href="visual-match.css">
+  <link rel="stylesheet" href="tutorial.css">
+  <link rel="stylesheet" href="workflow.css">
+  <link rel="stylesheet" href="free-edition.css">
+</head>
+<body>
+  <main id="director" class="director edition-free is-hidden" aria-label="Vanta Director">
+    <div id="lookSurface" class="look-surface" title="Right drag: camera. Left drag: actor. Alt drag: rotation."><span id="lookHint">RIGHT DRAG: LOOK · LEFT DRAG: MOVE ACTOR · ALT + DRAG: ROTATE · SHIFT: HEIGHT</span></div>
+    <div id="framingOverlay" class="framing-overlay" aria-hidden="true"></div><div id="actorPins" class="actor-pins" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand"><img class="brand-mark" src="vanta-mark.png" alt=""><span>VANTA <b>DIRECTOR</b> <small class="free-badge">FREE</small></span></div>
+      <div class="project-name"><span class="eyebrow">Project /</span><input id="projectName" maxlength="64" value="Untitled Project" aria-label="Project name"></div>
+      <span id="saveState" class="save-state">Not saved yet</span>
+      <div class="top-actions"><span id="sessionBadge" class="session-badge is-hidden"></span><button id="undoButton" class="history-button" type="button" title="Undo - Ctrl+Z" aria-label="Undo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 4 10l5 5M4 10h9a6 6 0 0 1 0 12"/></svg></button><button id="redoButton" class="history-button" type="button" title="Redo - Ctrl+Y" aria-label="Redo" disabled><svg viewBox="0 0 24 24" aria-hidden="true" style="transform:scaleX(-1)"><path d="M9 5 4 10l5 5M4 10h9a6 6 0 0 1 0 12"/></svg></button><button class="library-open-button" id="projectLibraryButton" type="button">Projects</button><button class="controls-button" id="controlsButton" type="button">Shortcuts</button><button id="captureButton" class="capture-button" title="Clean take for OBS; F9 stops">Clean take</button><button id="saveButton" class="save-button">Save project</button><button class="icon-button" id="closeButton" title="Close Director" aria-label="Close Director">×</button></div>
+    </header>
+
+    <section class="left-panel panel">
+      <div class="scene-tabs" aria-label="Editor views"><button id="cameraTab" class="active" type="button" title="Camera" aria-label="Camera"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg> <span>CAMERA</span></button><button id="actorsTab" type="button" title="Actors and vehicles" aria-label="Actors and vehicles"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3"/><path d="M6 20v-4a6 6 0 0 1 12 0v4"/></svg> <span>SCENE</span></button><button id="lookTab" type="button" title="Scene look" aria-label="Scene look"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2"/></svg> <span>LOOK</span></button></div>
+      <div class="pane-scroll">
+        <div id="cameraPane">
+          <div class="panel-heading"><div><span class="eyebrow">SHOT LIST</span><h1>Camera path</h1></div><span id="frameCount" class="count">00</span></div>
+          <button class="primary-button full" id="addKeyframeButton"><span>＋</span> Add camera keyframe <kbd>K</kbd></button>
+          <p class="panel-intro">Place the camera in game, then add a shot at the current time.</p>
+          <details id="shotLibrary" class="rig-panel"><summary>Shot library <span class="accent">PRESETS</span></summary>
+            <label>SHOT<select id="shotPreset"><option value="orbit">Orbit · 180° reveal</option><option value="lateral">Lateral travelling</option><option value="approach">Approach subject</option><option value="pullback">Pull back reveal</option><option value="follow">Follow actor</option></select></label>
+            <label>SUBJECT<select id="shotSubject"><option value="0">Point at camera aim</option></select></label>
+            <div class="rig-grid"><label>LENGTH (SEC)<input id="shotSeconds" type="number" min="1" max="60" value="6" step="0.5"></label><label>DISTANCE (M)<input id="shotDistance" type="number" min="1" max="200" value="8" step="0.5"></label><label>HEIGHT ABOVE SUBJECT (M)<input id="shotHeight" type="number" min="-50" max="50" value="2" step="0.1"></label><label id="shotTravelField" class="is-hidden">TRAVEL (M)<input id="shotTravel" type="number" min="1" max="200" value="10" step="0.5"></label></div>
+            <p id="shotHint">Frames the subject's current position. Aim at a building or choose an actor. Check clearance in the preview.</p>
+            <div class="shot-buttons"><button id="shotPreview" type="button">Preview shot</button><button id="shotCancel" type="button">Stop</button></div><button id="shotAdd" type="button" class="primary-button full">Ajouter au curseur</button>
+          </details><details id="cameraSequencePanel" class="rig-panel"><summary>Sequences <span id="sequenceCount">00</span></summary><button id="newCameraSequence" type="button">New manual shot at playhead</button><button id="legacyCameraEdit" type="button">Edit original camera path</button><div id="sequenceList"></div><div id="sequenceEdit" class="is-hidden"><label>SHOT NAME<input id="sequenceName" maxlength="48"></label><div class="rig-grid"><label>START (SEC)<input id="sequenceTime" type="number" min="0" max="60" step="0.1"></label><label>LENGTH (SEC)<input id="sequenceDuration" type="number" min="0.1" max="60" step="0.1"></label></div><label>MOTION CURVE<select id="sequenceEase"><option value="smooth">Smooth path</option><option value="linear">Linear speed</option><option value="easeInOut">Ease in / out</option></select></label><label>TRANSITION INTO SHOT<select id="sequenceBlend"><option value="0">Cut</option><option value="0.5">Blend · 0.5 sec</option><option value="1">Blend · 1 sec</option><option value="2">Blend · 2 sec</option></select></label><button id="sequenceUpdate" type="button">Apply shot settings</button><div class="shot-buttons"><button id="sequenceCopy" type="button">Copy shot</button><button id="sequencePaste" type="button">Paste at playhead</button><button id="sequenceDelete" type="button">Delete shot</button></div><p>Each sequence owns its keyframes and camera mode. Cuts switch at the start of the next shot. Scene actors keep the same project timeline.</p></div></details><div id="keyframeList" class="keyframe-list"></div>
+          <div id="emptyCamera" class="empty-state"><strong>No shots yet</strong><span>Move the view, then press K or add a camera keyframe.</span></div>
+          <details id="locationPanel" class="rig-panel"><summary>Locations &amp; capture</summary><label>LOCATION NAME<input id="locationName" maxlength="48" placeholder="Current view"></label><button id="locationSave" type="button">Save current camera location</button><div id="locationList"></div><div class="rig-grid"><label>PLAY FROM (SEC)<input id="playbackFirst" type="number" min="0" max="60" value="0" step="0.1"></label><label>TO (SEC)<input id="playbackLast" type="number" min="0.1" max="60" value="20" step="0.1"></label></div><label class="rig-check"><input id="playbackLoop" type="checkbox">Loop playback / clean take</label><button id="playbackRangeApply" type="button">Set playback range</button><p>Clean take uses this range. F9 stops a looping capture.</p><label>FRAMING GUIDE<select id="framingGuide"><option value="none">None</option><option value="thirds">Rule of thirds</option><option value="wide">Cinema · 2.39:1</option><option value="portrait">Portrait · 9:16</option></select></label></details><details class="rig-panel" id="collaborationPanel"><summary>Shared filming <span id="sessionRole">SOLO</span></summary><p id="sessionHint">The host stages the scene. Participants preview synchronized local copies. Everyone needs the same streamed models.</p><button id="sessionCreate" type="button">Host current project</button><label>PLAYER SERVER ID<input id="sessionTarget" type="number" min="1" max="65535"></label><button id="sessionInviteButton" type="button">Invite player</button><button id="sessionPublish" type="button">Publish current scene to session</button><div class="shot-buttons"><button id="sessionPlay" type="button">Play together</button><button id="sessionStop" type="button">Stop together</button></div><button id="sessionLeave" type="button">Leave / end session</button></details><div id="cameraNote" class="panel-note"><span class="note-dot"></span><span>Move the playhead and add a keyframe to shape the shot. Drag markers below to change timing.</span></div>
+        </div>
+        <div id="actorsPane" class="is-hidden">
+          <div class="panel-heading"><div><span class="eyebrow">SCENE / 01</span><h2>Scene elements</h2></div></div>
+          <button id="browseModelsButton" class="primary-button full" type="button">＋ &nbsp; Browse models</button>
+          <details class="actor-creator" id="motionRecordPanel"><summary>Record live movement</summary><div class="appearance-body"><label class="scene-label">SOURCE<select id="motionRecordKind"><option value="ped">My character (on foot)</option><option value="vehicle">My vehicle (driver)</option></select></label><label class="scene-label">MAX LENGTH (SEC)<input id="motionRecordSeconds" type="number" value="20" min="1" max="30" step="1"></label><label class="scene-label">CUSTOM MODEL (OPTIONAL)<input id="motionRecordModel" placeholder="Auto-detect model" maxlength="48"></label><label class="ped-auto-duration"><input id="motionRecordAim" type="checkbox">Record aim poses (no bullets or damage)</label><label class="ped-auto-duration"><input id="motionRecordOccupants" type="checkbox" checked>Include driver and passengers (vehicle take)</label><button id="motionRecordStart" class="aim-button" type="button">Start movement recording</button><p class="scene-hint">Play normally. F10 saves the take; F11 cancels. Maximum 30 seconds. Records movement and supported gestures, not a full replay.</p></div></details><details id="actorCreate" class="actor-creator"><summary>Custom model (advanced)</summary><div class="field-pair"><label class="scene-label" for="actorKind">TYPE<select id="actorKind"><option value="ped">Ped</option><option value="vehicle">Vehicle</option><option value="prop">Object</option></select></label><label class="scene-label" for="actorModel">GTA MODEL NAME<input id="actorModel" value="a_m_y_business_01" maxlength="48" spellcheck="false"></label></div><button id="addActorButton" class="primary-button full" type="button">Place selected model</button></details>
+          <details class="rig-panel" id="stagingTools"><summary>Staging tools</summary><label>SELECTION<select id="stagingSelection"><option value="">Selected actor</option></select></label><label>GROUP NAME<input id="stagingGroupName" maxlength="32" placeholder="e.g. Police unit"></label><button id="stagingGroupApply" type="button">Assign group</button><div class="rig-grid"><label>OFFSET X<input id="stagingOffsetX" type="number" value="2" min="-1000" max="1000" step="0.1"></label><label>OFFSET Y<input id="stagingOffsetY" type="number" value="0" min="-1000" max="1000" step="0.1"></label></div><button id="stagingDuplicate" type="button">Duplicate selection</button><label>TRIM TAKE FROM (SEC)<input id="recordingTrimFirst" type="number" value="0" min="0" max="30" step="0.1"></label><label>TO (SEC)<input id="recordingTrimLast" type="number" value="1" min="0.1" max="30" step="0.1"></label><button id="recordingTrim" type="button">Trim selected recorded take</button><label>RECORDED GESTURE<select id="recordedGesture"><option value="salute">Salute</option><option value="point">Point ahead</option><option value="refuse">Refuse</option><option value="pointRight">Point right</option><option value="hangout">Hang out</option><option value="leanWall">Lean on wall</option><option value="leanHands">Lean, hands together</option><option value="sitGround">Sit on ground</option><option value="medic">Medic</option><option value="mechanic">Mechanic</option><option value="pushups">Push-ups</option></select></label><label>GESTURE LENGTH (SEC)<input id="recordedGestureSeconds" type="number" value="2" min="0.1" max="30" step="0.1"></label><button id="recordedGestureAdd" type="button">Add gesture to take at playhead</button><p>Groups duplicate together, including attached accessories. Trimming keeps only the selected time range; Undo restores the take.</p></details><div class="list-heading"><span>IN THIS SCENE</span><span id="actorCount" class="count">00</span></div>
+          <div id="actorList" class="actor-list"></div>
+          <div id="emptyActors" class="empty-state"><strong>Empty scene</strong><span>Choose a ped, vehicle or object above to start staging.</span></div>
+          <div id="actorNote" class="panel-note"><span class="note-dot"></span><span>Select a scene element to adjust its position or add an action at the current time.</span></div>
+        </div>
+        <div id="lookPane" class="is-hidden">
+          <div class="panel-heading"><div><span class="eyebrow">SCENE / 02</span><h2>Scene look</h2></div></div>
+          <p class="look-copy">Set the atmosphere for your preview and clean take. These settings stay with the project.</p>
+          <label class="look-field" for="lookWeather">WEATHER<select id="lookWeather"><option value="SERVER">Server weather</option><option value="EXTRASUNNY">Extra sunny</option><option value="CLEAR">Clear</option><option value="CLOUDS">Clouds</option><option value="OVERCAST">Overcast</option><option value="RAIN">Rain</option><option value="THUNDER">Thunder</option><option value="FOGGY">Foggy</option><option value="SMOG">Smog</option><option value="CLEARING">Clearing</option></select></label>
+          <label class="look-field" for="lookHour">TIME<select id="lookHour"><option value="-1">Server time</option></select></label>
+          <label class="look-field" for="lookMinute">MINUTE<input id="lookMinute" type="number" min="0" max="59" step="1" value="0"></label>
+          <div class="look-divider"></div>
+          <label class="look-switch" for="lookDof"><span><strong>Depth of field</strong><small>Soft background focus</small></span><input id="lookDof" type="checkbox"></label>
+          <label class="look-field">FOCUS SUBJECT<select id="lookFocusSubject"><option value="0">Manual focus distance</option></select></label><div id="lookFocusControls" class="is-hidden">
+            <label class="look-field" for="lookNear">NEAR FOCUS <span id="lookNearValue">2 m</span><input id="lookNear" type="range" min="0.5" max="50" step="0.5" value="2"></label>
+            <label class="look-field" for="lookFar">FAR FOCUS <span id="lookFarValue">30 m</span><input id="lookFar" type="range" min="5" max="200" step="1" value="30"></label>
+            <label class="look-field" for="lookStrength">BLUR STRENGTH <span id="lookStrengthValue">50%</span><input id="lookStrength" type="range" min="0" max="1" step="0.05" value="0.5"></label>
+          </div>
+          <div class="panel-note"><span class="note-dot"></span><span>Weather and time affect your view only while Director is open. Server sync may also control the scene.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="right-panel panel">
+      <div class="panel-heading"><div><span id="inspectorEyebrow" class="eyebrow">INSPECTOR</span><h2 id="inspectorTitle">Camera</h2></div><span id="liveTag" class="live-tag">● LIVE</span></div>
+      <div id="actorInspector" class="is-hidden"></div>
+      <div id="cameraInspector">
+      <div id="selectedCameraCard" class="selection-card is-hidden"><span class="selection-icon">▣</span><span><strong id="selectedCameraName">Shot 01</strong><small id="selectedCameraTime">Keyframe at 00:00.0</small></span></div>
+      <label id="shotNameField" class="shot-name-field is-hidden" for="shotNameInput">SHOT NAME<input id="shotNameInput" type="text" maxlength="48" placeholder="e.g. Opening view" spellcheck="false"></label>
+      <div class="readout-section"><span class="eyebrow">POSITION</span><span class="eyebrow accent">GAME WORLD</span></div>
+      <div class="readout-grid"><div><label>X</label><output id="posX">0.00</output></div><div><label>Y</label><output id="posY">0.00</output></div><div><label>Z</label><output id="posZ">0.00</output></div></div>
+      <div class="readout-section"><span class="eyebrow">ROTATION</span></div>
+      <div class="readout-grid"><div><label>PITCH</label><output id="rotX">0.00</output></div><div><label>ROLL</label><output id="rotY">0.00</output></div><div><label>HEADING</label><output id="rotZ">0.00</output></div></div>
+      <div class="control-block"><div class="control-label"><label for="fov">FIELD OF VIEW</label><output id="fovValue">50°</output></div><input id="fov" type="range" min="20" max="100" step="1" value="50"></div>
+      <div id="selectedCameraActions" class="inspector-actions is-hidden"><button id="updateFrameButton" type="button">Update from view</button><button id="deleteFrameButton" type="button">Delete shot</button></div>
+      <details id="advancedCamera"><summary>Camera controls</summary><div class="control-block"><div class="control-label"><label for="speed">CAMERA SPEED</label><output id="speedValue">8.0</output></div><input id="speed" type="range" min="0.5" max="30" step="0.5" value="8"></div></details>
+      <details id="automaticCamera" class="rig-panel"><summary>Automatic camera <span id="rigBadge">MANUAL</span></summary>
+        <label>MODE<select id="rigMode"><option value="manual">Manual camera</option><option value="target">Keep subject framed</option><option value="follow">Follow subject</option><option value="orbit">Orbit subject</option></select></label>
+        <div id="rigSubjectFields" class="is-hidden">
+          <label>SUBJECT<select id="rigTarget"></select></label>
+          <label>AIM HEIGHT (M)<input id="rigHeight" type="number" min="-20" max="20" step="0.1" value="1"></label>
+          <label id="rigFollowFields" class="rig-check is-hidden"><input id="rigRelative" type="checkbox" checked>Turn with subject</label>
+          <div id="rigOrbitFields" class="rig-grid is-hidden"><label>RADIUS (M)<input id="rigRadius" type="number" min="0.5" max="1000" step="0.5" value="8"></label><label>HEIGHT (M)<input id="rigElevation" type="number" min="-100" max="100" step="0.5" value="2"></label><label>SPEED (°/SEC)<input id="rigSpeed" type="number" min="-90" max="90" step="1" value="15"></label></div>
+        </div>
+        <label class="rig-check"><input id="rigAvoidObstacles" type="checkbox">Avoid walls and objects</label><p id="rigHint">Move the camera freely or create a keyframe path.</p>
+        <button id="rigApply" type="button">Apply camera mode</button>
+      </details>
+      <div id="controlsPanel" class="key-help"><kbd id="forwardKeyLabel">Z</kbd><kbd id="leftKeyLabel">Q</kbd><kbd>S</kbd><kbd>D</kbd><span>move</span><kbd id="lowerKeyLabel">A</kbd><kbd>E</kbd><span>height</span><br><span>Right drag: look · Left drag: actors</span></div>
+      </div>
+    </section>
+
+    <section class="timeline panel">
+      <div class="timeline-top"><div class="transport"><button id="previewButton" class="play-button" aria-label="Preview path">▶</button><button id="stopButton" class="plain-button" aria-label="Arrêter l’aperçu">■</button><output id="timeReadout">00:00.0</output><span class="muted">/</span><span id="durationReadout" class="muted">00:20.0</span><span class="eyebrow preview-label">PREVIEW</span></div>
+        <button id="timelineCopy" class="controls-button" type="button" title="Ctrl-click items, then copy">Copy</button><button id="timelinePaste" class="controls-button" type="button">Paste</button><span id="timelineSelectionCount" class="eyebrow">0 SELECTED</span><label class="timeline-zoom" title="Zoom timeline">ZOOM<input id="timelineZoom" type="range" min="1" max="8" step="1" value="1"></label><label class="duration-control">DURATION <input id="duration" type="number" min="1" max="60" step="1" value="20"><span>SEC</span></label>
+      </div>
+      <div id="timelineViewport" class="timeline-viewport"><div id="timelineContent" class="timeline-content"><div class="ruler" id="ruler"></div>
+      <div class="timeline-tracks" id="timelineTracks"><div class="track-area"><div class="track-name">CAMERA</div><div class="track-lane" id="trackLane"><div class="path-bar" id="pathBar"></div><div id="markers" class="markers"></div></div></div><div class="track-area keyframe-track"><div class="track-name">KEYFRAMES</div><div class="track-lane" id="keyframeLane"><div id="keyMarkers" class="markers"></div></div></div><div id="actorTracks"></div><div id="playheadLine" class="playhead-line"><i></i></div></div>
+      </div></div><input id="timelineScrubber" class="timeline-scrubber" type="range" min="0" max="20" step="0.1" value="0" aria-label="Timeline playhead">
+      <div class="timeline-footer"><span id="statusMessage">Director ready</span><span>Drag blocks to retime actions · F9 stops a clean take</span></div>
+    </section>
+    <div id="routeLayer" class="route-layer is-hidden"><svg id="routeLines" aria-hidden="true" viewBox="0 0 1 1" preserveAspectRatio="none"></svg><div id="routeNodes"></div></div>
+    <section id="routeEditor" class="route-editor is-hidden" aria-label="Route editor"><div class="route-editor-title"><strong id="routeTitle">Edit route</strong><span id="routeMeasure">Click the ground to add points</span></div><p>Click ground: add · Drag point: move · Shift + drag: height · Right-click point: remove</p><label class="rig-check route-inspection"><input id="routeInspectObstacles" type="checkbox">Inspect obstacles before applying</label><div class="route-editor-controls"><label>Timing<select id="routeTiming"><option value="duration">Duration</option><option value="speed">Average speed</option></select></label><label id="routeSecondsField">Seconds<input id="routeSeconds" type="number" min="0.1" max="60" step="0.1" value="3"></label><label id="routeSpeedField" class="is-hidden">m/s<input id="routeSpeed" type="number" min="0.1" max="100" step="0.1" value="3"></label><label id="routeGaitField">Movement<select id="routeGait"><option value="auto">Auto</option><option value="walk">Walk</option><option value="run">Run</option><option value="sprint">Sprint</option></select></label><button id="routeCancel" type="button">Cancel</button><button id="routeApply" class="save-button" type="button">Apply route</button></div></section>
+    <div id="toast" class="toast" role="status"></div>
+    <div id="modelOverlay" class="model-overlay is-hidden" role="dialog" aria-modal="true" aria-label="Model browser">
+      <div id="modelViewport" class="model-viewport" aria-label="Drag to rotate the 3D preview, scroll to zoom"><span>DRAG TO ROTATE · SCROLL TO ZOOM · DOUBLE-CLICK TO FIT</span></div>
+      <section class="model-browser panel"><header><span class="eyebrow">VANTA DIRECTOR / ASSETS</span><h2>Model library</h2><p>Choose a model. Preview it in 3D before placing it.</p></header>
+        <div class="model-tabs"><button id="modelsPed" type="button">Peds</button><button id="modelsVehicle" type="button">Vehicles</button><button id="modelsProp" type="button">Objects</button></div>
+        <input id="modelSearch" type="search" placeholder="Search name or model…" aria-label="Search models"><select id="modelCategory" aria-label="Model category"><option value="">All categories</option></select>
+        <div id="modelResults" class="model-results"></div><footer><button id="modelPrevious" type="button">←</button><span id="modelCount">Loading models…</span><button id="modelNext" type="button">→</button></footer>
+      </section>
+      <section class="model-detail panel"><button id="modelClose" class="icon-button" type="button" aria-label="Close model browser">×</button><span class="eyebrow">LIVE 3D PREVIEW</span><h2 id="modelName">Choose a model</h2><code data-i18n-user id="modelCode">—</code><p id="modelPreviewStatus" role="status">The preview is temporary and does not modify your project.</p><div class="model-view-buttons"><button id="modelFront" type="button">Front</button><button id="modelSide" type="button">Side</button><button id="modelFit" type="button">Reset view</button></div><label>ROTATION<input id="modelAngle" type="range" min="0" max="360" value="135"></label><label>ZOOM<input id="modelZoom" type="range" min="0.6" max="2.5" step="0.05" value="1"></label><button id="modelPlace" class="save-button" type="button" disabled>Place at camera aim</button><p>Your original camera position is restored before placement.</p></section>
+    </div>
+    <div id="sessionInviteOverlay" class="exit-overlay is-hidden" role="dialog" aria-label="Filming invitation"><section class="exit-dialog"><span class="eyebrow">VANTA DIRECTOR / SESSION</span><h2>Filming invitation</h2><p id="sessionInviteText"></p><p>Your current project is kept in memory and restored when you leave. Participants cannot edit the host's scene.</p><button id="sessionAccept" type="button">Join session</button><button id="sessionDecline" type="button">Decline</button></section></div>
+    <div id="exitOverlay" class="exit-overlay is-hidden" role="dialog" aria-modal="true" aria-label="Unsaved changes">
+      <section class="exit-dialog"><span class="eyebrow">VANTA DIRECTOR / PROJECT</span><h2>Unsaved changes</h2><p>Your latest changes have not been saved. Close Director anyway?</p><div><button id="exitCancelButton" type="button">Keep editing</button><button id="exitConfirmButton" type="button">Close without saving</button></div></section>
+    </div>
+    <div id="libraryOverlay" class="library-overlay is-hidden" role="dialog" aria-modal="true" aria-label="Project library">
+      <section class="library-panel">
+        <header class="library-heading"><div><span class="eyebrow">VANTA DIRECTOR / WORKSPACE</span><h2>Your projects</h2><p>Pick up where you left off. Create something new.</p></div><button id="libraryCloseButton" class="icon-button" type="button" aria-label="Close projects">×</button></header>
+        <nav class="library-tabs" aria-label="Project views"><button id="libraryTab" type="button" aria-pressed="true">Project library <span id="libraryCount">0 / 20</span></button><button id="transferTab" type="button" aria-pressed="false">Import &amp; export</button></nav>
+        <div id="libraryBrowse" class="library-content"><div class="library-toolbar"><label class="library-search"><span aria-hidden="true">⌕</span><input id="librarySearch" type="search" aria-label="Search projects" placeholder="Search your projects…" maxlength="64"></label><button id="newProjectButton" class="save-button" type="button">+ New project</button></div><div class="library-subheading"><span>PROJECT</span><span id="libraryResults"></span></div><div id="libraryList" class="library-list"></div></div>
+        <div id="projectTransfer" class="library-content is-hidden"><div class="library-transfer-grid"><section class="library-transfer-card"><span class="eyebrow">CURRENT PROJECT</span><h3 id="libraryExportName">Current project</h3><p>Export a copy to share your scene or keep a reusable template.</p><button id="projectExport" type="button">Export project JSON</button><small>Includes camera paths, actors and scene settings.</small></section><section class="library-transfer-card"><span class="eyebrow">IMPORT A COPY</span><h3>Bring a scene into Director</h3><p>Paste an exported project below. Your original stays untouched.</p><textarea id="projectJson" rows="5" aria-label="Project JSON" placeholder="Paste your project JSON here…"></textarea><button id="projectImport" class="save-button" type="button">+ Import as a new project</button></section></div><p class="library-transfer-hint">Project data and limits are checked before importing.</p></div>
+        <footer class="library-footer"><span><i aria-hidden="true"></i>Projects saved on this server</span><span><kbd>Esc</kbd> Back to editor</span></footer>
+        <div id="libraryConfirm" class="library-confirm is-hidden"><strong id="libraryConfirmTitle"></strong><p id="libraryConfirmText"></p><div><button id="libraryCancelButton" type="button">Cancel</button><button id="libraryContinueButton" type="button">Continue</button></div></div>
+      </section>
+    </div>
+    <div id="animationOverlay" class="animation-overlay is-hidden" role="dialog" aria-modal="true" aria-label="Bibliothèque d’animations">
+      <section class="animation-modal">
+        <header class="animation-heading"><div><span class="eyebrow">VANTA DIRECTOR / SCENE</span><h2>Bibliothèque d’animations</h2><p id="animationContext">Choisis un personnage pour ajouter une animation.</p></div><button id="animationCloseButton" class="icon-button" type="button" aria-label="Fermer la bibliothèque">×</button></header>
+        <div class="animation-body">
+          <div class="animation-browser"><input id="animationSearch" type="search" placeholder="Rechercher en français ou en anglais…" aria-label="Rechercher une animation"><small id="animationCount" aria-live="polite"></small><div id="animationCategories" class="animation-categories"></div><div id="animationResults" class="animation-results"></div></div>
+          <div class="animation-detail"><span class="eyebrow">ANIMATION SÉLECTIONNÉE</span><h3 id="animationName">—</h3><button id="animationFavoriteButton" class="animation-favorite" type="button" aria-pressed="false">☆ Ajouter aux favoris</button><p id="animationDescription"></p><p id="animationRequirements"></p><div class="animation-meta"><span>LECTURE</span><code id="animationLoop">—</code><span>DICTIONNAIRE</span><code data-i18n-user id="animationDict"></code><span>CLIP</span><code data-i18n-user id="animationClip"></code></div><label class="scene-label"><span id="animationDurationLabel">DURÉE (SEC) · 0 = JUSQU’À REMPLACEMENT</span><input id="animationDuration" type="number" min="0" max="60" step="0.1" value="0"></label><p id="animationPreviewStatus" class="animation-preview-status">Choisis une animation, puis regarde son aperçu sur le personnage.</p><div class="animation-actions"><button id="animationPlayButton" type="button">Voir dans la scène</button><button id="animationStopButton" type="button">Arrêter l’aperçu</button></div><button id="animationAddButton" class="save-button" type="button">Ajouter au curseur</button></div>
+        </div>
+      </section>
+    </div>
+    <div id="animationPreviewBar" class="animation-preview-bar is-hidden"><div><span class="eyebrow">APERÇU ANIMATION</span><strong id="animationBarName">—</strong><small id="animationBarStatus">Loading…</small></div><div class="animation-preview-buttons"><button id="animationBarBackButton" type="button">Bibliothèque</button><button id="animationBarStopButton" type="button">Stop</button><button id="animationBarAddButton" class="save-button" type="button">Ajouter au curseur</button></div></div>
+  </main>
+  <div id="captureCountdown" class="capture-countdown is-hidden" aria-live="polite"></div>
+  <script src="app.js"></script>
+  <script src="vanta-controls.js"></script>
+  
+<div id="motionRecordOverlay" class="motion-record-overlay is-hidden"><span class="record-dot"></span><strong>RECORDING MOVEMENT</strong><span id="motionRecordClock">00:00</span><small>F10 save take &nbsp; / &nbsp; F11 cancel</small></div><script src="settings.js"></script><script src="runtime-config.js"></script>
+<script src="director-polish.js"></script>
+<script src="visual-match.js"></script>
+<script src="library-ui.js"></script>
+<script src="tutorial.js"></script>
+<script src="workflow.js"></script>
+<script src="free-edition.js"></script>
+<script src="locales.js"></script>
+<script src="i18n.js"></script>
+<script>
+(() => {
+  const start=async()=>{
+    try {
+      if(window.directorBootFailed || !window.VantaFree || !window.VantaWorkflow || !window.VantaI18n?.ready) return;
+      for(const link of document.querySelectorAll('link[rel="stylesheet"]')) {
+        if(!link.sheet)return;
+        try{if(!link.sheet.cssRules.length)return;}catch(e){if(e.name!=='SecurityError')throw e;}
+      }
+      const resource=typeof GetParentResourceName==='function'?GetParentResourceName():'vanta_director_free';
+      for(let attempt=0;attempt<3;attempt++){
+        const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),1500);
+        try{const result=await(await fetch('https://'+resource+'/nuiReady',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',signal:controller.signal})).json();if(result.ok){document.documentElement.classList.remove('nui-booting');return;}}catch(e){if(attempt===2)throw e;}finally{clearTimeout(timer)}
+        await new Promise(resolve=>setTimeout(resolve,500));
+      }
+    }catch(e){console.error('Director interface startup failed.');}
+  };
+  if(document.readyState==='complete')start();else window.addEventListener('load',start,{once:true});
+})();
+</script>
+</body>
+</html>

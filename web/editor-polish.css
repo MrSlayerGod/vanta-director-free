@@ -1,0 +1,84 @@
+﻿/* Vanta Director: approved compact editor layout. */
+.director{--editor-left:300px;--editor-right:330px;font-family:'Segoe UI',Arial,sans-serif}
+.left-panel{width:var(--editor-left);display:block;background:#09182a}
+.right-panel{width:var(--editor-right);background:#09182a}
+.look-surface{left:var(--editor-left);right:var(--editor-right)}
+.scene-tabs{width:100%;height:70px;display:flex;flex-direction:row;align-items:center;gap:6px;padding:12px 16px;margin:0;border-right:0;border-bottom:1px solid #23394d;background:#081525}
+.scene-tabs button{display:flex;align-items:center;justify-content:center;gap:7px;flex:1;width:auto;height:38px;padding:8px 4px;font-size:14px;border-radius:4px;color:#829caf;letter-spacing:0}
+.scene-tabs button span{display:inline;font:600 12px 'Segoe UI',Arial,sans-serif;letter-spacing:0;text-transform:capitalize}
+.scene-tabs button.active{background:#14384f;color:#65d5ff;box-shadow:none;border:1px solid #285a73}
+.pane-scroll{width:100%;height:calc(100% - 70px);padding:22px 18px;overflow-y:auto}
+.brand{width:var(--editor-left);flex-shrink:0;background:#081525}
+.panel-heading h1,.panel-heading h2{font-size:18px;letter-spacing:-.35px}
+.panel-heading .eyebrow{font-size:10px;letter-spacing:.1em;color:#80a2ba}
+.left-panel .primary-button{border:1px solid #357da4;background:#155476;border-radius:4px;min-height:38px;font-size:12px;box-shadow:none}
+.left-panel .primary-button:hover{background:#1b678c}
+.actor-creator{margin:10px 0 23px}
+.actor-creator summary{background:transparent;border:0;color:#8ca5b9;height:auto;padding:7px 0;font-size:11px;font-weight:400}
+.actor-creator summary:hover{color:#c8e9f9}
+.actor-list{gap:5px}
+.actor-card{position:relative;min-height:65px;padding:12px 10px 12px 45px;border-radius:4px;background:transparent}
+.actor-card::before{content:'◆';position:absolute;left:14px;top:22px;color:#92b3c9;font-size:17px}
+.actor-card.scene-element-ped::before{content:'♟'}
+.actor-card.scene-element-vehicle::before{content:'▱'}
+.actor-card.scene-element-prop::before{content:'◇'}
+.actor-card.selected{background:#123047;border-color:#284b62;box-shadow:inset 2px 0 #4dcfff}
+.actor-card:hover{background:#102b40}
+.actor-card header strong{font-size:13px;font-weight:600;max-width:175px}
+.actor-card small{font:11px 'Segoe UI',Arial,sans-serif;color:#829eb3;margin-top:4px}
+.actor-card .delete-frame{height:24px;width:24px;background:transparent;border:0;opacity:.65}
+.actor-card .delete-frame:hover{opacity:1;background:#24384a}
+.right-panel>.panel-heading{padding:22px 21px 18px;background:#0c1e31;border-bottom:1px solid #284154}
+#actorInspector{padding:0 20px 20px}
+#actorInspector.empty-inspector{padding-top:24px;color:#8ea8bc}
+.inspector-group{padding:0 0 16px;border-bottom:1px solid #233b4f;margin:0}
+.inspector-group>summary{padding:17px 0 12px;font-size:13px;font-weight:600;color:#d9e8f2;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between}
+.inspector-group>summary::after{content:'›';color:#86a7bd;font-size:18px;transform:rotate(0deg)}
+.inspector-group[open]>summary::after{transform:rotate(90deg)}
+.inspector-group>summary::-webkit-details-marker{display:none}
+.actor-transform{display:flex;flex-direction:column;gap:7px;margin:0}
+.actor-transform label{display:grid;grid-template-columns:66px 1fr;align-items:center;background:transparent;border:0;padding:0;font:11px 'Segoe UI',Arial,sans-serif;color:#90a9bb}
+.actor-transform input{width:100%;height:32px;border:1px solid #2a4357;border-radius:4px;background:#0b2031;color:#dae9f3;padding:6px 10px;font:12px 'Segoe UI',Arial,sans-serif}
+.inspector-placement{margin:12px 0 0}
+.inspector-placement .aim-button{width:100%;height:32px;background:transparent;border:1px solid #2b4c62;border-radius:4px;color:#aec9dc;font-size:11px}
+.movement-controls{display:flex;flex-direction:column;gap:10px;margin:0}
+.movement-controls .scene-label{display:grid;grid-template-columns:85px 1fr;align-items:center;margin:0;font:10px 'Segoe UI',Arial,sans-serif;letter-spacing:0;color:#8fa9bc}
+.movement-controls input,.movement-controls select{min-width:0;width:100%;height:32px;background:#0b2031;border:1px solid #2a4357;border-radius:4px;padding:6px 8px;color:#deedf5;font:12px 'Segoe UI',Arial,sans-serif}
+.movement-controls .ped-auto-duration{margin:0;display:flex;align-items:center;gap:8px;font:11px 'Segoe UI',Arial,sans-serif;color:#9fb7c8}
+.movement-controls .ped-auto-duration input{width:13px;height:13px}
+.movement-controls>button{min-height:34px;font-size:12px;border-radius:4px;background:#155476;border-color:#34799e}
+.action-controls{margin:0;gap:8px}
+.action-controls button{min-height:32px;border-radius:4px;font-size:11px}
+.action-controls .animation-panel{grid-column:1/-1;padding:0;background:transparent;border:0}
+.action-controls .animation-panel summary{padding:8px 0;color:#abc5d6;font-size:12px}
+.action-controls .browse-animation{grid-column:1/-1}
+.inspector-group .action-row{font-size:11px;padding:9px 0;display:flex;align-items:center;justify-content:space-between}
+.timeline{background:#081626;box-shadow:none;border-top:1px solid #34536b}
+.timeline-top{background:#0b1c2e}
+.track-lane{background:#0c2134;border-color:#263f53}
+.timeline-action{font:600 10px 'Segoe UI',Arial,sans-serif;border-radius:3px}
+.timeline-action.move{background:#20545d;border-color:#5b9d9e}
+.timeline-action.lookAt{background:#4b3f65;border-color:#9d83bb}
+.timeline-action.selected,.timeline-marker.selected{box-shadow:0 0 0 1px #7be0ff}
+button,input,select{transition:background-color .12s,border-color .12s,color .12s}
+button:focus-visible,summary:focus-visible{outline:2px solid #67d6ff;outline-offset:2px}
+@media(max-width:1450px){.director{--editor-left:265px;--editor-right:290px}.pane-scroll{padding:18px 14px}.scene-tabs{padding:12px 10px}.project-name{min-width:130px}.top-actions{gap:6px}.actor-card header strong{max-width:140px}}
+@media(max-width:1100px){.director{--editor-left:235px;--editor-right:260px}.scene-tabs button{gap:4px}.scene-tabs button span{font-size:11px}.top-actions .controls-button{display:none}}
+@media(prefers-reduced-motion:reduce){button,input,select{transition:none}}
+#actorInspector .actor-transform input{height:30px;margin:0;background:#0c2031;border:1px solid #2c4559;border-radius:4px;padding:5px 10px;font:12px 'Segoe UI',Arial,sans-serif}
+#actorInspector .actor-transform{gap:5px}
+#actorInspector .movement-controls .scene-label{padding:0;background:transparent;border:0;grid-template-columns:85px minmax(0,1fr)}
+#actorInspector .movement-controls .ped-gait-field select{margin:0;border-radius:4px}
+#actorInspector .movement-controls .ped-auto-duration{padding:0;background:transparent;border:0;justify-content:flex-start}
+#actorInspector .movement-controls .ped-auto-duration input{width:13px;flex:none}
+.inspector-group>summary{padding-top:14px;padding-bottom:10px}
+.actor-card{min-height:62px}
+.actor-card>small{margin-bottom:0}
+.scene-tabs svg{width:16px;height:16px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.actor-card::before{content:''!important;width:19px;height:19px;top:22px;background:#92b3c9;mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='7' r='3'/%3E%3Cpath d='M6 21v-5a6 6 0 0 1 12 0v5z'/%3E%3C/svg%3E")}
+.actor-card.scene-element-vehicle::before{mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='1.8' d='m5 9 2-5h10l2 5M4 10h16v9H4zM7 19v2m10-2v2M7 14h2m6 0h2'/%3E%3C/svg%3E")}
+.actor-card.scene-element-prop::before{mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='1.8' d='m12 3 8 4v10l-8 4-8-4V7zm0 8 8-4m-8 4L4 7m8 4v10'/%3E%3C/svg%3E")}
+.actor-card.selected::before{background:#69d4ef}
+#actorInspector .movement-controls{align-items:stretch}
+#actorInspector .movement-controls .scene-label input{margin-top:0}
+.actor-card>.actor-controls{display:none}
