@@ -1,10 +1,62 @@
-.edition-free .free-badge{font-size:10px;letter-spacing:1px;color:#69d7e9;border:1px solid #335b72;border-radius:4px;padding:3px 5px;margin-left:5px}
-.edition-free #shotLibrary,.edition-free #cameraSequencePanel,.edition-free #collaborationPanel,.edition-free #motionRecordPanel,.edition-free #stagingTools,.edition-free #routeEditor,.edition-free .accessory-panel,.edition-free .route-open,.edition-free .vehicle-interaction-panel{display:none!important}
-.free-community{padding:12px 16px;margin-top:8px;border-top:1px solid #294256;color:#b1c6d5;font-size:11px;line-height:1.5}
-.free-community strong{display:block;color:#e5f0f6;font-size:12px}
-.free-community p{margin:5px 0 8px}
-.free-community button{width:100%;padding:9px;border:1px solid #34536c;border-radius:5px;color:#78def0;background:#102639;cursor:pointer}
-.free-community button:hover{background:#17364b}
-.free-community button:focus-visible{outline:2px solid #6bdded;outline-offset:2px}
-.edition-free .brand{white-space:nowrap}
-.edition-free .sequence-options,.edition-free #sequenceInspector,.edition-free #legacyCameraEdit,.edition-free #viewSubject,.edition-free #selectedSequenceNumber{display:none!important}
+.edition-free .free-badge {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #69d7e9;
+  border: 1px solid #335b72;
+  border-radius: 4px;
+  padding: 3px 5px;
+  margin-left: 5px;
+}
+.edition-free #shotLibrary,
+.edition-free #cameraSequencePanel,
+.edition-free #collaborationPanel,
+.edition-free #motionRecordPanel,
+.edition-free #stagingTools,
+.edition-free #routeEditor,
+.edition-free .accessory-panel,
+.edition-free .route-open,
+.edition-free .vehicle-interaction-panel {
+  display: none !important;
+}
+.free-community {
+  padding: 12px 16px;
+  margin-top: 8px;
+  border-top: 1px solid #294256;
+  color: #b1c6d5;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.free-community strong {
+  display: block;
+  color: #e5f0f6;
+  font-size: 12px;
+}
+.free-community p {
+  margin: 5px 0 8px;
+}
+.free-community button {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #34536c;
+  border-radius: 5px;
+  color: #78def0;
+  background: #102639;
+  cursor: pointer;
+}
+.free-community button:hover {
+  background: #17364b;
+}
+.free-community button:focus-visible {
+  outline: 2px solid #6bdded;
+  outline-offset: 2px;
+}
+.edition-free .brand {
+  white-space: nowrap;
+}
+.edition-free .sequence-options,
+.edition-free #sequenceInspector,
+.edition-free #legacyCameraEdit,
+.edition-free #viewSubject,
+.edition-free #selectedSequenceNumber {
+  display: none !important;
+}
