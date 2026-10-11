@@ -4,6 +4,12 @@ A free, standalone cinematic scene editor for **FiveM GTA V Legacy**. Build shor
 
 [**Download the latest installer**](https://github.com/SraxDev/vanta-director-free/releases/download/v0.1.0-beta.2/VANTA_Director_Free_0.1.0-beta.2_EN_Install.zip) · [All releases](https://github.com/SraxDev/vanta-director-free/releases) · [Vanta Discord](https://discord.gg/BUdg2bx6H)
 
+## Interface preview
+
+[![Vanta Director interface preview from the trailer](https://img.youtube.com/vi/vkyVUIya6Mg/maxresdefault.jpg)](https://www.youtube.com/watch?v=vkyVUIya6Mg&t=15s)
+
+Click the image to watch the trailer from the interface walkthrough at 00:15.
+
 ## Features
 
 - Keyframed camera positions and a timeline for arranging the scene.
