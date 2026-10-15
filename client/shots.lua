@@ -79,7 +79,7 @@ DirectorClient.modules.shots = function(ctx)
         return true
     end
 
-    function ctx.shots.appendShot(frames, rig, seconds, name, start)
+    function ctx.shots.appendShot(frames, rig, seconds, name, start, options)
         local id = 1
         for _, shot in ipairs(editorState.cameraShots) do
             id = math.max(id, shot.id + 1)
@@ -92,7 +92,9 @@ DirectorClient.modules.shots = function(ctx)
             duration = seconds,
             frames = frames,
             rig = rig or { mode = "manual" },
-            ease = "smooth",
+            ease = options and options.ease or "smooth",
+            blend = options and options.blend or 0,
+            handheld = options and options.handheld or 0,
         }
         local ok, message = ctx.shots.commitShots(candidate)
         if not ok then
@@ -184,6 +186,7 @@ DirectorClient.modules.shots = function(ctx)
                     candidate[i].name = tostring(data.name or shot.name):sub(1, 48)
                     candidate[i].ease = data.ease or shot.ease
                     candidate[i].blend = tonumber(data.blend) or shot.blend or 0
+                    candidate[i].handheld = data.handheld ~= nil and data.handheld or shot.handheld or 0
                 end
             end
             local ok, message = ctx.shots.commitShots(candidate)
@@ -221,7 +224,8 @@ DirectorClient.modules.shots = function(ctx)
                 return
             end
             local copy = DirectorShots.retime(shot, start, shot.duration)
-            local ok, message = ctx.shots.appendShot(copy.frames, copy.rig, copy.duration, copy.name .. " copy", start)
+            local ok, message =
+                ctx.shots.appendShot(copy.frames, copy.rig, copy.duration, copy.name .. " copy", start, copy)
             callback({ ok = ok, message = message })
         end)
     end

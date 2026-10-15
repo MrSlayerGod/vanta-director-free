@@ -37,6 +37,8 @@ local function choice(t, k, f, values, prefix)
     end
 end
 local numeric = {
+    MaximumPresets = { 100, 1, 10000, true },
+    PresetFileLimit = { 4194304, 16384, 67108864, true },
     ServerRequestBurst = { 40, 10, 100, true },
     ServerRequestWindowMs = { 10000, 1000, 60000, true },
     ProjectFileLimit = { 1048576, 16384, 67108864, true },
@@ -68,6 +70,17 @@ local numeric = {
     InvitationSeconds = { 30, 10, 120, true },
     PlaybackLeadMs = { 1500, 500, 5000, true },
 }
+-- New optional fields remain compatible with existing operator configurations.
+if Config.MaximumPresets == nil then
+    Config.MaximumPresets = 100
+end
+if Config.PresetFileLimit == nil then
+    Config.PresetFileLimit = 4194304
+end
+if Config.RecoveryEnabled == nil then
+    Config.RecoveryEnabled = true
+end
+boolean(Config, "RecoveryEnabled", true)
 for k, v in pairs(numeric) do
     number(Config, k, v[1], v[2], v[3], v[4])
 end

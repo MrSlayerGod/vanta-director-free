@@ -188,7 +188,7 @@ DirectorClient.modules.camera = function(ctx)
             and (shot.blend or 0) > 0
             and time < shot.time + shot.blend
             and (editorState.previewing or forceBlend)
-        if rig.mode == "manual" and not blending then
+        if rig.mode == "manual" and not blending and (not shot or (shot.handheld or 0) == 0) then
             return
         end
         local state = ctx.camera.sampleRig(rig, base, shot and time - shot.time or time)
@@ -221,6 +221,9 @@ DirectorClient.modules.camera = function(ctx)
                     time
                 )
             end
+        end
+        if shot and (editorState.previewing or forceBlend) then
+            state = DirectorMotion.handheld(state, time - shot.time, shot.duration, shot.handheld or 0)
         end
         ctx.camera.applyState(state)
     end

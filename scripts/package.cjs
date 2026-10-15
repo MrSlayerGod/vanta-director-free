@@ -14,6 +14,7 @@ const files = new Set([
   "CHANGELOG.md",
   "SOURCES.md",
   "CONTRIBUTING.md",
+  "VALIDATION.md",
   "LICENSE",
   "animations.json",
 ]);

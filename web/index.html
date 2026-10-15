@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="tutorial.css" />
     <link rel="stylesheet" href="workflow.css" />
     <link rel="stylesheet" href="free-edition.css" />
+    <link rel="stylesheet" href="workflow-update.css" />
   </head>
   <body>
     <main id="director" class="director edition-free is-hidden" aria-label="Vanta Director">
@@ -236,7 +237,14 @@
                     <option value="1">Blend · 1 sec</option>
                     <option value="2">Blend · 2 sec</option>
                   </select></label
-                ><button id="sequenceUpdate" type="button">Apply shot settings</button>
+                ><label
+                  >HANDHELD CAMERA<select id="sequenceHandheld">
+                    <option value="0">Steady</option>
+                    <option value="0.35">Subtle breathing</option>
+                    <option value="0.7">Gentle handheld</option>
+                  </select></label
+                >
+                <button id="sequenceUpdate" type="button">Apply shot settings</button>
                 <div class="shot-buttons">
                   <button id="sequenceCopy" type="button">Copy shot</button
                   ><button id="sequencePaste" type="button">Paste at playhead</button
@@ -686,8 +694,31 @@
             Copy</button
           ><button id="timelinePaste" class="controls-button" type="button">Paste</button
           ><span id="timelineSelectionCount" class="eyebrow">0 SELECTED</span
-          ><label class="timeline-zoom" title="Zoom timeline"
-            >ZOOM<input id="timelineZoom" type="range" min="1" max="8" step="1" value="1" /></label
+          ><button
+            id="timelineSnap"
+            class="controls-button"
+            type="button"
+            aria-pressed="true"
+            title="Snap to nearby clip edges and camera keys. Hold Alt to move freely."
+          >
+            Snap
+          </button>
+          <button
+            id="timelineFit"
+            class="controls-button"
+            type="button"
+            title="Show the full timeline"
+          >
+            Fit
+          </button>
+          <label class="timeline-zoom" title="Zoom timeline · Ctrl + wheel around the cursor"
+            >ZOOM<input
+              id="timelineZoom"
+              type="range"
+              min="1"
+              max="8"
+              step="0.5"
+              value="1" /></label
           ><label class="duration-control"
             >DURATION <input id="duration" type="number" min="1" step="1" value="20" /><span
               >SEC</span
@@ -1075,6 +1106,8 @@
     <script src="editor/timeline.js"></script>
     <script src="editor/collaboration.js"></script>
     <script src="editor/sequences.js"></script>
+    <script src="editor/actionChain.js"></script>
+    <script src="editor/presets.js"></script>
     <script src="editor/staging.js"></script>
     <script src="editor/production.js"></script>
     <script src="editor/projectView.js"></script>

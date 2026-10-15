@@ -113,6 +113,9 @@ function DirectorClient.newState()
         addAction = true,
         deleteAction = true,
         moveAction = true,
+        editActionTiming = true,
+        chainActions = true,
+        applyPreset = true,
         commitRoute = true,
     }
     editorState.routeCommands = {

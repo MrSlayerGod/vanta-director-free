@@ -45,6 +45,10 @@ DirectorClient.modules.bridge = function(ctx)
                     or name == "undo"
                     or name == "redo"
                     or name == "manageProject"
+                    or name == "manageRecovery"
+                    or name == "createTemplate"
+                    or name == "saveDraft"
+                    or name == "savePreset"
                 )
             then
                 callback({ ok = false, message = "An edit is still being applied." })
@@ -56,6 +60,9 @@ DirectorClient.modules.bridge = function(ctx)
                     name == "preview"
                     or name == "capture"
                     or name == "saveProject"
+                    or name == "saveDraft"
+                    or name == "manageRecovery"
+                    or name == "createTemplate"
                     or name == "previewCameraPreset"
                     or name == "applyCameraPreset"
                 )
@@ -65,6 +72,10 @@ DirectorClient.modules.bridge = function(ctx)
             end
             if editorState.motionRecording then
                 callback({ ok = false, message = "Stop or cancel movement recording first." })
+                return
+            end
+            if editorState.shotPreview and name == "saveDraft" then
+                callback({ ok = false, message = "Stop playback or editing before saving a recovery draft." })
                 return
             end
             if editorState.shotPreview and name ~= "setKeys" and name ~= "mouseLook" then
@@ -79,8 +90,11 @@ DirectorClient.modules.bridge = function(ctx)
                     or name == "undo"
                     or name == "redo"
                     or name == "saveProject"
+                    or name == "saveDraft"
+                    or name == "manageRecovery"
                     or name == "manageProject"
                     or name == "importProject"
+                    or name == "createTemplate"
                     or name == "startMotionRecording"
                     or name == "commitRoute"
                 )

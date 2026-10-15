@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0
+
+- Retained the existing editor layout and improved timeline interaction: no cursor-offset jump, duration handles for supported action clips, edge/key snapping, Alt bypass, Ctrl-wheel pointer zoom, Escape/blur cancellation and interval-based clip stacking.
+- Added action timing fields, optional ripple movement of following steps, joining and reordering in the current inspector. Edits validate duration, gait speed and vehicle-seat dependencies before committing, and support undo/redo.
+- Added personal camera/action presets with relative placement and subject remapping. Presets are kept on the player's computer; server saves still validate their resulting projects.
+- Added three editable starter scenes at the camera aim, plus a link to the English quickstart video.
+- Added subtle per-shot handheld motion, sampled from scene time with fades at shot edges. Duplicating a shot now retains its curve, transition and handheld settings.
+- Added a separate server recovery slot per account, with acknowledged periodic drafts, revision-checked discard, and restoration as a new project through the existing verified library write path.
+- Fixed save confirmation to compare project contents rather than JSON serialization order. Edits made while a save is pending remain unsaved.
+- Fixed loading server-normalized scenes without runtime actor IDs, while preserving IDs when returning to a local shared-session backup.
+- Shared the existing project schema between client preset checks and authoritative server validation; retained project format version 4 and library format version 2.
+- Added FR/EN captions, regression coverage and English upgrade/validation notes. Automated checks do not establish native gameplay, shared playback timing or runtime performance; see VALIDATION.md for the in-game acceptance checklist.
+
 ## 0.2.0-beta.2
 
 - Split the client into explicit services for project storage, camera, timeline, routes, actors, recording, collaboration and lifecycle.

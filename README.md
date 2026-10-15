@@ -4,7 +4,7 @@ A free, standalone cinematic scene editor for **FiveM GTA V Legacy**. Build shor
 
 [**Download a release**](https://github.com/SraxDev/vanta-director-free/releases) · [Installation guide](INSTALL.md) · [Documentation (EN)](https://vantadocs.netlify.app/director-free.html) · [Documentation (FR)](https://vantadocs.netlify.app/fr/director-free.html) · [Vanta Discord](https://discord.gg/BUdg2bx6H)
 
-Current version: **0.2.0-beta.2**. Download the matching EN Install ZIP from [this release](https://github.com/SraxDev/vanta-director-free/releases/tag/v0.2.0-beta.2). Previous releases do not include all changes below.
+Current release: [**0.3.0**](https://github.com/SraxDev/vanta-director-free/releases/tag/v0.3.0). Download the **EN Install** ZIP for installation. [Watch the English quickstart tutorial](https://youtu.be/WRm5OxSCESE).
 
 ## Interface preview
 
@@ -15,6 +15,11 @@ Click the image to watch the trailer from the interface walkthrough at 00:15.
 ## Features
 
 - Keyframed camera positions and a timeline for arranging the scene.
+- Resize action clips, preserve the grab offset when dragging, snap to nearby clip edges, zoom around the pointer with Ctrl + wheel, and cancel a drag with Escape. Hold Alt to bypass snapping.
+- Edit, reorder and join an actor's action steps in the existing inspector. Optionally move following steps when retiming a clip.
+- Reuse personal camera and action presets between projects, with relative placement and explicit subject mapping for interactions.
+- Start from three editable examples: slow camera reveal, conversation and vehicle follow.
+- Add deterministic, subtle handheld motion to individual camera shots. Existing shot curves and transitions remain available.
 - Place and stage peds, vehicles and objects, with simple movement and appearance controls.
 - 100 curated animations with search, previews, favourites, recent items and English/French placement hints.
 - Multi-point pedestrian and vehicle routes, live motion recording, recorded gestures and trimming.
@@ -22,6 +27,7 @@ Click the image to watch the trailer from the interface walkthrough at 00:15.
 - Subject grouping and duplication, accessories, attachments and vehicle entry/exit actions.
 - Invitation-based shared filming: the host publishes scenes and controls synchronized playback.
 - Scene weather, time, vehicle cues, object visibility, save/load and JSON import/export.
+- A separate recovery draft for the latest unsaved scene on each account; restore it as a new project from Projects.
 - English and French interface, help and interactive tutorial.
 - Clean-take mode for recording cinematic footage with OBS.
 - Standalone operation: no ESX, QBCore or inventory dependency.
@@ -66,6 +72,12 @@ For development, formatting, automated checks and packaging, see [CONTRIBUTING.m
 ## Compatibility and data
 
 This release targets **FiveM Legacy**. FiveM/GTA V Enhanced has not been validated. Director is framework-independent. Project data is stored in this resource `data/` directory, separately from the full edition. The release archive includes only an empty data placeholder; do not publish server or player project files.
+
+Recovery drafts are enabled by default with `Config.RecoveryEnabled`. While the editor is open and changed, Director attempts a draft every 30 seconds; playback, recording, routes and active manipulation pause the attempt. Only an acknowledged draft is protected. Each account has one recovery slot for its latest scene. The draft shares the project library's verified backup writes, and never replaces the explicitly saved project. A successful restore creates a new project. The separate optional Autosave preference still saves the regular project.
+
+Personal presets are stored on the player's computer using resource KVP storage, not in server `data/`. `Config.MaximumPresets` defaults to 100 and `Config.PresetFileLimit` to 4 MiB for the whole personal library. Paths rotate and translate relative to the destination subject or camera; check terrain and framing after applying. Recorded takes use project JSON export instead of action presets. One-shot animations can be shortened, but cannot be extended beyond their captured duration in the timing editor.
+
+Starter scenes are placed at the current camera aim. Choose an open, flat area and save current changes before creating an example. See [VALIDATION.md](VALIDATION.md) for the release's automated and in-game verification checklist.
 
 Use `/director_free_status` for diagnostics. The archive includes the complete editable Lua/NUI resource source and English installation guide. In-game rendering, animation placement, save/reconnect behavior and performance should be verified on the target server.
 

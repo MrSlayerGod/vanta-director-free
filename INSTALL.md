@@ -1,6 +1,6 @@
 # Installation and upgrade
 
-This beta targets FiveM with GTA V Legacy. GTA V Enhanced is not validated. No ESX, QBCore, database, Node.js or build tools are needed on the game server.
+This build targets FiveM with GTA V Legacy. GTA V Enhanced is not validated. No ESX, QBCore, database, Node.js or build tools are needed on the game server.
 
 ## Fresh installation
 
@@ -42,6 +42,25 @@ Stop other Director editions during testing to avoid overlapping cameras and mou
 English is the initial language. French is available in Settings. `Config.DiscordUrl = ""` hides the optional community link. Joining Discord is not required to use the editor.
 
 Shared filming uses invitations: the host publishes the scene and controls playback; invited participants load it and receive synchronized playback commands. It is not simultaneous multi-user editing. Both users need Director permission. Animations with accessory hints require manual accessory placement.
+
+Version 0.3.0 also accepts these optional settings. Existing configuration files remain compatible when they are absent:
+
+```lua
+Config.RecoveryEnabled = true     -- One separate recovery draft per account.
+Config.MaximumPresets = 100       -- Personal preset count budget.
+Config.PresetFileLimit = 4194304   -- Entire personal library, in bytes (4 MiB).
+```
+
+## Using the 0.3.0 additions
+
+- Timeline: drag a clip body to move it; drag its right edge to change duration. Ctrl + wheel zooms at the pointer, Alt bypasses snapping, Fit shows the complete scene, and Escape cancels an unfinished drag. Recorded clips use the existing recording-trim tool.
+- Subject inspector: open a scheduled action to set its start/duration or place the playhead at its end. Enable **Move following steps too** for ripple edits. **Join steps** removes timing gaps; the earlier/later controls reorder and join the full sequence. These operations are undoable and refuse invalid vehicle interactions or out-of-range timing.
+- Camera: select a shot and choose **Steady**, **Subtle breathing** or **Gentle handheld** under Shot timing & motion, then apply the settings and preview. The effect is reproducible at the same scene time.
+- Presets: use **Save camera as preset**, **Save actions as preset**, or **Projects → Personal presets**. Give the preset a name. When applying it, select any referenced vehicles/subjects; actions apply to the currently selected compatible subject. Check world clearance afterwards. Personal presets are local to the player's computer and resource name.
+- Starter scenes: in Projects, expand **Starter scenes**. Aim at an open, flat area before choosing an example. Current edits are not automatically saved when opening an example.
+- Recovery: after an unsaved editing interval, the save indicator acknowledges a protected draft. On reopening Director, use **Projects → Restore as new project** when a draft is offered. There is one slot per account, replaced by the latest draft. Recovery is separate from the optional regular Autosave preference.
+
+Keep the 0.2.0 backup until the checks in `VALIDATION.md` pass in FiveM. A downgrade can discard new draft or handheld metadata on its next save; restoring the complete backup is the supported rollback.
 
 ## Troubleshooting and acceptance checks
 

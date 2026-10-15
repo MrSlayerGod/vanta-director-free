@@ -10,7 +10,7 @@
   panel.className = "free-community";
   panel.setAttribute("aria-label", "Director Free et communauté");
   panel.innerHTML =
-    '<strong>Director Free · bêta</strong><button id="freeDiscord" type="button" hidden>Rejoindre Vanta</button>';
+    '<strong>Director Free · 0.3.0</strong><button id="freeDiscord" type="button" hidden>Rejoindre Vanta</button>';
   document.querySelector(".left-panel .pane-scroll").append(panel);
   const button = panel.querySelector("button");
   let url = "";

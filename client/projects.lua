@@ -60,7 +60,7 @@ DirectorClient.modules.projects = function(ctx)
         }
     end
 
-    function ctx.projects.loadProject(project)
+    function ctx.projects.loadProject(project, preserveIds)
         if editorState.shotPreview then
             ctx.camera.stopShotPreview()
         end
@@ -78,6 +78,8 @@ DirectorClient.modules.projects = function(ctx)
         editorState.previewing = false
         editorState.captureMode = false
         editorState.pendingSaveSnapshot = nil
+        editorState.pendingDraftRequest = nil
+        editorState.lastDraftRevision = nil
         editorState.playhead = 0.0
         editorState.projectName = tostring(project.name or editorState.projectName):sub(1, 64)
         editorState.duration = ctx.maths.clamp(
@@ -114,7 +116,8 @@ DirectorClient.modules.projects = function(ctx)
         table.sort(editorState.keyframes, function(a, b)
             return a.time < b.time
         end)
-        if ctx.scene.sceneLoad(project.actors) == false then
+        -- Network-normalized projects use actor indices; local session backups keep live IDs.
+        if ctx.scene.sceneLoad(project.actors, preserveIds == true) == false then
             return
         end
         ctx.environment.loadSceneLook(project.look)
@@ -128,6 +131,52 @@ DirectorClient.modules.projects = function(ctx)
     end
 
     return function()
+        ctx.bridge.editorCallback("saveDraft", function(_, callback)
+            if not editorState.currentProjectId or Config.RecoveryEnabled == false then
+                callback({ ok = false, message = "Recovery is unavailable." })
+                return
+            end
+            editorState.draftRequestSerial = (editorState.draftRequestSerial or 0) + 1
+            editorState.pendingDraftRequest = editorState.draftRequestSerial
+            TriggerServerEvent(
+                "vanta_director_free:saveDraft",
+                ctx.projects.projectPayload(),
+                editorState.pendingDraftRequest
+            )
+            callback({ ok = true })
+        end)
+
+        ctx.bridge.editorCallback("manageRecovery", function(data, callback)
+            if data.operation ~= "restore" and data.operation ~= "discard" then
+                callback({ ok = false, message = "Invalid recovery action." })
+                return
+            end
+            TriggerServerEvent("vanta_director_free:manageRecovery", data.operation, data.revision)
+            callback({ ok = true })
+        end)
+
+        RegisterNetEvent("vanta_director_free:recoveryState", function(draft)
+            if editorState.directorOpen then
+                if type(draft) == "table" and draft.projectId == editorState.currentProjectId then
+                    editorState.lastDraftRevision = draft.revision
+                end
+                SendNUIMessage({ action = "recoveryState", draft = draft })
+            end
+        end)
+
+        RegisterNetEvent("vanta_director_free:draftResult", function(requestId, ok, message, revision)
+            if requestId ~= editorState.pendingDraftRequest then
+                return
+            end
+            editorState.pendingDraftRequest = nil
+            if ok then
+                editorState.lastDraftRevision = revision
+            end
+            if editorState.directorOpen then
+                SendNUIMessage({ action = "draftResult", ok = ok, message = message })
+            end
+        end)
+
         ctx.bridge.editorCallback("setProjectName", function(data, callback)
             editorState.projectName = tostring(data.name or "Untitled Project"):gsub("[\r\n]", " "):sub(1, 64)
             callback({ ok = true })
@@ -148,7 +197,7 @@ DirectorClient.modules.projects = function(ctx)
                 return
             end
             local payload = ctx.projects.projectPayload()
-            editorState.pendingSaveSnapshot = json.encode(payload)
+            editorState.pendingSaveSnapshot = DirectorHistory.copy(payload)
             editorState.saveRequestSerial = editorState.saveRequestSerial + 1
             editorState.pendingSaveRequest = editorState.saveRequestSerial
             TriggerServerEvent("vanta_director_free:saveProject", payload, editorState.pendingSaveRequest)
@@ -229,8 +278,13 @@ DirectorClient.modules.projects = function(ctx)
             if not editorState.pendingSaveSnapshot then
                 return
             end
-            local unchangedSinceSave = json.encode(ctx.projects.projectPayload()) == editorState.pendingSaveSnapshot
+            local unchangedSinceSave =
+                DirectorHistory.same(ctx.projects.projectPayload(), editorState.pendingSaveSnapshot)
             editorState.pendingSaveSnapshot = nil
+            if ok and unchangedSinceSave and editorState.lastDraftRevision then
+                TriggerServerEvent("vanta_director_free:manageRecovery", "discard", editorState.lastDraftRevision)
+                editorState.lastDraftRevision = nil
+            end
             if ok and type(project) == "table" and unchangedSinceSave then
                 SendNUIMessage({ action = "saveState", saved = true })
             elseif ok then

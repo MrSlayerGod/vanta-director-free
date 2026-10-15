@@ -64,12 +64,24 @@ window.DirectorEditor.modules.sequences = function defineModule(ctx) {
     const shot = ctx.sequences.selectedSequence();
     document.getElementById("sequenceEdit").classList.toggle("is-hidden", !shot);
     if (shot)
+      if (
+        ![...document.getElementById("sequenceHandheld").options].some(
+          (option) => Number(option.value) === (shot.handheld || 0),
+        )
+      ) {
+        const option = document.createElement("option");
+        option.value = shot.handheld;
+        option.textContent = Math.round(shot.handheld * 100) + "%";
+        document.getElementById("sequenceHandheld").appendChild(option);
+      }
+    if (shot)
       for (const [id, value] of Object.entries({
         sequenceName: shot.name,
         sequenceTime: shot.time,
         sequenceDuration: shot.duration,
         sequenceEase: shot.ease,
         sequenceBlend: shot.blend || 0,
+        sequenceHandheld: shot.handheld || 0,
       })) {
         const el = document.getElementById(id);
         if (document.activeElement !== el) el.value = value;
@@ -129,6 +141,7 @@ window.DirectorEditor.modules.sequences = function defineModule(ctx) {
           duration: Number(document.getElementById("sequenceDuration").value),
           ease: document.getElementById("sequenceEase").value,
           blend: Number(document.getElementById("sequenceBlend").value),
+          handheld: Number(document.getElementById("sequenceHandheld").value),
         });
     });
 
@@ -152,8 +165,8 @@ window.DirectorEditor.modules.sequences = function defineModule(ctx) {
     });
 
     document.getElementById("timelineZoom").addEventListener("input", (event) => {
-      document.getElementById("timelineContent").style.width =
-        Number(event.target.value) * 100 + "%";
+      const bounds = document.getElementById("timelineViewport").getBoundingClientRect();
+      ctx.timeline.zoom(Number(event.target.value), bounds.left + bounds.width / 2);
     });
   };
 };

@@ -158,6 +158,10 @@ function S.validate(shots, duration, actors, baseCount, preserveIds)
             return nil, "Camera keyframe limit reached."
         end
         local blend = S.number(shot.blend or 0, 0, math.min(2, seconds))
+        local handheld = S.number(shot.handheld or 0, 0, 1)
+        if not handheld then
+            return nil, "Invalid handheld camera intensity."
+        end
         if not blend then
             return nil, "Invalid camera transition."
         end
@@ -170,6 +174,7 @@ function S.validate(shots, duration, actors, baseCount, preserveIds)
             rig = rig,
             ease = shot.ease or "smooth",
             blend = blend,
+            handheld = handheld,
         }
     end
     table.sort(clean, function(a, b)

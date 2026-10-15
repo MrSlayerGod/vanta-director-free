@@ -1,12 +1,94 @@
 window.DirectorEditor.modules.timeline = function defineModule(ctx) {
   ctx.timeline = {};
+  ctx.timeline.snapTime = function snapTime(value, maximum, event, exclude) {
+    let time = Math.max(0, Math.min(maximum, value));
+    if (event?.altKey || window.VantaPreferences?.snap === false)
+      return Math.round(time * 100) / 100;
+    const step = window.VantaPreferences?.interval || 0.1;
+    const width =
+      ctx.state.timelineDrag?.laneWidth ||
+      document.getElementById("keyframeLane").getBoundingClientRect().width ||
+      1000;
+    const tolerance = Math.min(0.25, (7 / width) * ctx.state.project.duration);
+    let targets = ctx.state.timelineDrag?.snapTargets;
+    if (!targets) {
+      targets = [0, ctx.state.project.playhead];
+      for (const frame of ctx.state.project.keyframes) {
+        if (exclude?.kind === "camera" && ctx.state.project.keyframes[exclude.index - 1] === frame)
+          continue;
+        targets.push(frame.time);
+      }
+      for (const shot of ctx.state.project.cameraShots || []) {
+        if (exclude?.kind === "shot" && shot.id === exclude.id) continue;
+        targets.push(shot.time, shot.time + shot.duration);
+      }
+      for (const actor of ctx.state.project.actors)
+        for (const action of actor.actions || []) {
+          if (
+            exclude?.kind === "action" &&
+            exclude.actorId === actor.id &&
+            exclude.actionId === action.id
+          )
+            continue;
+          targets.push(action.time, action.time + (action.duration || 0));
+        }
+      targets.sort((a, b) => a - b);
+      if (ctx.state.timelineDrag) ctx.state.timelineDrag.snapTargets = targets;
+    }
+    let nearest,
+      distance = tolerance;
+    let low = 0,
+      high = targets.length;
+    while (low < high) {
+      const middle = Math.floor((low + high) / 2);
+      if (targets[middle] < time) low = middle + 1;
+      else high = middle;
+    }
+    for (const target of [targets[low - 1], targets[low]]) {
+      const delta = Math.abs(target - time);
+      if (delta < distance && target >= 0 && target <= maximum) {
+        nearest = target;
+        distance = delta;
+      }
+    }
+    return Math.min(maximum, nearest ?? Math.round(time / step) * step);
+  };
+
+  ctx.timeline.cancelDrag = function cancelDrag() {
+    if (!ctx.state.timelineDrag) return;
+    ctx.state.timelineDrag = null;
+    ctx.state.trackRenderCache.clear();
+    ctx.elements.actorTracks.replaceChildren();
+    ctx.projectView.renderProject();
+  };
+
+  ctx.timeline.zoom = function zoom(value, clientX) {
+    const viewport = document.getElementById("timelineViewport");
+    const content = document.getElementById("timelineContent");
+    const lane = document.getElementById("keyframeLane");
+    const bounds = lane.getBoundingClientRect();
+    const anchor = Math.max(0, Math.min(1, (clientX - bounds.left) / Math.max(bounds.width, 1)));
+    const before = bounds.left + anchor * bounds.width;
+    const slider = document.getElementById("timelineZoom");
+    slider.value = String(Math.max(1, Math.min(8, value)));
+    content.style.width = Number(slider.value) * 100 + "%";
+    const after = lane.getBoundingClientRect();
+    viewport.scrollLeft += after.left + anchor * after.width - before;
+    ctx.timeline.renderRuler();
+    ctx.timeline.renderTimelineTracks();
+  };
+
   ctx.timeline.renderRuler = function renderRuler() {
     const max = Number(ctx.state.project.duration) || 20;
-    const interval = max <= 30 ? 5 : max <= 90 ? 15 : max <= 300 ? 30 : max <= 1200 ? 120 : 600;
+    const width = document.getElementById("keyframeLane").getBoundingClientRect().width || 1000;
+    const interval =
+      [0.1, 0.25, 0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 1800, 3600, 7200].find(
+        (step) => (step * width) / max >= 60,
+      ) || 7200;
     const ticks = [];
     for (let value = 0; value <= max; value += interval) {
       ticks.push(
-        `<span style="left:${(value / max) * 100}%">${ctx.formatting.formatTime(value).slice(0, 5)}</span>`,
+        `<span style="left:${(value / max) * 100}%">${interval < 1 ? value.toFixed(1) : Math.round(value)}s</span>`,
       );
     }
     if (max % interval !== 0)
@@ -21,6 +103,7 @@ window.DirectorEditor.modules.timeline = function defineModule(ctx) {
   };
 
   ctx.timeline.renderTimelineTracks = function renderTimelineTracks() {
+    const laneWidth = document.getElementById("keyframeLane").getBoundingClientRect().width || 1000;
     const present = new Set(ctx.state.project.actors.map((a) => a.id));
     for (const [id, cached] of ctx.state.trackRenderCache)
       if (!present.has(id)) {
@@ -35,13 +118,18 @@ window.DirectorEditor.modules.timeline = function defineModule(ctx) {
         actor.model,
         actor.actions,
         ctx.state.project.duration,
+        Math.round(laneWidth),
       ]);
       const cached = ctx.state.trackRenderCache.get(actor.id);
       if (cached?.signature === signature) {
         ctx.actors.placeCached(ctx.elements.actorTracks, cached.node, actorIndex);
         denseTimeline ||= cached.dense;
-        for (const [marker, key] of cached.markers)
+        for (const [marker, key, action] of cached.markers) {
           marker.classList.toggle("selected", ctx.state.timelineSelection.has(key));
+          marker.style.left = `${(action.time / ctx.state.project.duration) * 100}%`;
+          if (action.duration)
+            marker.style.width = `${Math.max(1, (action.duration / ctx.state.project.duration) * 100)}%`;
+        }
         return;
       }
       if (cached) cached.node.remove();
@@ -57,84 +145,101 @@ window.DirectorEditor.modules.timeline = function defineModule(ctx) {
         if (event.target === lane) ctx.timeline.beginSeekDrag(event, lane);
       });
       const markerEntries = [];
-      const cueStacks = new Map();
+      const rowEnds = [];
       let deepestStack = 1;
-      (actor.actions || []).forEach((action) => {
-        const marker = document.createElement("button");
-        marker.className = `timeline-action ${action.type}${action.type === "visibility" ? (action.visible ? " show" : " hide") : ""}`;
-        marker.classList.toggle(
-          "selected",
-          ctx.state.timelineSelection.has(
+      [...(actor.actions || [])]
+        .sort((a, b) => a.time - b.time || a.id - b.id)
+        .forEach((action) => {
+          const marker = document.createElement("button");
+          marker.className = `timeline-action ${action.type}${action.duration ? " duration-clip" : ""}${action.type === "visibility" ? (action.visible ? " show" : " hide") : ""}`;
+          marker.classList.toggle(
+            "selected",
+            ctx.state.timelineSelection.has(
+              ctx.state.selectionKey({
+                kind: "action",
+                actorId: actor.id,
+                actionId: action.id,
+              }),
+            ),
+          );
+          marker.style.left = `${(action.time / ctx.state.project.duration) * 100}%`;
+          const visibleDuration = Math.max(
+            action.duration || 0,
+            (52 * ctx.state.project.duration) / laneWidth,
+          );
+          let stack = rowEnds.findIndex((end) => end <= action.time);
+          if (stack === -1) stack = rowEnds.length;
+          rowEnds[stack] = action.time + visibleDuration;
+          deepestStack = Math.max(deepestStack, stack + 1);
+          if (stack) marker.style.top = `${5 + stack * 20}px`;
+          marker.title = `${ctx.formatting.actionLabel(action)} · ${ctx.formatting.formatTime(action.time)} · drag to retime`;
+          if (
+            action.type === "move" ||
+            action.type === "lookAt" ||
+            action.type === "enterVehicle" ||
+            action.type === "exitVehicle" ||
+            action.type === "recording" ||
+            (action.type === "animation" && action.duration)
+          ) {
+            marker.style.width = `${Math.max(1, (action.duration / ctx.state.project.duration) * 100)}%`;
+            marker.textContent =
+              action.type === "animation"
+                ? "ANIM"
+                : action.type === "recording"
+                  ? "RECORD"
+                  : action.type === "enterVehicle"
+                    ? "ENTER"
+                    : action.type === "exitVehicle"
+                      ? "EXIT"
+                      : action.type === "lookAt"
+                        ? "LOOK"
+                        : action.points
+                          ? "ROUTE"
+                          : action.gait && action.gait !== "auto"
+                            ? action.gait.toUpperCase()
+                            : "MOVE";
+            marker.textContent += " · " + Number(action.duration).toFixed(1) + "s";
+          } else if (action.type === "visibility") {
+            marker.textContent = action.visible ? "SHOW" : "HIDE";
+          } else if (
+            action.type === "engine" ||
+            action.type === "lights" ||
+            action.type === "door"
+          ) {
+            marker.textContent =
+              action.type === "engine" ? "ENGINE" : action.type === "lights" ? "LIGHTS" : "DOOR";
+          }
+          marker.dataset.actionId = action.id;
+          marker.dataset.actorId = actor.id;
+          marker.setAttribute("aria-label", marker.title);
+          if (action.duration && action.type !== "recording") {
+            const handle = document.createElement("span");
+            handle.className = "clip-handle end";
+            handle.dataset.edge = "end";
+            handle.title = "Drag to change duration";
+            marker.appendChild(handle);
+          }
+          marker.addEventListener("mousedown", (event) =>
+            ctx.timeline.beginTimelineDrag(event, marker, lane, {
+              kind: "action",
+              actorId: actor.id,
+              actionId: action.id,
+              time: action.time,
+              duration: action.duration,
+              maxTime: Math.max(0, ctx.state.project.duration - (action.duration || 0)),
+            }),
+          );
+          markerEntries.push([
+            marker,
             ctx.state.selectionKey({
               kind: "action",
               actorId: actor.id,
               actionId: action.id,
             }),
-          ),
-        );
-        marker.style.left = `${(action.time / ctx.state.project.duration) * 100}%`;
-        const stackKey = Number(action.time).toFixed(1);
-        const stack = cueStacks.get(stackKey) || 0;
-        cueStacks.set(stackKey, stack + 1);
-        deepestStack = Math.max(deepestStack, stack + 1);
-        if (stack) marker.style.top = `${5 + stack * 20}px`;
-        marker.title = `${ctx.formatting.actionLabel(action)} · ${ctx.formatting.formatTime(action.time)} · drag to retime`;
-        if (
-          action.type === "move" ||
-          action.type === "lookAt" ||
-          action.type === "enterVehicle" ||
-          action.type === "exitVehicle" ||
-          action.type === "recording" ||
-          (action.type === "animation" && action.duration)
-        ) {
-          marker.style.width = `${Math.max(1, (action.duration / ctx.state.project.duration) * 100)}%`;
-          marker.textContent =
-            action.type === "animation"
-              ? "ANIM"
-              : action.type === "recording"
-                ? "RECORD"
-                : action.type === "enterVehicle"
-                  ? "ENTER"
-                  : action.type === "exitVehicle"
-                    ? "EXIT"
-                    : action.type === "lookAt"
-                      ? "LOOK"
-                      : action.points
-                        ? "ROUTE"
-                        : action.gait && action.gait !== "auto"
-                          ? action.gait.toUpperCase()
-                          : "MOVE";
-        } else if (action.type === "visibility") {
-          marker.textContent = action.visible ? "SHOW" : "HIDE";
-        } else if (action.type === "engine" || action.type === "lights" || action.type === "door") {
-          marker.textContent =
-            action.type === "engine" ? "ENGINE" : action.type === "lights" ? "LIGHTS" : "DOOR";
-        }
-        marker.addEventListener("mousedown", (event) =>
-          ctx.timeline.beginTimelineDrag(event, marker, lane, {
-            kind: "action",
-            actorId: actor.id,
-            actionId: action.id,
-            time: action.time,
-            maxTime:
-              action.type === "move" ||
-              action.type === "lookAt" ||
-              action.type === "recording" ||
-              (action.type === "animation" && action.duration)
-                ? Math.max(0, ctx.state.project.duration - action.duration)
-                : ctx.state.project.duration,
-          }),
-        );
-        markerEntries.push([
-          marker,
-          ctx.state.selectionKey({
-            kind: "action",
-            actorId: actor.id,
-            actionId: action.id,
-          }),
-        ]);
-        lane.appendChild(marker);
-      });
+            action,
+          ]);
+          lane.appendChild(marker);
+        });
       if (deepestStack > 1) {
         lane.style.height = `${10 + deepestStack * 20}px`;
         track.style.height = `${26 + deepestStack * 20}px`;
@@ -170,6 +275,7 @@ window.DirectorEditor.modules.timeline = function defineModule(ctx) {
 
   ctx.timeline.beginTimelineDrag = function beginTimelineDrag(event, marker, lane, item) {
     if (event.button !== 0) return;
+    if (ctx.state.sessionRole === "viewer" || ctx.state.previewPlaying) return;
     event.preventDefault();
     event.stopPropagation();
     if (event.ctrlKey || event.metaKey) {
@@ -184,8 +290,10 @@ window.DirectorEditor.modules.timeline = function defineModule(ctx) {
       marker,
       lane,
       item,
+      laneWidth: lane.getBoundingClientRect().width,
       startX: event.clientX,
       time: item.time,
+      duration: item.duration,
       moved: false,
       edge: event.target.closest("[data-edge]")?.dataset.edge,
     };
@@ -239,6 +347,50 @@ window.DirectorEditor.modules.timeline = function defineModule(ctx) {
     await ctx.transport.post("setPlayhead", { time: clamped, sequence: ++ctx.state.seekSequence });
   };
   return function bindEvents() {
+    const viewport = document.getElementById("timelineViewport");
+    const snap = document.getElementById("timelineSnap");
+    const renderSnap = () => {
+      snap.setAttribute("aria-pressed", String(window.VantaPreferences?.snap !== false));
+    };
+    snap.onclick = () => {
+      window.VantaPreferences ||= {};
+      window.VantaPreferences.snap = window.VantaPreferences.snap === false;
+      renderSnap();
+    };
+    renderSnap();
+    window.addEventListener("directorPreferences", renderSnap);
+    document.getElementById("timelineFit").onclick = () => {
+      ctx.timeline.zoom(1, viewport.getBoundingClientRect().left);
+      viewport.scrollLeft = 0;
+    };
+    viewport.addEventListener(
+      "wheel",
+      (event) => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        if (ctx.state.timelineDrag) return;
+        ctx.timeline.zoom(
+          Number(document.getElementById("timelineZoom").value) + (event.deltaY > 0 ? -0.5 : 0.5),
+          event.clientX,
+        );
+      },
+      { passive: false },
+    );
+    window.addEventListener("blur", ctx.timeline.cancelDrag);
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key !== "Escape" || !ctx.state.timelineDrag) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        ctx.timeline.cancelDrag();
+      },
+      true,
+    );
+    window.addEventListener("message", ({ data }) => {
+      if (data?.action === "close" || data?.action === "captureCountdown")
+        ctx.state.timelineDrag = null;
+    });
     document.getElementById("timelineCopy").addEventListener("click", async () => {
       const result = await ctx.transport.post("copyTimeline", {
         items: [...ctx.state.timelineSelection.values()],
@@ -262,10 +414,18 @@ window.DirectorEditor.modules.timeline = function defineModule(ctx) {
       if (!ctx.state.timelineDrag) return;
       if (!(event.buttons & 1)) return;
       const drag = ctx.state.timelineDrag;
-      const maximum = drag.item
-        ? (drag.item.maxTime ?? ctx.state.project.duration)
-        : ctx.state.project.duration;
-      drag.time = ctx.timeline.timeFromPointer(event.clientX, drag.lane, maximum);
+      const maximum =
+        drag.edge === "start"
+          ? drag.original.time + drag.original.duration - 0.1
+          : drag.item
+            ? (drag.item.maxTime ?? ctx.state.project.duration)
+            : ctx.state.project.duration;
+      const bounds = drag.lane.getBoundingClientRect();
+      const delta =
+        ((event.clientX - drag.startX) / Math.max(bounds.width, 1)) * ctx.state.project.duration;
+      drag.time = drag.seek
+        ? ctx.timeline.timeFromPointer(event.clientX, drag.lane)
+        : ctx.timeline.snapTime(drag.item.time + delta, maximum, event, drag.item);
       if (drag.seek) {
         const now = performance.now();
         if (now - ctx.state.lastDragSeekAt >= 40) {
@@ -274,19 +434,21 @@ window.DirectorEditor.modules.timeline = function defineModule(ctx) {
         }
       } else {
         drag.moved ||= Math.abs(event.clientX - drag.startX) > 3;
+        if (!drag.moved) return;
         if (drag.edge) {
           const end = drag.original.time + drag.original.duration;
           if (drag.edge === "start") {
-            drag.time = Math.min(end - 0.1, drag.time);
-            drag.item.duration = end - drag.time;
+            drag.time = Math.max(0, Math.min(end - 0.1, drag.time));
+            drag.duration = end - drag.time;
           } else {
-            drag.item.duration = Math.max(
+            drag.duration = Math.max(
               0.1,
-              ctx.timeline.timeFromPointer(event.clientX, drag.lane) - drag.original.time,
+              ctx.timeline.snapTime(end + delta, ctx.state.project.duration, event, drag.item) -
+                drag.original.time,
             );
             drag.time = drag.original.time;
           }
-          drag.marker.style.width = (drag.item.duration / ctx.state.project.duration) * 100 + "%";
+          drag.marker.style.width = (drag.duration / ctx.state.project.duration) * 100 + "%";
         }
         drag.marker.style.left = `${(drag.time / ctx.state.project.duration) * 100}%`;
         ctx.timeline.renderPlayhead(drag.time);
@@ -313,20 +475,24 @@ window.DirectorEditor.modules.timeline = function defineModule(ctx) {
           ? await ctx.transport.post("updateCameraShot", {
               id: drag.item.id,
               time: drag.time,
-              duration: drag.item.duration,
+              duration: drag.duration,
             })
           : drag.item.kind === "camera"
             ? await ctx.transport.post("moveKeyframe", {
                 index: drag.item.index,
                 time: drag.time,
               })
-            : await ctx.transport.post("moveAction", {
+            : await ctx.transport.post("editActionTiming", {
                 actorId: drag.item.actorId,
                 actionId: drag.item.actionId,
                 time: drag.time,
+                ...(drag.edge ? { duration: drag.duration } : {}),
+                ripple: ctx.state.rippleActions === true,
               });
       if (!result.ok) {
         ctx.status.showStatus(result.message || "Could not move timeline item.");
+        ctx.state.trackRenderCache.clear();
+        ctx.elements.actorTracks.replaceChildren();
         ctx.projectView.renderProject();
       } else {
         if (drag.item.kind === "camera") {

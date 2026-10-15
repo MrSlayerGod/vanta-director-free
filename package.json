@@ -1,6 +1,6 @@
 {
   "name": "vanta-director-free",
-  "version": "0.2.0-beta.2",
+  "version": "0.3.0",
   "description": "A free, standalone cinematic scene editor for **FiveM GTA V Legacy**. Build short scenes with a camera timeline, characters, vehicles, objects, curated animations, lighting and weather controls. The editor can hide its interface for a clean take; use OBS or another recorder to capture the footage.",
   "scripts": {
     "catalog": "node scripts/catalog.cjs",
@@ -8,7 +8,7 @@
     "format:check": "prettier --check web animations.json scripts tests *.md *.json && stylua --check --glob \"**/*.lua\" --glob \"!node_modules/**\" .",
     "check": "node scripts/check.cjs",
     "test": "node --test tests/*.test.cjs && node scripts/test-lua.cjs",
-    "test:ui": "node tests/ui.cjs",
+    "test:ui": "node tests/ui.cjs && node tests/workflow-ui.cjs",
     "package": "node scripts/package.cjs"
   },
   "repository": {

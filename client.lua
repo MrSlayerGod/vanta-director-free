@@ -16,6 +16,8 @@ local modules = {
     "bridge",
     "input",
     "timeline",
+    "workflow",
+    "presets",
     "shots",
     "capture",
     "models",

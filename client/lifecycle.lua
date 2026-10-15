@@ -34,6 +34,7 @@ DirectorClient.modules.lifecycle = function(ctx)
                     minimumDuration = Config.MinimumDuration,
                     maximumDuration = Config.MaximumDuration,
                     projectFileLimit = Config.ProjectFileLimit,
+                    recoveryEnabled = Config.RecoveryEnabled ~= false,
                     defaultDuration = Config.DefaultDuration,
                     recordingMaximumSeconds = Config.RecordingMaximumSeconds,
                     collaborationEnabled = Config.CollaborationEnabled,

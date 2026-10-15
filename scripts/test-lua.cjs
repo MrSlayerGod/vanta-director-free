@@ -1,6 +1,6 @@
 const { createRuntime } = require("./lua-runtime.cjs");
 (async () => {
-  for (const file of ["payload", "library", "client", "collaboration"]) {
+  for (const file of ["payload", "timing", "presets", "library", "client", "collaboration"]) {
     const lua = await createRuntime();
     try {
       await lua.doFile("/tests/" + file + ".lua");

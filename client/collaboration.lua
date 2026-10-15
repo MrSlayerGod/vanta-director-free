@@ -123,7 +123,7 @@ DirectorClient.modules.collaboration = function(ctx)
             end
             if editorState.directorOpen and backup then
                 editorState.currentProjectId = backup.id
-                ctx.projects.loadProject(backup)
+                ctx.projects.loadProject(backup, true)
                 SendNUIMessage({ action = "saveState", saved = false })
             end
             SendNUIMessage({ action = "sessionState", role = "none" })

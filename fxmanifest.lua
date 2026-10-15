@@ -2,8 +2,8 @@ fx_version("cerulean")
 game("gta5")
 
 author("Vanta")
-description("VANTA DIRECTOR FREE - standalone cinematic editor (beta)")
-version("0.2.0-beta.2")
+description("VANTA DIRECTOR FREE - standalone cinematic scene editor")
+version("0.3.0")
 
 shared_scripts({
     "config.lua",
@@ -13,10 +13,15 @@ shared_scripts({
     "routes.lua",
     "history.lua",
     "shots.lua",
+    "timing.lua",
     "staging.lua",
     "appearance.lua",
     "attachments.lua",
     "recording.lua",
+    "payload.lua",
+    "project_validation.lua",
+    "presets.lua",
+    "templates.lua",
 })
 
 ui_page("web/index.html")
@@ -44,6 +49,8 @@ files({
     "web/editor/timeline.js",
     "web/editor/collaboration.js",
     "web/editor/sequences.js",
+    "web/editor/actionChain.js",
+    "web/editor/presets.js",
     "web/editor/staging.js",
     "web/editor/production.js",
     "web/editor/projectView.js",
@@ -76,6 +83,7 @@ files({
     "web/tutorial.css",
     "web/workflow.js",
     "web/workflow.css",
+    "web/workflow-update.css",
     "catalog/index.json",
     "catalog/chunk-001.json",
     "catalog/chunk-002.json",
@@ -153,6 +161,8 @@ client_scripts({
     "client/bridge.lua",
     "client/input.lua",
     "client/timeline.lua",
+    "client/workflow.lua",
+    "client/presets.lua",
     "client/shots.lua",
     "client/capture.lua",
     "client/models.lua",
@@ -163,7 +173,7 @@ client_scripts({
     "client/frame.lua",
     "client.lua",
 })
-server_scripts({ "access.lua", "payload.lua", "collaboration_server.lua", "server.lua" })
+server_scripts({ "access.lua", "collaboration_server.lua", "server.lua" })
 
 -- Keep operator configuration editable after uploading to FiveM Asset Escrow.
 escrow_ignore({ "config.lua", "README.md" })

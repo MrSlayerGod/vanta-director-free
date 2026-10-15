@@ -62,6 +62,7 @@ AddEventHandler = function() end
 dofile("access.lua")
 
 dofile("payload.lua")
+dofile("project_validation.lua")
 dofile("collaboration_server.lua")
 dofile("server.lua")
 
@@ -207,3 +208,73 @@ assert(named("saveResult") == false)
 print(
     "Library stability: corrupt entry isolation, no invalid switch/duplication, ordered recovery, future versions and animation durations passed."
 )
+
+local storedBeforeDraft = copy(json.decode(files[libraryPath]).projects[1].data)
+local draft = validProject("p1", "Unsaved scene")
+fire("vanta_director_free:saveDraft", draft, 1)
+local request, draftOk, _, revision = named("draftResult")
+assert(request == 1 and draftOk and revision)
+local withDraft = json.decode(files[libraryPath])
+assert(withDraft.projects[1].data.name == storedBeforeDraft.name, "Draft must not replace the saved project")
+assert(withDraft.recovery.data.name == "Unsaved scene")
+fire("vanta_director_free:requestProject")
+assert(named("recoveryState").revision == revision, "Draft survives a new editor session")
+local beforeInvalid = files[libraryPath]
+fire("vanta_director_free:saveDraft", { id = "p1", keyframes = {}, duration = math.huge }, 2)
+local _, invalidDraft = named("draftResult")
+assert(not invalidDraft and files[libraryPath] == beforeInvalid)
+fire("vanta_director_free:manageRecovery", "discard", revision - 1)
+assert(named("libraryError") and files[libraryPath] == beforeInvalid, "Stale requests cannot delete a newer draft")
+fire("vanta_director_free:manageRecovery", "restore", revision)
+local recovered, recoveredId = named("projectLibrary")
+assert(recovered.name == "Unsaved scene recovered" and recoveredId ~= "p1")
+assert(json.decode(files[libraryPath]).projects[1].data.name == storedBeforeDraft.name)
+assert(not named("recoveryState"), "Successful recovery consumes only the draft")
+Config.RecoveryEnabled = false
+fire("vanta_director_free:saveDraft", validProject(recoveredId, "Disabled"), 3)
+local _, disabledDraft = named("draftResult")
+assert(not disabledDraft)
+Config.RecoveryEnabled = true
+Config.RequireAce = true
+IsPlayerAceAllowed = function()
+    return false
+end
+local beforeDenied = files[libraryPath]
+fire("vanta_director_free:saveDraft", draft, 4)
+local _, deniedDraft = named("draftResult")
+assert(not deniedDraft and files[libraryPath] == beforeDenied)
+Config.RequireAce = false
+print("Recovery: separate draft, reopening, invalid payload, stale deletion, copy restore and ACL passed.")
+local victimContents = files[libraryPath]
+license = "license:other"
+fire("vanta_director_free:manageRecovery", "restore", revision)
+assert(named("libraryError") and files[libraryPath] == victimContents, "Recovery is scoped to the calling account")
+license = "license:test"
+local recoveryClock = 10000
+GetGameTimer = function()
+    return recoveryClock
+end
+local active = json.decode(files[libraryPath]).activeId
+fire("vanta_director_free:saveDraft", validProject(active, "Rate-limited draft"), 5)
+local _, firstDraft = named("draftResult")
+assert(firstDraft)
+local beforeRateLimit = files[libraryPath]
+fire("vanta_director_free:saveDraft", validProject(active, "Too soon"), 6)
+local _, repeatedDraft = named("draftResult")
+assert(not repeatedDraft and files[libraryPath] == beforeRateLimit)
+recoveryClock = recoveryClock + 6000
+local originalWrite = SaveResourceFile
+SaveResourceFile = function(resource, path, content, length)
+    if path == libraryPath .. ".pending" then
+        return false
+    end
+    return originalWrite(resource, path, content, length)
+end
+fire("vanta_director_free:saveDraft", validProject(active, "Failed write"), 7)
+local _, failedDraft = named("draftResult")
+assert(
+    not failedDraft and files[libraryPath] == beforeRateLimit,
+    "A failed draft write must preserve the original library"
+)
+SaveResourceFile = originalWrite
+print("Recovery boundaries: account isolation, write rate limit and failed-write preservation passed.")

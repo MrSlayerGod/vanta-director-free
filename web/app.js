@@ -13,6 +13,8 @@
     "timeline",
     "collaboration",
     "sequences",
+    "actionChain",
+    "presets",
     "staging",
     "production",
     "projectView",

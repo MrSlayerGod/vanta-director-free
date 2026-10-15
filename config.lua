@@ -13,6 +13,10 @@
 -- Collaboration is included. Server owners may disable it with CollaborationEnabled.
 -- RateLimits use milliseconds. DiscordUrl: empty string hides the button.
 Config = {}
+-- Keep one recoverable unsaved scene per account, separate from saved projects.
+Config.RecoveryEnabled = true
+Config.MaximumPresets = 100
+Config.PresetFileLimit = 4194304
 
 Config.Command = "director_free"
 Config.DefaultKey = "F6"

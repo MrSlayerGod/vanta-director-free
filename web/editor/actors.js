@@ -526,9 +526,11 @@ window.DirectorEditor.modules.actors = function defineModule(ctx) {
       card.appendChild(controls);
       card.appendChild(icon);
       (actor.actions || []).forEach((action, index) => {
-        const row = document.createElement("div");
-        row.className = "action-row";
-        row.textContent = `${ctx.formatting.formatTime(action.time)} · ${ctx.formatting.actionLabel(action)}`;
+        const row = document.createElement("details");
+        row.className = "action-row action-step";
+        const summary = document.createElement("summary");
+        summary.textContent = `${ctx.formatting.formatTime(action.time)} · ${ctx.formatting.actionLabel(action)}`;
+        row.append(summary, ctx.actionChain.controls(actor, action, index));
         const deleteAction = document.createElement("button");
         deleteAction.className = "delete-frame";
         deleteAction.textContent = "×";
@@ -624,6 +626,7 @@ window.DirectorEditor.modules.actors = function defineModule(ctx) {
             "Scheduled actions (" + rows.length + ")",
             true,
           );
+          scheduled.appendChild(ctx.actionChain.toolbar(actor));
           for (const row of rows) scheduled.appendChild(row);
           if (position.parentNode === inspector)
             inspector.insertBefore(scheduled, position.nextSibling);

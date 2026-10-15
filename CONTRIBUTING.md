@@ -24,6 +24,9 @@ npm run package
 - `client.lua`: startup orchestration; `client/state.lua`: per-session state.
 - `client/`: client services. Camera, playback, routes, projects, entity lifecycle, input and recording have separate modules.
 - `server.lua`: project validation and persistence.
+- `project_validation.lua`: shared scene normalization; server calls remain authoritative. `timing.lua`, `presets.lua` and `templates.lua` contain pure editing/placement helpers.
+- `client/workflow.lua`, `client/presets.lua`: validated action-chain edits, local preset storage and starter-scene requests.
+- `web/editor/actionChain.js`, `web/editor/presets.js`: additions inside the existing inspector and project library. `web/editor/timeline.js` owns drag/resize/zoom; snap targets are cached for each drag.
 - `access.lua`, `payload.lua`: authorization, rate control and payload shape checks.
 - `collaboration_server.lua`: invitations, host authority and shared playback.
 - `routes.lua`, `motion.lua`, `recording.lua`, `shots.lua`: scene movement and camera data.

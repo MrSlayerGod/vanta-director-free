@@ -6751,5 +6751,385 @@ window.VantaLocales = {
       en: "Place a destination to estimate the duration.",
       fr: "Place une destination pour estimer la durée.",
     },
+    workflow_03_0: {
+      en: "Stop playback or editing before saving a recovery draft.",
+      fr: "Arrête la lecture ou la manipulation avant de sauvegarder un brouillon de récupération.",
+    },
+    workflow_03_1: {
+      en: "Recovery draft available",
+      fr: "Brouillon de récupération disponible",
+    },
+    workflow_03_2: {
+      en: "Restore a separate copy of your last unsaved scene.",
+      fr: "Restaure une copie distincte de ta dernière scène non enregistrée.",
+    },
+    workflow_03_3: {
+      en: "Restore as new project",
+      fr: "Restaurer dans un nouveau projet",
+    },
+    workflow_03_4: {
+      en: "Discard draft",
+      fr: "Supprimer le brouillon",
+    },
+    workflow_03_5: {
+      en: "Restore recovery draft?",
+      fr: "Restaurer le brouillon ?",
+    },
+    workflow_03_6: {
+      en: "Discard recovery draft?",
+      fr: "Supprimer le brouillon ?",
+    },
+    workflow_03_7: {
+      en: "A new project will be created. Save your current changes before continuing.",
+      fr: "Un nouveau projet sera créé. Enregistre tes modifications actuelles avant de continuer.",
+    },
+    workflow_03_8: {
+      en: "This removes the recovery draft only. Your saved projects stay available.",
+      fr: "Seul le brouillon de récupération sera supprimé. Tes projets enregistrés restent disponibles.",
+    },
+    workflow_03_9: {
+      en: "A recovery draft is protected on this server. Save project to keep your final version.",
+      fr: "Un brouillon de récupération est protégé sur ce serveur. Enregistre le projet pour conserver ta version finale.",
+    },
+    workflow_03_10: {
+      en: "Unsaved · draft protected",
+      fr: "Non enregistré · brouillon protégé",
+    },
+    workflow_03_11: {
+      en: "Recovery drafts are disabled on this server.",
+      fr: "Les brouillons de récupération sont désactivés sur ce serveur.",
+    },
+    workflow_03_12: {
+      en: "Open the project before saving its recovery draft.",
+      fr: "Ouvre le projet avant de sauvegarder son brouillon.",
+    },
+    workflow_03_13: {
+      en: "The recovery draft changed. Reopen Director before trying again.",
+      fr: "Le brouillon a changé. Rouvre Director avant de réessayer.",
+    },
+    workflow_03_14: {
+      en: "Free a project slot before recovering this draft.",
+      fr: "Libère une place dans ta bibliothèque avant de restaurer ce brouillon.",
+    },
+    workflow_03_15: {
+      en: "Recovery draft restored as a new project.",
+      fr: "Le brouillon a été restauré dans un nouveau projet.",
+    },
+    workflow_03_16: {
+      en: "Recovery is unavailable.",
+      fr: "La récupération est indisponible.",
+    },
+    workflow_03_17: {
+      en: "Invalid recovery action.",
+      fr: "Action de récupération invalide.",
+    },
+    workflow_03_18: {
+      en: "Choose valid action timing.",
+      fr: "Choisis un début et une durée valides.",
+    },
+    workflow_03_19: {
+      en: "This cue has no duration.",
+      fr: "Cette action ponctuelle n’a pas de durée.",
+    },
+    workflow_03_20: {
+      en: "Use Trim recording to shorten a recorded take.",
+      fr: "Utilise l’outil de découpe pour raccourcir un enregistrement.",
+    },
+    workflow_03_21: {
+      en: "A one-shot animation cannot be extended beyond its captured duration.",
+      fr: "Une animation jouée une seule fois ne peut pas dépasser sa durée enregistrée.",
+    },
+    workflow_03_22: {
+      en: "Vehicle interactions must last at most 30 seconds.",
+      fr: "Les interactions avec un véhicule ne peuvent pas dépasser 30 secondes.",
+    },
+    workflow_03_23: {
+      en: "Extend the project or shorten the action chain first.",
+      fr: "Allonge le projet ou raccourcis l’enchaînement d’actions.",
+    },
+    workflow_03_24: {
+      en: "This movement is too fast for the chosen gait. Increase its duration.",
+      fr: "Ce déplacement est trop rapide pour l’allure choisie. Augmente sa durée.",
+    },
+    workflow_03_25: {
+      en: "The action list changed. Select the steps again.",
+      fr: "La liste des actions a changé. Sélectionne à nouveau les étapes.",
+    },
+    workflow_03_26: {
+      en: "Give every animation a clip duration before joining steps.",
+      fr: "Donne une durée à chaque animation avant de joindre les étapes.",
+    },
+    workflow_03_27: {
+      en: "Stop playback or editing before changing action timing.",
+      fr: "Arrête la lecture ou la manipulation avant de modifier les étapes.",
+    },
+    workflow_03_28: {
+      en: "Invalid action chain option.",
+      fr: "Option d’enchaînement invalide.",
+    },
+    workflow_03_29: {
+      en: "Start (sec)",
+      fr: "Début (s)",
+    },
+    workflow_03_30: {
+      en: "Length (sec)",
+      fr: "Durée (s)",
+    },
+    workflow_03_31: {
+      en: "Apply timing",
+      fr: "Appliquer le minutage",
+    },
+    workflow_03_32: {
+      en: "Next step at end",
+      fr: "Placer la suite à la fin",
+    },
+    workflow_03_33: {
+      en: "Move step earlier and join",
+      fr: "Avancer l’étape et joindre",
+    },
+    workflow_03_34: {
+      en: "Move step later and join",
+      fr: "Reculer l’étape et joindre",
+    },
+    workflow_03_35: {
+      en: "Move following steps too",
+      fr: "Décaler aussi les étapes suivantes",
+    },
+    workflow_03_36: {
+      en: "Join steps",
+      fr: "Joindre les étapes",
+    },
+    workflow_03_37: {
+      en: "Save actions as preset",
+      fr: "Enregistrer les actions comme modèle",
+    },
+    workflow_03_38: {
+      en: "Personal presets",
+      fr: "Modèles personnels",
+    },
+    workflow_03_39: {
+      en: "Close personal presets",
+      fr: "Fermer les modèles personnels",
+    },
+    workflow_03_40: {
+      en: "Saved on this computer. Apply at the playhead; paths are placed relative to your current camera or subject.",
+      fr: "Enregistrés sur cet ordinateur. Applique-les au curseur : les trajets sont placés par rapport à ta caméra ou ton sujet actuel.",
+    },
+    workflow_03_41: {
+      en: "Save a reusable sequence",
+      fr: "Enregistrer une séquence réutilisable",
+    },
+    workflow_03_42: {
+      en: "Preset name",
+      fr: "Nom du modèle",
+    },
+    workflow_03_43: {
+      en: "Preset type",
+      fr: "Type de modèle",
+    },
+    workflow_03_44: {
+      en: "Current camera shot or path",
+      fr: "Plan ou trajet caméra actuel",
+    },
+    workflow_03_45: {
+      en: "Selected subject’s actions",
+      fr: "Actions du sujet sélectionné",
+    },
+    workflow_03_46: {
+      en: "Save preset",
+      fr: "Enregistrer le modèle",
+    },
+    workflow_03_47: {
+      en: "Use a saved preset",
+      fr: "Utiliser un modèle enregistré",
+    },
+    workflow_03_48: {
+      en: "No saved presets yet.",
+      fr: "Aucun modèle enregistré pour le moment.",
+    },
+    workflow_03_49: {
+      en: "Saved presets",
+      fr: "Modèles enregistrés",
+    },
+    workflow_03_50: {
+      en: "Apply at playhead",
+      fr: "Appliquer au curseur",
+    },
+    workflow_03_51: {
+      en: "Delete preset",
+      fr: "Supprimer le modèle",
+    },
+    workflow_03_52: {
+      en: "Confirm delete",
+      fr: "Confirmer la suppression",
+    },
+    workflow_03_53: {
+      en: "Choose a scene subject",
+      fr: "Choisir un sujet de la scène",
+    },
+    workflow_03_54: {
+      en: "Watch the quickstart tutorial",
+      fr: "Voir le tutoriel de démarrage",
+    },
+    workflow_03_55: {
+      en: "Starter scenes",
+      fr: "Scènes de départ",
+    },
+    workflow_03_56: {
+      en: "Aim at an open, flat area. Each example creates a new editable project.",
+      fr: "Vise un espace plat et dégagé. Chaque exemple crée un nouveau projet modifiable.",
+    },
+    workflow_03_57: {
+      en: "Slow camera reveal",
+      fr: "Découverte en travelling lent",
+    },
+    workflow_03_58: {
+      en: "Two-person conversation",
+      fr: "Conversation entre deux personnages",
+    },
+    workflow_03_59: {
+      en: "Vehicle follow",
+      fr: "Suivi d’un véhicule",
+    },
+    workflow_03_60: {
+      en: "Create a starter scene?",
+      fr: "Créer une scène de départ ?",
+    },
+    workflow_03_61: {
+      en: "Save your current changes before continuing. The example will become a new project.",
+      fr: "Enregistre tes modifications avant de continuer. L’exemple sera créé dans un nouveau projet.",
+    },
+    workflow_03_62: {
+      en: "Save camera as preset",
+      fr: "Enregistrer la caméra comme modèle",
+    },
+    workflow_03_63: {
+      en: "The personal preset library is too large.",
+      fr: "La bibliothèque de modèles personnels est trop volumineuse.",
+    },
+    workflow_03_64: {
+      en: "The personal preset library is damaged or uses a newer version. Nothing was overwritten.",
+      fr: "La bibliothèque de modèles est endommagée ou utilise une version plus récente. Aucun fichier n’a été remplacé.",
+    },
+    workflow_03_65: {
+      en: "The personal preset library is damaged. Nothing was overwritten.",
+      fr: "La bibliothèque de modèles est endommagée. Aucun fichier n’a été remplacé.",
+    },
+    workflow_03_66: {
+      en: "Could not save the personal preset library.",
+      fr: "Impossible d’enregistrer la bibliothèque de modèles personnels.",
+    },
+    workflow_03_67: {
+      en: "The personal preset library is full.",
+      fr: "La bibliothèque de modèles personnels est pleine.",
+    },
+    workflow_03_68: {
+      en: "Enter a preset name and type.",
+      fr: "Indique un nom et un type de modèle.",
+    },
+    workflow_03_69: {
+      en: "Select a subject with actions or a camera path first.",
+      fr: "Sélectionne d’abord un sujet avec des actions ou un trajet caméra.",
+    },
+    workflow_03_70: {
+      en: "Add a camera position first.",
+      fr: "Ajoute d’abord une position caméra.",
+    },
+    workflow_03_71: {
+      en: "Preset saved on this computer.",
+      fr: "Modèle enregistré sur cet ordinateur.",
+    },
+    workflow_03_72: {
+      en: "Preset not found.",
+      fr: "Modèle introuvable.",
+    },
+    workflow_03_73: {
+      en: "Stop playback or editing before applying a preset.",
+      fr: "Arrête la lecture ou la manipulation avant d’appliquer un modèle.",
+    },
+    workflow_03_74: {
+      en: "Preset not found or damaged.",
+      fr: "Modèle introuvable ou endommagé.",
+    },
+    workflow_03_75: {
+      en: "Choose a scene subject for every preset reference.",
+      fr: "Choisis un sujet de la scène pour chaque référence du modèle.",
+    },
+    workflow_03_76: {
+      en: "Select a subject of the same type as this preset.",
+      fr: "Sélectionne un sujet du même type que ce modèle.",
+    },
+    workflow_03_77: {
+      en: "Action preset added at the playhead.",
+      fr: "Le modèle d’actions a été ajouté au curseur.",
+    },
+    workflow_03_78: {
+      en: "Save an actor with scheduled actions first.",
+      fr: "Enregistre d’abord un sujet avec des actions programmées.",
+    },
+    workflow_03_79: {
+      en: "Use a project export to reuse recorded takes.",
+      fr: "Utilise l’export du projet pour réutiliser les enregistrements.",
+    },
+    workflow_03_80: {
+      en: "Save a camera shot or path first.",
+      fr: "Enregistre d’abord un plan ou un trajet caméra.",
+    },
+    workflow_03_81: {
+      en: "Stop playback or editing before creating a starter scene.",
+      fr: "Arrête la lecture ou la manipulation avant de créer une scène de départ.",
+    },
+    workflow_03_82: {
+      en: "Aim at clear ground before creating a starter scene.",
+      fr: "Vise un sol dégagé avant de créer une scène de départ.",
+    },
+    workflow_03_83: {
+      en: "Unknown starter scene.",
+      fr: "Scène de départ inconnue.",
+    },
+    workflow_03_84: {
+      en: "Invalid handheld camera intensity.",
+      fr: "Intensité de caméra à main levée invalide.",
+    },
+    workflow_03_85: {
+      en: "HANDHELD CAMERA",
+      fr: "CAMÉRA À MAIN LEVÉE",
+    },
+    workflow_03_86: {
+      en: "Steady",
+      fr: "Stable",
+    },
+    workflow_03_87: {
+      en: "Subtle breathing",
+      fr: "Respiration discrète",
+    },
+    workflow_03_88: {
+      en: "Gentle handheld",
+      fr: "Main levée légère",
+    },
+    workflow_03_89: {
+      en: "Drag to change duration",
+      fr: "Glisse pour modifier la durée",
+    },
+    workflow_03_90: {
+      en: "Snap",
+      fr: "Aimant",
+    },
+    workflow_03_91: {
+      en: "Fit",
+      fr: "Tout voir",
+    },
+    workflow_03_92: {
+      en: "Snap to nearby clip edges and camera keys. Hold Alt to move freely.",
+      fr: "Aligne les blocs sur les bords et les positions proches. Maintiens Alt pour déplacer librement.",
+    },
+    workflow_03_93: {
+      en: "Show the full timeline",
+      fr: "Afficher toute la timeline",
+    },
+    workflow_03_94: {
+      en: "Zoom timeline · Ctrl + wheel around the cursor",
+      fr: "Zoom de la timeline · Ctrl + molette autour du curseur",
+    },
   },
 };

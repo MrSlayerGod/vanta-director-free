@@ -10,6 +10,11 @@ dofile("appearance.lua")
 dofile("attachments.lua")
 dofile("recording.lua")
 dofile("motion.lua")
+dofile("payload.lua")
+dofile("project_validation.lua")
+dofile("presets.lua")
+dofile("templates.lua")
+dofile("timing.lua")
 dofile("scene_geometry.lua")
 dofile("drag_ground.lua")
 dofile("ped_cues.lua")
@@ -201,11 +206,28 @@ function SetEntityCollision(handle, enabled)
     entities[handle].collision = enabled
 end
 DirectorModelBrowser = { close = function() end, active = false }
+local encodedValues, encodedSerial, kvps, serverCalls = {}, 0, {}, {}
 json = {
-    encode = function()
-        return "{}"
+    encode = function(value)
+        encodedSerial = encodedSerial + 1
+        local key = "encoded:" .. encodedSerial
+        encodedValues[key] = DirectorHistory.copy(value)
+        return key
+    end,
+    decode = function(key)
+        assert(encodedValues[key], "Invalid JSON")
+        return DirectorHistory.copy(encodedValues[key])
     end,
 }
+function GetResourceKvpString(key)
+    return kvps[key]
+end
+function SetResourceKvp(key, value)
+    kvps[key] = value
+end
+function TriggerServerEvent(name, ...)
+    serverCalls[#serverCalls + 1] = { name = name, args = { ... } }
+end
 -- Explicitly ignored rendering natives. This suite exercises real callback/state logic,
 -- not game engine visuals, physics, native tasks or resource performance.
 setmetatable(_G, {
@@ -234,6 +256,8 @@ dofile("client/routes.lua")
 dofile("client/bridge.lua")
 dofile("client/input.lua")
 dofile("client/timeline.lua")
+dofile("client/workflow.lua")
+dofile("client/presets.lua")
 dofile("client/shots.lua")
 dofile("client/capture.lua")
 dofile("client/models.lua")
@@ -298,6 +322,62 @@ assert(call("addRoutePoint", { x = 0.5, y = 0.5, aspect = 16 / 9 }).ok)
 assert(call("cancelRoute").ok)
 assert(call("setActorGroup", { ids = { 1 }, name = "Actors" }).ok)
 assert(call("collaboration", { operation = "create" }).ok)
+assert(call("addAction", { id = 1, type = "move", duration = 3, gait = "auto" }).ok)
+local action = latest("actors").actors[1].actions[1]
+assert(call("editActionTiming", { actorId = 1, actionId = action.id, time = 4, duration = 4, ripple = true }).ok)
+assert(not call("editActionTiming", { actorId = 1, actionId = action.id, time = 19, duration = 4 }).ok)
+assert(latest("actors").actors[1].actions[1].time == 4)
+assert(call("savePreset", { kind = "actions", actorId = 1, name = "First action preset" }).ok)
+local presets = call("getPresets").entries
+assert(#presets == 1 and presets[1].available and presets[1].actorKind == "ped")
+assert(call("setPlayhead", { time = 10 }).ok)
+assert(call("applyPreset", { id = presets[1].id, actorId = 1, mappings = {} }).ok)
+assert(#latest("actors").actors[1].actions == 2)
+assert(call("undo").ok and #latest("project").project.actors[1].actions == 1)
+assert(call("redo").ok and #latest("project").project.actors[1].actions == 2)
+assert(call("saveProject").ok)
+local saveRequest = serverCalls[#serverCalls]
+events["vanta_director_free:saveResult"](true, "Saved", {}, saveRequest.args[2])
+assert(latest("saveState").saved == true, "Semantic save comparison ignores JSON key order")
+assert(call("saveProject").ok)
+saveRequest = serverCalls[#serverCalls]
+assert(call("setProjectName", { name = "Newer edits" }).ok)
+events["vanta_director_free:saveResult"](true, "Saved", {}, saveRequest.args[2])
+assert(latest("saveResult").stale == true and latest("saveState").saved == false)
+assert(call("saveDraft").ok)
+assert(serverCalls[#serverCalls].name == "vanta_director_free:saveDraft")
+local valid, normalized = DirectorProject.validate({
+    name = "Normalized scene",
+    duration = 20,
+    keyframes = {},
+    actors = {
+        {
+            id = 4,
+            kind = "ped",
+            model = "a_m_y_business_01",
+            x = 0,
+            y = 0,
+            z = 1,
+            heading = 0,
+            actions = { { id = 1, type = "lookAt", time = 2, duration = 2, targetId = 17 } },
+        },
+        { id = 9, kind = "ped", model = "a_m_y_business_01", x = 3, y = 0, z = 1, heading = 0, actions = {} },
+        { id = 17, kind = "vehicle", model = "sultan", x = 10, y = 0, z = 1, heading = 0, actions = {} },
+    },
+})
+assert(valid and not normalized.actors[1].id)
+events["vanta_director_free:projectLibrary"](normalized, "normalized", {})
+assert(latest("project").project.actors[3].id == 3, "Server-normalized projects must assign fresh runtime IDs")
+assert(call("deleteActor", { id = 2 }).ok)
+assert(call("savePreset", { kind = "actions", actorId = 1, name = "Referenced gaze" }).ok)
+presets = call("getPresets").entries
+local referencePreset = presets[#presets]
+assert(referencePreset.references[1].id == 2 and referencePreset.references[1].kind == "vehicle")
+assert(call("setPlayhead", { time = 8 }).ok)
+assert(not call("applyPreset", { id = referencePreset.id, actorId = 1, mappings = {} }).ok)
+assert(call("applyPreset", { id = referencePreset.id, actorId = 1, mappings = { ["2"] = 3 } }).ok)
+local mapped = latest("actors").actors[1].actions
+assert(#mapped == 2 and mapped[2].targetId == 3, "Preset references must return to sparse live actor IDs")
 assert(call("close").ok and not focus)
 assert(not call("addKeyframe", { time = 0 }).ok)
 print(

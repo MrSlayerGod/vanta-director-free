@@ -1,0 +1,192 @@
+.recovery-banner {
+  margin: 12px 0;
+  padding: 16px;
+  border: 1px solid var(--cyan, #65d8f0);
+  border-radius: 8px;
+  background: #102b3a;
+}
+.recovery-banner strong,
+.recovery-banner > span {
+  display: block;
+  margin-bottom: 8px;
+}
+.recovery-banner p {
+  color: #a6c2d1;
+}
+.recovery-banner button {
+  margin-top: 6px;
+}
+.director .action-step {
+  display: block;
+  padding: 8px;
+}
+.director .action-step summary {
+  cursor: pointer;
+  color: #bdd5e4;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.chain-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 10px 0;
+}
+.chain-fields label,
+.preset-dialog label {
+  display: grid;
+  gap: 6px;
+  color: #a6bfce;
+  font-size: 11px;
+}
+.chain-fields input {
+  min-width: 0;
+  width: 100%;
+}
+.chain-fields button {
+  min-width: 0;
+  white-space: normal;
+  line-height: 1.4;
+}
+.director .chain-fields button,
+.director .chain-toolbar button,
+.preset-dialog button {
+  color: #c5dce9;
+  background: #132d41;
+  border: 1px solid #35566c;
+  border-radius: 5px;
+  padding: 7px 9px;
+  font:
+    11px "Segoe UI",
+    sans-serif;
+  cursor: pointer;
+}
+.director .chain-fields button:hover,
+.director .chain-toolbar button:hover,
+.preset-dialog button:hover {
+  border-color: #65d8f0;
+}
+.director .chain-fields button:disabled,
+.director .chain-toolbar button:disabled,
+.preset-dialog button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.director .timeline-viewport {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #38576b #091927;
+}
+.chain-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 0;
+}
+.chain-ripple {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #9dc4d8;
+}
+.director .chain-ripple input {
+  width: auto;
+  accent-color: #62d5ed;
+}
+.director .timeline-action {
+  padding-right: 9px;
+}
+.director .timeline-action.duration-clip {
+  transform: none;
+  top: 5px;
+  height: 18px;
+  min-width: 8px;
+  padding: 0 8px;
+  border-radius: 3px;
+  line-height: 16px;
+}
+.director .timeline-action .clip-handle {
+  width: 7px;
+  z-index: 2;
+  border-right: 2px solid #bfeaf4;
+  opacity: 0.5;
+}
+.director .timeline-action:hover .clip-handle {
+  opacity: 1;
+}
+#timelineSnap[aria-pressed="true"] {
+  border-color: #52bfd6;
+  color: #6bd9ef;
+}
+.preset-dialog {
+  pointer-events: auto;
+  width: min(650px, 94vw);
+  max-height: 88vh;
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid #36576d;
+  border-radius: 12px;
+  background: #0c1d2e;
+  color: #d8e9f3;
+}
+.preset-dialog::backdrop {
+  background: #020a14aa;
+}
+.preset-dialog header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.preset-dialog h2 {
+  margin: 0;
+  font-size: 20px;
+}
+.preset-dialog p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #9dbacb;
+}
+.preset-dialog section {
+  padding: 14px 0;
+  border-top: 1px solid #253e51;
+}
+.preset-dialog h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+.preset-dialog label {
+  margin-bottom: 12px;
+}
+.preset-dialog input,
+.preset-dialog select {
+  width: 100%;
+  min-height: 34px;
+  padding: 7px;
+  color: inherit;
+  background: #122b40;
+  border: 1px solid #34526a;
+  border-radius: 5px;
+}
+.starter-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 0;
+}
+.starter-scenes {
+  border-top: 1px solid #2a4255;
+  padding: 12px 0;
+}
+.starter-scenes summary {
+  cursor: pointer;
+}
+.starter-scenes p {
+  color: #9dbacb;
+  line-height: 1.6;
+}
+.starter-scenes button {
+  margin: 4px;
+}

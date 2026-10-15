@@ -66,6 +66,13 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
       );
     }
   }
+  for (const file of ["timing.lua", "presets.lua", "client/presets.lua", "client/workflow.lua"]) {
+    for (const match of read(file).matchAll(
+      /(?:message\s*=\s*|return (?:nil|false),\s*)"([^"\n]+)"/g,
+    )) {
+      assert(captions.has(match[1]), "Untranslated workflow message: " + match[1]);
+    }
+  }
   assert(
     !/DirectorFree|unavailableCalls/.test(
       read("client.lua") + read("server.lua") + read("web/app.js"),

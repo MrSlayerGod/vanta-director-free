@@ -140,7 +140,7 @@
     popup.querySelector("input")?.focus();
   };
   const enhance = (select) => {
-    if (widgets.has(select) || select.multiple) return;
+    if (widgets.has(select) || select.multiple || select.closest("dialog")) return;
     const wrapper = document.createElement("span");
     wrapper.className = "vanta-select";
     const button = document.createElement("button");
